@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-06-17
+> Última atualização: 2026-06-18
 
 ---
 
@@ -21,15 +21,17 @@
 
 ## Firebase / Infra
 
-- [ ] Projeto Firebase criado no console
-- [ ] Firebase Authentication habilitado (Email/Password)
-- [ ] Coleção `users` criada no Firestore
-- [ ] Coleção `tasks` criada no Firestore
-- [ ] Coleção `preferences` criada no Firestore
-- [ ] Coleção `reminders` criada no Firestore
-- [ ] Regras de segurança do Firestore configuradas
-- [ ] Firebase Cloud Messaging habilitado (push notifications)
-- [ ] Variáveis de ambiente compartilhadas com o time
+- [x] Projeto Firebase criado no console (`seniorease-backend`)
+- [x] Firebase Authentication habilitado (Email/Password)
+- [x] Coleção `users` criada no Firestore
+- [x] Coleção `tasks` criada no Firestore
+- [x] Coleção `preferences` criada no Firestore
+- [x] Coleção `reminders` criada no Firestore
+- [x] Regras de segurança do Firestore configuradas
+- [x] Firebase Cloud Messaging habilitado (push notifications)
+- [x] Variáveis de ambiente compartilhadas com o time
+
+> Coleções Firestore serão populadas automaticamente pela app na primeira gravação. Apps registadas: Web (`seniorease-web`), Android e iOS (`com.seniorease.mobile`). APNs iOS pendente para fase de push notifications.
 
 ---
 
