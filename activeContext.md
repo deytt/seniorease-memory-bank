@@ -7,7 +7,7 @@
 
 ## Status geral
 
-**Fase atual:** Fundação — Firebase concluído; início do setup Web e Mobile
+**Fase atual:** Fundação — Firebase concluído; setup Mobile em progresso (Flutter criado)
 
 O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional com Auth, Firestore, FCM e apps Web/Android/iOS registadas. O Figma está validado e alinhado com os requisitos do Hackathon.
 
@@ -31,13 +31,11 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
-**Status:** Pronto para Etapa 2 — setup do projeto
-**Já feito:** memory-bank como submódulo, `.cursor/rules/memory-bank.mdc` configurado.
+**Status:** Etapa 2 em progresso — Firebase conectado, app compila
+**Já feito:** memory-bank como submódulo, `.cursor/rules/memory-bank.mdc`, projeto Flutter (`com.seniorease.mobile`), estrutura Clean Architecture, Riverpod, GoRouter, tema base, `flutterfire configure`, Firebase inicializado no `main.dart`.
 **Próximo passo:**
-1. Configurar projeto Flutter com estrutura definida em `systemPatterns.md` (`com.seniorease.mobile`)
-2. Executar `flutterfire configure` para conectar ao Firebase (`seniorease-backend`)
-3. Configurar Riverpod e GoRouter
-4. Implementar autenticação (Login, Register, Forgot Password)
+1. Configurar GitHub Actions (build APK + Firebase App Distribution)
+2. Implementar autenticação (Login, Register, Forgot Password)
 
 ### CI/CD
 **Status:** Pendente — deve ser configurado antes das primeiras features

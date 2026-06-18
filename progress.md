@@ -101,13 +101,13 @@
 ## Mobile App — seniorease-mobile
 
 ### Configuração inicial
-- [ ] Projeto Flutter inicializado
-- [ ] Estrutura de pastas Clean Architecture criada
-- [ ] memory-bank adicionado como submódulo
-- [ ] `.cursor/rules/memory-bank.mdc` copiado para o projeto
-- [ ] `flutterfire configure` executado
-- [ ] Riverpod configurado
-- [ ] GoRouter configurado
+- [x] Projeto Flutter inicializado
+- [x] Estrutura de pastas Clean Architecture criada
+- [x] memory-bank adicionado como submódulo
+- [x] `.cursor/rules/memory-bank.mdc` copiado para o projeto
+- [x] `flutterfire configure` executado
+- [x] Riverpod configurado
+- [x] GoRouter configurado
 
 ### Design System (widgets base)
 - [ ] SeniorButton (variantes)
