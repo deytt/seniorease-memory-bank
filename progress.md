@@ -38,8 +38,8 @@
 ## CI/CD
 
 - [ ] GitHub Actions configurado para Web (build + Vercel deploy)
-- [ ] GitHub Actions configurado para Mobile (build APK)
-- [ ] Firebase App Distribution configurado para Mobile
+- [x] GitHub Actions configurado para Mobile (build APK)
+- [x] Firebase App Distribution configurado para Mobile
 
 ---
 

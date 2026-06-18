@@ -31,15 +31,14 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
-**Status:** Etapa 2 em progresso — Firebase conectado, app compila
-**Já feito:** memory-bank como submódulo, `.cursor/rules/memory-bank.mdc`, projeto Flutter (`com.seniorease.mobile`), estrutura Clean Architecture, Riverpod, GoRouter, tema base, `flutterfire configure`, Firebase inicializado no `main.dart`.
-**Próximo passo:**
-1. Configurar GitHub Actions (build APK + Firebase App Distribution)
-2. Implementar autenticação (Login, Register, Forgot Password)
+**Status:** Etapa 2 em progresso — CI/CD Mobile configurado
+**Já feito:** memory-bank como submódulo, `.cursor/rules/memory-bank.mdc`, projeto Flutter (`com.seniorease.mobile`), estrutura Clean Architecture, Riverpod, GoRouter, tema base, `flutterfire configure`, Firebase inicializado no `main.dart`, GitHub Actions (CI em qualquer branch; CD na `master` → Firebase App Distribution, grupo `seniorease-testers`).
+**Próximo passo:** Implementar autenticação (Login, Register, Forgot Password)
 
 ### CI/CD
-**Status:** Pendente — deve ser configurado antes das primeiras features
-**Próximo passo:** Configurar GitHub Actions para Web (Vercel) e Mobile (Firebase App Distribution)
+**Status:** Mobile concluído — Web pendente
+**Entregue (Mobile):** `.github/workflows/mobile.yml` — CI (`analyze` + `test`) em push/PR; CD (build APK + App Distribution) só em push na `master`.
+**Próximo passo:** Configurar GitHub Actions para Web (Vercel)
 
 ---
 
