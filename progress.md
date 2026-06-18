@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-06-18
+> Última atualização: 2026-06-18 (layout auth + Figma)
 
 ---
 
@@ -110,19 +110,24 @@
 - [x] GoRouter configurado
 
 ### Design System (widgets base)
-- [ ] SeniorButton (variantes)
-- [ ] SeniorInput
-- [ ] SeniorCard
-- [ ] Modal de confirmação
-- [ ] SnackBar / Toast
+- [x] SeniorButton (Primary, Secondary, Outline, Ghost, Destructive)
+- [x] SeniorInput (label compacto para campos lado a lado)
+- [x] SeniorCard
+- [x] SeniorLogo
+- [x] SeniorScreenHeader (botão voltar Figma `15:6423`)
+- [x] SeniorScreenScaffold
+- [x] SeniorFormBody (scroll com altura mínima proporcional)
+- [x] Modal de confirmação
+- [x] SnackBar / Toast
+- [x] Edge-to-edge e system UI (`senior_system_ui.dart`, MainActivity, styles Android)
 - [ ] ThemeData dinâmico (fonte, contraste via MaterialApp)
 
 ### Autenticação
-- [ ] Tela Login
-- [ ] Tela Register
-- [ ] Tela Forgot Password
-- [ ] Firebase Auth integrado
-- [ ] Rota protegida
+- [x] Tela Login (Figma `15:6210`)
+- [x] Tela Register (Figma `15:6415` — nome/sobrenome lado a lado, scroll unificado)
+- [x] Tela Forgot Password (Figma `15:6638` — conteúdo centralizado, botão outline)
+- [x] Firebase Auth integrado
+- [x] Rota protegida
 
 ### Home
 - [ ] Tela Home (Dashboard)

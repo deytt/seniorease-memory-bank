@@ -1,15 +1,15 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-06-18
+> Última atualização: 2026-06-18 (layout auth + Figma)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Fundação — Firebase concluído; setup Mobile em progresso (Flutter criado)
+**Fase atual:** Features — Design System, autenticação e layout das telas auth Mobile concluídos; próximo: Home/Dashboard e Módulo Acessibilidade
 
-O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional com Auth, Firestore, FCM e apps Web/Android/iOS registadas. O Figma está validado e alinhado com os requisitos do Hackathon.
+O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado a partir do Figma. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma com layout responsivo e edge-to-edge.
 
 ---
 
@@ -31,9 +31,9 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
-**Status:** Etapa 2 em progresso — CI/CD Mobile configurado
-**Já feito:** memory-bank como submódulo, `.cursor/rules/memory-bank.mdc`, projeto Flutter (`com.seniorease.mobile`), estrutura Clean Architecture, Riverpod, GoRouter, tema base, `flutterfire configure`, Firebase inicializado no `main.dart`, GitHub Actions (CI em qualquer branch; CD na `master` → Firebase App Distribution, grupo `seniorease-testers`).
-**Próximo passo:** Implementar autenticação (Login, Register, Forgot Password)
+**Status:** Etapa 3 em progresso — Design System + Auth + layout auth concluídos
+**Já feito:** CI/CD Mobile; Design System (`SeniorButton` com variante outline, `SeniorInput` com label compacto, `SeniorCard`, `SeniorAlert`, `SeniorToast`, `SeniorModal`, `SeniorLogo`, `SeniorScreenHeader`, `SeniorScreenScaffold`, `SeniorFormBody`); escala tipográfica e tokens Figma (`inputHeight` 58, `inputBorderRadius`/`buttonBorderRadius` 16, botão voltar 36×36 visual / 48×48 toque); edge-to-edge (status bar e nav bar transparentes via `senior_system_ui.dart`); autenticação Firebase (Login, Register, Forgot Password); auth guard GoRouter; criação de `users/{uid}` no Firestore no registo; telas auth alinhadas ao Figma (`15:6210` Login, `15:6415` Register, `15:6638` Forgot Password, `15:6423` botão voltar).
+**Próximo passo:** Home/Dashboard real e Módulo 1 — Acessibilidade (ThemeData dinâmico)
 
 ### CI/CD
 **Status:** Mobile concluído — Web pendente
