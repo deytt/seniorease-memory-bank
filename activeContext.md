@@ -1,15 +1,15 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-06-17
+> Última atualização: 2026-06-18
 
 ---
 
 ## Status geral
 
-**Fase atual:** Fundação — configuração de infraestrutura e início do desenvolvimento
+**Fase atual:** Fundação — Firebase concluído; início do setup Web e Mobile
 
-O memory-bank foi criado e está pronto para ser adicionado como submódulo nos projetos web e mobile. O Figma está validado e alinhado com os requisitos do Hackathon.
+O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional com Auth, Firestore, FCM e apps Web/Android/iOS registadas. O Figma está validado e alinhado com os requisitos do Hackathon.
 
 ---
 
@@ -17,11 +17,12 @@ O memory-bank foi criado e está pronto para ser adicionado como submódulo nos 
 
 ### Firebase / Infra
 **Responsável:** David (Tech Lead)
-**Status:** Pendente
-**Próximo passo:** Criar projeto no Firebase Console, habilitar Auth (Email/Password), criar coleções no Firestore (`users`, `tasks`, `preferences`, `reminders`), configurar regras de segurança conforme `techContext.md`, compartilhar variáveis de ambiente com o time.
+**Status:** Concluído
+**Entregue:** Projeto `seniorease-backend`, Auth Email/Password, Firestore com regras publicadas, FCM V1, apps Web/Android/iOS (`com.seniorease.mobile`), `.env.local` partilhado com o time.
+**Pendente (não bloqueante):** Configuração APNs para push notifications no iOS.
 
 ### Web (seniorease-web)
-**Status:** Pendente — aguardando Firebase configurado
+**Status:** Pronto para Etapa 2 — setup do projeto
 **Próximo passo:**
 1. Adicionar memory-bank como submódulo (`git submodule add`)
 2. Copiar `.cursor/rules/memory-bank.mdc` para `.cursor/rules/`
@@ -30,13 +31,13 @@ O memory-bank foi criado e está pronto para ser adicionado como submódulo nos 
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
-**Status:** Pendente — aguardando Firebase configurado
+**Status:** Pronto para Etapa 2 — setup do projeto
+**Já feito:** memory-bank como submódulo, `.cursor/rules/memory-bank.mdc` configurado.
 **Próximo passo:**
-1. Adicionar memory-bank como submódulo (`git submodule add`)
-2. Copiar `.cursor/rules/memory-bank.mdc` para `.cursor/rules/`
-3. Configurar projeto Flutter com estrutura definida em `systemPatterns.md`
-4. Executar `flutterfire configure` para conectar ao Firebase
-5. Implementar autenticação (Login, Register, Forgot Password)
+1. Configurar projeto Flutter com estrutura definida em `systemPatterns.md` (`com.seniorease.mobile`)
+2. Executar `flutterfire configure` para conectar ao Firebase (`seniorease-backend`)
+3. Configurar Riverpod e GoRouter
+4. Implementar autenticação (Login, Register, Forgot Password)
 
 ### CI/CD
 **Status:** Pendente — deve ser configurado antes das primeiras features
