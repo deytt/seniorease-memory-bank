@@ -176,10 +176,13 @@ tasks/{taskId}
 preferences/{userId}               ← ID = userId (1:1 com users)
   - userId: string
   - fontSize: 'small' | 'medium' | 'large' | 'extra_large'
+  - darkMode: boolean                ← novo (Dark Mode toggle)
   - contrast: 'default' | 'high' | 'maximum'
+    ↳ 'maximum' é derivado automaticamente (darkMode:true + contrast:'high')
   - spacing: 'compact' | 'comfortable' | 'spacious'
   - interfaceMode: 'basic' | 'advanced'
-  - visualFeedbackEnabled: boolean
+  - audioFeedbackEnabled: boolean    ← substitui visualFeedbackEnabled
+  - largeTouchTargets: boolean       ← novo (botões 64×64px)
   - remindersEnabled: boolean
   - notificationTime: string | null  ← ex: "08:00"
   - updatedAt: Timestamp

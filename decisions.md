@@ -215,6 +215,37 @@ Os use cases foram criados de facto (`SignInUseCase`, `SignUpUseCase`, `SignOutU
 
 ---
 
+## ADR-009 — Dynamic Theme Engine + Módulo Acessibilidade (Mobile)
+
+**Data:** 2026-06-22
+**Status:** Aceito
+
+**Contexto:**
+O `AppTheme.light` era estático. A tela de Acessibilidade do Figma (`node 15:9085`) requer que tamanho de letra, modo escuro, contraste e tamanho dos touch targets sejam configurados pelo utilizador e reflitam imediatamente em toda a app. O schema original do Firestore (`preferences`) não tinha `darkMode` nem `largeTouchTargets`, e usava `visualFeedbackEnabled` em vez de `audioFeedbackEnabled`.
+
+**Decisão:**
+1. Criar `AppTheme.buildDynamic(UserPreferences)` que produz um `ThemeData` com escala tipográfica correta do Figma (Display 48px → Caption 12px), multiplicada pelo factor de `FontSizeScale` do utilizador.
+2. Atualizar `app.dart` para observar `preferencesProvider` e passar o tema dinâmico ao `MaterialApp.router`.
+3. Atualizar schema Firestore `preferences/{userId}`: adicionar `darkMode: boolean`, `largeTouchTargets: boolean`, substituir `visualFeedbackEnabled` por `audioFeedbackEnabled`.
+4. O `ContrastMode.maximum` é **derivado automaticamente** pelo `SavePreferencesUseCase` quando `darkMode == true && contrast == high` — nunca exposto como opção separada na UI.
+
+**Motivo:**
+- `buildDynamic()` centraliza toda a lógica de tema num único ponto, evitando duplicação e garantindo consistência WCAG em todos os ecrãs.
+- Observar `preferencesProvider` em `app.dart` faz com que a mudança de tema seja instantânea sem reiniciar a app.
+- Derivar `maximum` automaticamente simplifica a UX (dois toggles em vez de três opções de contraste).
+
+**Alternativas consideradas:**
+- `MediaQuery.textScaleFactor` — descartado porque é global do sistema e não dá controlo fine-grained por feature.
+- `ThemeExtension` para spacing — mantido como work-in-progress; o campo `spacing` existe no Firestore mas o toggle não está exposto na UI por ora (implementar na iteração de Spacing avançado).
+- Três modos de contraste como segmented control — descartado em favor de dois toggles (Dark Mode + High Contrast) para não sobrecarregar a UX do público sénior.
+
+**Regras imutáveis:**
+- `AppTheme.buildDynamic()` é o único ponto de construção de `ThemeData` em produção.
+- `AppTheme.light` e `AppTheme.dark` existem apenas como base interna; nunca passados directamente ao `MaterialApp`.
+- `UserPreferences.defaults()` é sempre retornado quando não há utilizador autenticado ou Firestore indisponível.
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:

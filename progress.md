@@ -120,7 +120,7 @@
 - [x] Modal de confirmação
 - [x] SnackBar / Toast
 - [x] Edge-to-edge e system UI (`senior_system_ui.dart`, MainActivity, styles Android)
-- [ ] ThemeData dinâmico (fonte, contraste via MaterialApp)
+- [x] ThemeData dinâmico (fonte, contraste via MaterialApp)
 
 ### Autenticação
 - [x] Tela Login (Figma `15:6210`)
@@ -133,13 +133,15 @@
 - [ ] Tela Home (Dashboard)
 
 ### Módulo 1 — Acessibilidade
-- [ ] Tela Accessibility
-- [ ] Toggle de tamanho de fonte (ThemeData dinâmico)
-- [ ] Toggle de contraste
-- [ ] Toggle de espaçamento
-- [ ] Toggle de Modo Básico / Avançado
-- [ ] Toggle de feedback visual
-- [ ] Persistência das preferências no Firestore
+- [x] Tela Accessibility (Figma `15:9085`)
+- [x] Toggle de tamanho de fonte (ThemeData dinâmico — 4 passos 87%/100%/120%/150%)
+- [x] Toggle de Dark Mode (ThemeMode.dark via buildDynamic)
+- [x] Toggle de Alto Contraste (ContrastMode.high / maximum)
+- [x] Toggle de Modo Básico / Avançado
+- [x] Toggle de Feedback de Áudio e Tátil
+- [x] Toggle de Botões Maiores (largeTouchTargets 64×64px)
+- [x] ThemeData dinâmico (AppTheme.buildDynamic — escala tipográfica, contraste, touch targets)
+- [x] Persistência das preferências no Firestore
 
 ### Módulo 2 — Tarefas
 - [ ] Tela Task List

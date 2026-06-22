@@ -1,17 +1,17 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-06-22 (refactor feature-first + use cases auth)
+> Última atualização: 2026-06-22 (Módulo Acessibilidade + Dynamic Theme Engine)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Features — Refactor arquitetural concluído; próximo: Home/Dashboard e Módulo Acessibilidade
+**Fase atual:** Features — Módulo Acessibilidade concluído; próximo: Home/Dashboard
 
 O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma.
 
-**Refactor ADR-008 concluído:** projeto migrado para Feature-First + Clean Architecture com use cases reais criados (`SignInUseCase`, `SignUpUseCase`, `SignOutUseCase`, `SendPasswordResetUseCase`). Estrutura `core/` e `features/` no lugar de `domain/`, `infrastructure/`, `presentation/` globais. 0 erros de análise estática.
+**Refactor ADR-008 concluído:** projeto migrado para Feature-First + Clean Architecture. **ADR-009 concluído:** Dynamic Theme Engine (`AppTheme.buildDynamic`) + Módulo Acessibilidade implementado (tela `15:9085`, domain/data/presentation, rota `/accessibility`). 0 erros de análise estática.
 
 ---
 
@@ -33,9 +33,9 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
-**Status:** Refactor ADR-008 concluído — pronto para Home/Dashboard e Módulo 1
-**Já feito:** CI/CD Mobile; Design System em `core/widgets/` (`SeniorButton`, `SeniorInput`, `SeniorCard`, `SeniorAlert`, `SeniorToast`, `SeniorModal`, `SeniorLogo`, `SeniorScreenHeader`, `SeniorScreenScaffold`, `SeniorFormBody`); `core/theme/` com tokens Figma; edge-to-edge; autenticação Firebase com use cases reais; auth guard GoRouter; telas auth alinhadas ao Figma; estrutura Feature-First (`features/auth/`, `features/home/`, `features/accessibility/`, `features/tasks/`, `features/reminders/`, `features/profile/`).
-**Próximo passo:** Home/Dashboard real e Módulo 1 — Acessibilidade (`UserPreferences` entity + `ThemeData` dinâmico)
+**Status:** Módulo Acessibilidade concluído — próximo: Home/Dashboard
+**Já feito:** CI/CD Mobile; Design System em `core/widgets/`; `core/theme/` com tokens Figma e `AppTheme.buildDynamic`; edge-to-edge; autenticação Firebase com use cases; auth guard GoRouter; telas auth alinhadas ao Figma; estrutura Feature-First; **Módulo Acessibilidade** (`UserPreferences` entity, `FirebasePreferencesRepository`, `GetPreferencesUseCase`, `SavePreferencesUseCase`, `preferencesProvider`, `AccessibilityScreen`, `AppTheme.buildDynamic` com dark mode/high contrast/large touch targets/font scale).
+**Próximo passo:** Home/Dashboard real (Figma a confirmar com o utilizador)
 
 ### CI/CD
 **Status:** Mobile concluído — Web pendente
