@@ -102,7 +102,7 @@
 
 ### Configuração inicial
 - [x] Projeto Flutter inicializado
-- [x] Estrutura de pastas Clean Architecture criada
+- [x] Estrutura de pastas Feature-First + Clean Architecture criada (ADR-008)
 - [x] memory-bank adicionado como submódulo
 - [x] `.cursor/rules/memory-bank.mdc` copiado para o projeto
 - [x] `flutterfire configure` executado
