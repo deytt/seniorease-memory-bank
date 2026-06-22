@@ -1,13 +1,13 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-06-22 (Módulo Acessibilidade + Dynamic Theme Engine)
+> Última atualização: 2026-06-22 (Home/Dashboard + Settings + Bottom Nav)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Features — Módulo Acessibilidade concluído; próximo: Home/Dashboard
+**Fase atual:** Features — Home/Dashboard e Settings concluídos; próximo: Módulo Tarefas
 
 O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma.
 
@@ -33,9 +33,9 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
-**Status:** Módulo Acessibilidade concluído — próximo: Home/Dashboard
-**Já feito:** CI/CD Mobile; Design System em `core/widgets/`; `core/theme/` com tokens Figma e `AppTheme.buildDynamic`; edge-to-edge; autenticação Firebase com use cases; auth guard GoRouter; telas auth alinhadas ao Figma; estrutura Feature-First; **Módulo Acessibilidade** (`UserPreferences` entity, `FirebasePreferencesRepository`, `GetPreferencesUseCase`, `SavePreferencesUseCase`, `preferencesProvider`, `AccessibilityScreen`, `AppTheme.buildDynamic` com dark mode/high contrast/large touch targets/font scale).
-**Próximo passo:** Home/Dashboard real (Figma a confirmar com o utilizador)
+**Status:** Home/Dashboard e Settings concluídos — próximo: Módulo Tarefas
+**Já feito:** CI/CD Mobile; Design System em `core/widgets/`; `core/theme/` com tokens Figma e `AppTheme.buildDynamic`; edge-to-edge; autenticação Firebase com use cases; auth guard GoRouter; telas auth alinhadas ao Figma; estrutura Feature-First; **Módulo Acessibilidade** (dynamic theme, tela, Firestore); **Home/Dashboard** (header gradiente, SOS, quick actions, reminders, bottom nav 5 tabs via StatefulShellRoute); **Settings** (profile banner, 5 nav rows, HelpCard, logout com confirmação).
+**Próximo passo:** Módulo Tarefas (Task List, Create Task, Guided Task Mode)
 
 ### CI/CD
 **Status:** Mobile concluído — Web pendente
