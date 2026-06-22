@@ -161,6 +161,60 @@ Usar **animações Lottie** (arquivos `.json` do LottieFiles) para a celebraçã
 
 ---
 
+## ADR-008 — Feature-First com Clean Architecture (Mobile)
+
+**Data:** 2026-06-22
+**Status:** Aceito
+
+**Contexto:**
+A estrutura inicial do projeto mobile seguia um modelo layer-first global (`domain/`, `infrastructure/`, `presentation/` na raiz de `lib/`). À medida que novas features (accessibility, tasks, reminders, profile) eram adicionadas, ficou claro que este modelo obrigaria o dev a navegar por 4 pastas raiz diferentes para trabalhar numa única feature, tornando o projeto difícil de manter e escalar.
+
+Adicionalmente, os use cases estavam todos vazios — a camada de apresentação chamava os repositórios diretamente, bypassando a camada de domínio e violando a Clean Architecture.
+
+**Decisão:**
+Reorganizar `lib/` para **Feature-First com Clean Architecture** em cada feature:
+
+```
+lib/
+├── app/          ← bootstrap, MaterialApp, GoRouter
+├── core/         ← partilhado por TODAS as features (sem lógica de negócio)
+│   ├── theme/    ← AppColors, AppSpacing, AppTheme, SeniorSystemUi
+│   ├── widgets/  ← Design System (SeniorButton, SeniorInput, etc.)
+│   └── firebase/ ← firebase_options.dart
+└── features/
+    ├── auth/
+    │   ├── domain/        ← entities/, repositories/, usecases/
+    │   ├── data/          ← implementações Firebase
+    │   └── presentation/  ← providers/, screens/
+    ├── home/
+    ├── accessibility/
+    ├── tasks/
+    ├── reminders/
+    └── profile/
+```
+
+Cada feature tem as suas próprias sub-camadas domain/data/presentation. A Clean Architecture é preservada dentro de cada feature: domain não importa data nem presentation.
+
+Os use cases foram criados de facto (`SignInUseCase`, `SignUpUseCase`, `SignOutUseCase`, `SendPasswordResetUseCase`) e o `AuthController` passou a chamar os use cases em vez de chamar o repositório diretamente.
+
+**Motivo:**
+- Trabalhar numa feature requer acesso a uma única pasta (`features/X/`) em vez de 4 pastas raiz
+- Use cases reais garantem que a lógica de negócio está na camada correta (domain)
+- `core/` separa claramente código partilhado de código de feature
+- Escala bem com 5+ features sem perder coesão
+- Padrão adotado por Very Good Ventures, Felix Angelov (Bloc) e Andrea Bizzotto (Riverpod)
+
+**Regra de ouro (inviolável):**
+- `features/X/domain/` **nunca** importa de `features/X/data/` nem de `features/X/presentation/`
+- Uma feature **nunca** importa diretamente de outra feature — comunicação via providers partilhados ou parâmetros
+- `core/` **nunca** importa de `features/` — é sempre o contrário
+
+**Alternativas consideradas:**
+- Manter layer-first global (descartado: não escala, dificulta navegação)
+- Monorepo por packages Dart (descartado: overhead desnecessário para um hackathon)
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:

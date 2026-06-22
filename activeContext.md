@@ -1,15 +1,17 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-06-18 (layout auth + Figma)
+> Última atualização: 2026-06-22 (refactor feature-first + use cases auth)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Features — Design System, autenticação e layout das telas auth Mobile concluídos; próximo: Home/Dashboard e Módulo Acessibilidade
+**Fase atual:** Features — Refactor arquitetural concluído; próximo: Home/Dashboard e Módulo Acessibilidade
 
-O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado a partir do Figma. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma com layout responsivo e edge-to-edge.
+O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma.
+
+**Refactor ADR-008 concluído:** projeto migrado para Feature-First + Clean Architecture com use cases reais criados (`SignInUseCase`, `SignUpUseCase`, `SignOutUseCase`, `SendPasswordResetUseCase`). Estrutura `core/` e `features/` no lugar de `domain/`, `infrastructure/`, `presentation/` globais. 0 erros de análise estática.
 
 ---
 
@@ -31,9 +33,9 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
-**Status:** Etapa 3 em progresso — Design System + Auth + layout auth concluídos
-**Já feito:** CI/CD Mobile; Design System (`SeniorButton` com variante outline, `SeniorInput` com label compacto, `SeniorCard`, `SeniorAlert`, `SeniorToast`, `SeniorModal`, `SeniorLogo`, `SeniorScreenHeader`, `SeniorScreenScaffold`, `SeniorFormBody`); escala tipográfica e tokens Figma (`inputHeight` 58, `inputBorderRadius`/`buttonBorderRadius` 16, botão voltar 36×36 visual / 48×48 toque); edge-to-edge (status bar e nav bar transparentes via `senior_system_ui.dart`); autenticação Firebase (Login, Register, Forgot Password); auth guard GoRouter; criação de `users/{uid}` no Firestore no registo; telas auth alinhadas ao Figma (`15:6210` Login, `15:6415` Register, `15:6638` Forgot Password, `15:6423` botão voltar).
-**Próximo passo:** Home/Dashboard real e Módulo 1 — Acessibilidade (ThemeData dinâmico)
+**Status:** Refactor ADR-008 concluído — pronto para Home/Dashboard e Módulo 1
+**Já feito:** CI/CD Mobile; Design System em `core/widgets/` (`SeniorButton`, `SeniorInput`, `SeniorCard`, `SeniorAlert`, `SeniorToast`, `SeniorModal`, `SeniorLogo`, `SeniorScreenHeader`, `SeniorScreenScaffold`, `SeniorFormBody`); `core/theme/` com tokens Figma; edge-to-edge; autenticação Firebase com use cases reais; auth guard GoRouter; telas auth alinhadas ao Figma; estrutura Feature-First (`features/auth/`, `features/home/`, `features/accessibility/`, `features/tasks/`, `features/reminders/`, `features/profile/`).
+**Próximo passo:** Home/Dashboard real e Módulo 1 — Acessibilidade (`UserPreferences` entity + `ThemeData` dinâmico)
 
 ### CI/CD
 **Status:** Mobile concluído — Web pendente

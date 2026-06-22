@@ -111,72 +111,119 @@ seniorease-web/
 
 ## Estrutura de pastas — Mobile (Flutter)
 
+> **Padrão: Feature-First com Clean Architecture** — ver ADR-008 em `decisions.md`
+
 ```
 seniorease-mobile/
 ├── memory-bank/               ← submódulo (não editar aqui)
 ├── lib/
 │   ├── main.dart
 │   ├── app/
-│   │   ├── app.dart           ← MaterialApp + router
-│   │   └── router.dart        ← GoRouter ou auto_route
-│   ├── domain/
-│   │   ├── entities/
-│   │   │   ├── user.dart
-│   │   │   ├── task.dart
-│   │   │   ├── task_step.dart
-│   │   │   ├── reminder.dart
-│   │   │   └── user_preferences.dart
-│   │   ├── usecases/
-│   │   │   ├── auth/
-│   │   │   ├── tasks/
-│   │   │   ├── reminders/
-│   │   │   └── preferences/
-│   │   └── repositories/
-│   │       ├── auth_repository.dart
-│   │       ├── task_repository.dart
-│   │       ├── reminder_repository.dart
-│   │       └── preferences_repository.dart
-│   ├── infrastructure/
+│   │   ├── app.dart           ← MaterialApp
+│   │   └── router.dart        ← GoRouter + AppRoutes
+│   │
+│   ├── core/                  ← código partilhado por TODAS as features
+│   │   ├── theme/
+│   │   │   ├── app_colors.dart
+│   │   │   ├── app_spacing.dart
+│   │   │   ├── app_theme.dart
+│   │   │   └── senior_system_ui.dart
+│   │   ├── widgets/           ← Design System
+│   │   │   ├── senior_button.dart
+│   │   │   ├── senior_input.dart
+│   │   │   ├── senior_card.dart
+│   │   │   ├── senior_modal.dart
+│   │   │   ├── senior_toast.dart
+│   │   │   ├── senior_alert.dart
+│   │   │   ├── senior_logo.dart
+│   │   │   ├── senior_screen_header.dart
+│   │   │   ├── senior_screen_scaffold.dart
+│   │   │   └── senior_form_body.dart
 │   │   └── firebase/
-│   │       ├── firebase_options.dart
-│   │       ├── firebase_auth_repository.dart
-│   │       ├── firebase_task_repository.dart
-│   │       ├── firebase_reminder_repository.dart
-│   │       └── firebase_preferences_repository.dart
-│   └── presentation/
-│       ├── screens/
-│       │   ├── auth/
-│       │   │   ├── login_screen.dart
-│       │   │   ├── register_screen.dart
-│       │   │   └── forgot_password_screen.dart
-│       │   ├── home/
-│       │   │   └── home_screen.dart
-│       │   ├── tasks/
-│       │   │   ├── task_list_screen.dart
-│       │   │   ├── task_details_screen.dart
-│       │   │   ├── create_task_screen.dart
-│       │   │   └── guided_task_screen.dart
-│       │   ├── reminders/
-│       │   │   └── reminders_screen.dart
-│       │   ├── history/
-│       │   │   └── history_screen.dart
-│       │   ├── accessibility/
-│       │   │   └── accessibility_screen.dart
-│       │   └── settings/
-│       │       ├── settings_screen.dart
-│       │       └── profile_screen.dart
-│       ├── widgets/
-│       │   ├── ui/                ← componentes compartilhados
-│       │   ├── tasks/
-│       │   └── accessibility/
-│       └── providers/             ← Riverpod providers
-│           ├── auth_provider.dart
-│           ├── tasks_provider.dart
-│           └── preferences_provider.dart
+│   │       └── firebase_options.dart
+│   │
+│   └── features/
+│       ├── auth/
+│       │   ├── domain/
+│       │   │   ├── entities/user.dart
+│       │   │   ├── repositories/auth_repository.dart
+│       │   │   └── usecases/
+│       │   │       ├── sign_in_use_case.dart
+│       │   │       ├── sign_up_use_case.dart
+│       │   │       ├── sign_out_use_case.dart
+│       │   │       └── send_password_reset_use_case.dart
+│       │   ├── data/
+│       │   │   └── firebase_auth_repository.dart
+│       │   └── presentation/
+│       │       ├── providers/auth_provider.dart
+│       │       └── screens/
+│       │           ├── login_screen.dart
+│       │           ├── register_screen.dart
+│       │           └── forgot_password_screen.dart
+│       ├── home/
+│       │   └── presentation/screens/home_screen.dart
+│       ├── accessibility/
+│       │   ├── domain/
+│       │   │   ├── entities/user_preferences.dart
+│       │   │   ├── repositories/preferences_repository.dart
+│       │   │   └── usecases/
+│       │   │       ├── get_preferences_use_case.dart
+│       │   │       └── update_preferences_use_case.dart
+│       │   ├── data/firebase_preferences_repository.dart
+│       │   └── presentation/
+│       │       ├── providers/preferences_provider.dart
+│       │       ├── screens/accessibility_screen.dart
+│       │       └── widgets/preference_toggle.dart
+│       ├── tasks/
+│       │   ├── domain/
+│       │   │   ├── entities/task.dart, task_step.dart
+│       │   │   ├── repositories/task_repository.dart
+│       │   │   └── usecases/
+│       │   │       ├── get_tasks_use_case.dart
+│       │   │       ├── create_task_use_case.dart
+│       │   │       ├── update_task_use_case.dart
+│       │   │       ├── delete_task_use_case.dart
+│       │   │       └── complete_task_use_case.dart
+│       │   ├── data/firebase_task_repository.dart
+│       │   └── presentation/
+│       │       ├── providers/tasks_provider.dart
+│       │       ├── screens/
+│       │       │   ├── task_list_screen.dart
+│       │       │   ├── task_details_screen.dart
+│       │       │   ├── create_task_screen.dart
+│       │       │   ├── guided_task_screen.dart
+│       │       │   └── history_screen.dart
+│       │       └── widgets/task_card.dart, guided_step_card.dart
+│       ├── reminders/
+│       │   ├── domain/
+│       │   │   ├── entities/reminder.dart
+│       │   │   ├── repositories/reminder_repository.dart
+│       │   │   └── usecases/
+│       │   │       ├── get_reminders_use_case.dart
+│       │   │       └── create_reminder_use_case.dart
+│       │   ├── data/firebase_reminder_repository.dart
+│       │   └── presentation/
+│       │       ├── providers/reminders_provider.dart
+│       │       └── screens/reminders_screen.dart
+│       └── profile/
+│           ├── domain/usecases/get_user_use_case.dart
+│           └── presentation/screens/
+│               ├── settings_screen.dart
+│               └── profile_screen.dart
 ├── .cursor/
 │   └── rules/
 │       └── memory-bank.mdc
 └── memory-bank/                   ← submódulo
+```
+
+### Regras de dependência invioláveis
+
+```
+core/           ← nunca importa de features/
+features/X/domain/     ← nunca importa de features/X/data/ nem features/X/presentation/
+features/X/data/       ← implementa contratos de features/X/domain/
+features/X/presentation/ ← consome features/X/domain/ via providers
+features/X/     ← nunca importa de features/Y/ diretamente
 ```
 
 ---
