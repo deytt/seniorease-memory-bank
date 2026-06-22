@@ -92,9 +92,12 @@
 - [ ] Tela Reminder Center
 - [ ] Tela History
 
-### Módulo 3 — Perfil
-- [ ] Tela Profile
-- [ ] Persistência de preferências via Profile
+### Módulo 3 — Perfil / Definições
+- [x] Tela Settings — Figma `15:8860` (renomeada de "My Profile")
+- [x] Profile banner com gradiente + avatar com iniciais
+- [x] 5 rows de navegação (incl. link para Acessibilidade)
+- [x] Card "Precisa de Ajuda?" com número 1-800-SENIOR
+- [x] Botão "Sair da Conta" com confirmação modal
 
 ---
 
@@ -130,7 +133,12 @@
 - [x] Rota protegida
 
 ### Home
-- [ ] Tela Home (Dashboard)
+- [x] Tela Home (Dashboard) — Figma `15:6831`
+- [x] Header gradiente com saudação dinâmica + botão SOS
+- [x] Grid 2×2 Quick Actions (Nova Tarefa, Acessibilidade, Lembretes, Ajuda Rápida)
+- [x] Secção Lembretes de Hoje (placeholder)
+- [x] Banner de sucesso
+- [x] Bottom Navigation Bar com 5 tabs (StatefulShellRoute)
 
 ### Módulo 1 — Acessibilidade
 - [x] Tela Accessibility (Figma `15:9085`)
