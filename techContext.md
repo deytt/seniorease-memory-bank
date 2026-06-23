@@ -10,7 +10,7 @@ Stack completa, tokens do Design System, schema Firebase e configurações de am
 
 | Tecnologia | Versão | Motivo |
 |---|---|---|
-| Next.js | 14+ (App Router) | SSR/SSG, roteamento, performance |
+| Next.js | 16+ (App Router) | SSR/SSG, roteamento, performance |
 | TypeScript | 5+ | Tipagem estática obrigatória |
 | Tailwind CSS | 3+ | Design System via CSS custom properties |
 | Zustand | 4+ | State management simples e performático |
