@@ -1,6 +1,6 @@
 # SeniorEase — Memory Bank
 
-Repositório central de contexto do projeto **SeniorEase**, uma plataforma de inclusão digital para pessoas idosas desenvolvida como projeto final de pós-graduação (Hackathon FIAP).
+Repositório central de contexto do projeto **SeniorEase**, uma plataforma de inclusão digital para pessoas idosas desenvolvida como projeto final de pós-graduação (Hackathon FIAP)..
 
 Este repositório funciona como **submódulo Git** dentro dos projetos `seniorease-web` e `seniorease-mobile`. É a fonte da verdade para decisões de produto, arquitetura, stack e progresso do time.
 
