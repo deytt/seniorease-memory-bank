@@ -38,9 +38,9 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Próximo passo:** Módulo Tarefas (Task List, Create Task, Guided Task Mode)
 
 ### CI/CD
-**Status:** Mobile concluído — Web pendente
+**Status:** Mobile concluído — Web concluído
 **Entregue (Mobile):** `.github/workflows/mobile.yml` — CI (`analyze` + `test`) em push/PR; CD (build APK + App Distribution) só em push na `master`.
-**Próximo passo:** Configurar GitHub Actions para Web (Vercel)
+**Entregue (Web):** `.github/workflows/web.yml` — CI (lint + type-check + build) em push/PR para `develop` e `master`; CD (Vercel `--prebuilt`) só em push para `master` após CI passar. Secrets necessários: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID` + variáveis Firebase.
 
 ---
 

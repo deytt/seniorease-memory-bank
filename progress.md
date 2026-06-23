@@ -37,7 +37,7 @@
 
 ## CI/CD
 
-- [ ] GitHub Actions configurado para Web (build + Vercel deploy)
+- [x] GitHub Actions configurado para Web (CI: lint+types+build em develop/master; CD: Vercel deploy em master)
 - [x] GitHub Actions configurado para Mobile (build APK)
 - [x] Firebase App Distribution configurado para Mobile
 
@@ -46,7 +46,7 @@
 ## Web Platform — seniorease-web
 
 ### Configuração inicial
-- [ ] Projeto Next.js 14 inicializado com TypeScript
+- [x] Projeto Next.js 16 inicializado com TypeScript
 - [ ] Estrutura de pastas Clean Architecture criada (`domain/`, `infrastructure/`, `presentation/`)
 - [ ] memory-bank adicionado como submódulo
 - [ ] `.cursor/rules/memory-bank.mdc` copiado para o projeto
