@@ -87,7 +87,7 @@
 
 > As rules abaixo devem estar publicadas no Firebase Console → `seniorease-backend` → Firestore → Rules.
 > O ficheiro `firestore.rules` neste mesmo diretório contém o conteúdo em formato nativo.
-> Última publicação: **2026-06-22**
+> Última publicação: **2026-06-24**
 
 Princípio: **cada utilizador só acede aos seus próprios dados**. Não existe acesso admin via cliente — operações administrativas (se necessárias) devem usar Firebase Admin SDK num ambiente seguro.
 
