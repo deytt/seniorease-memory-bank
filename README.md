@@ -13,7 +13,8 @@ Este repositório funciona como **submódulo Git** dentro dos projetos `seniorea
 | `projectbrief.md` | Requisitos oficiais do Hackathon (imutável) | Ninguém — fonte da verdade |
 | `productContext.md` | Persona, problemas do usuário, objetivos do produto | Product / Tech Lead |
 | `systemPatterns.md` | Clean Architecture, estrutura de pastas, padrões de código | Tech Lead |
-| `techContext.md` | Stack, Design System tokens, schema Firebase, env vars | Tech Lead |
+| `techContext.md` | Stack, Design System tokens, env vars | Tech Lead |
+| `firebaseSchema.md` | Schema Firestore (collections, campos, tipos), regras de segurança, changelog | Tech Lead |
 | `activeContext.md` | Foco atual do time, o que está em andamento | Todo dev ao iniciar tarefa |
 | `progress.md` | Status por frente (Web / Mobile / Firebase / CI/CD) | Todo dev ao concluir tarefa |
 | `decisions.md` | ADRs — decisões arquiteturais e seus motivos | Tech Lead / decisão coletiva |
@@ -30,7 +31,8 @@ Ler obrigatoriamente:
 2. `memory-bank/productContext.md` — para entender para quem e por quê
 3. `memory-bank/systemPatterns.md` — para respeitar a arquitetura definida
 4. `memory-bank/techContext.md` — para usar a stack e tokens corretos
-5. `memory-bank/activeContext.md` — para saber o foco atual do time
+5. `memory-bank/firebaseSchema.md` — para conhecer o schema Firestore e as regras de segurança vigentes
+6. `memory-bank/activeContext.md` — para saber o foco atual do time
 
 ### Após concluir uma tarefa
 - Atualizar `memory-bank/progress.md` com o que foi entregue
@@ -40,6 +42,13 @@ Ler obrigatoriamente:
 
 ### Ao tomar uma decisão arquitetural nova
 - Registrar em `memory-bank/decisions.md` no formato ADR
+
+### Ao modificar o schema Firestore ou as Firestore Rules
+1. Atualizar `memory-bank/firebaseSchema.md` — campo modificado e linha no Changelog
+2. Atualizar `memory-bank/firestore.rules` com as novas regras
+3. Publicar as rules no Firebase Console (projeto: `seniorease-backend`)
+4. Se a mudança for estrutural, criar um ADR em `decisions.md`
+5. Commitar o submódulo e avisar o time: `git submodule update --remote`
 
 > A Cursor Rule que aplica este protocolo automaticamente está em `.cursor/rules/memory-bank.mdc` e deve ser copiada para `.cursor/rules/` em cada projeto.
 
