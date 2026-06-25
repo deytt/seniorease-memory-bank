@@ -1,17 +1,17 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-06-25 (Melhorias UX do Módulo Tarefas mobile)
+> Última atualização: 2026-06-25 (Filtros + Pull-to-Refresh na Task List)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Features — Melhorias UX Módulo Tarefas concluídas; próximo: Lembretes e Histórico
+**Fase atual:** Features — Filtros e Pull-to-Refresh na Task List concluídos; próximo: Lembretes e Histórico
 
 O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma.
 
-**Refactor ADR-008 concluído:** projeto migrado para Feature-First + Clean Architecture. **ADR-009 concluído:** Dynamic Theme Engine (`AppTheme.buildDynamic`) + Módulo Acessibilidade implementado (tela `15:9085`, domain/data/presentation, rota `/accessibility`). **ADR-010 concluído:** schema `tasks` estendido (priority, category, reminderTime) e Módulo Tarefas mobile implementado (Create `15:7612`, List `15:7134`, Details `15:7401`, Guided `15:7818`) com passos dinâmicos, modo guiado sequencial inteligente e celebração Lottie. **ADR-011 concluído:** ordenação de tarefas por `dueDate` ascendente em memória + `nextPendingTaskProvider`. **Melhorias UX 2026-06-25:** limites de caracteres (título 30, descrição 100, passo 30); TaskDetails com header genérico (título + badges) e cores de botões alinhadas ao Figma; TaskCard com badges de prioridade+categoria e data formatada; Home com Próxima Atividade dinâmica ligada ao Firestore. 0 erros de análise estática.
+**Refactor ADR-008 concluído:** projeto migrado para Feature-First + Clean Architecture. **ADR-009 concluído:** Dynamic Theme Engine (`AppTheme.buildDynamic`) + Módulo Acessibilidade implementado. **ADR-010 concluído:** schema `tasks` estendido (priority, category, reminderTime) e Módulo Tarefas mobile implementado com passos dinâmicos, modo guiado sequencial inteligente e celebração Lottie. **ADR-011 concluído:** ordenação de tarefas por `dueDate` ascendente + `nextPendingTaskProvider`. **Melhorias UX 2026-06-25 (1ª vaga):** limites de caracteres; TaskDetails com header genérico; TaskCard com badges; Home com Próxima Atividade dinâmica. **ADR-012 concluído (2026-06-25):** Filtros na Task List com queries Firestore (category, priority, isToday), bottom sheet `TaskFilterSheet`, barra de chips activos, pull-to-refresh com reset de filtros. 0 erros de análise estática.
 
 ---
 

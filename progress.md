@@ -164,6 +164,8 @@
 - [x] TaskCard com badges de prioridade+categoria e data formatada na lista
 - [x] Ordenação da lista por dueDate ascendente (mais próxima primeiro, nulls no fim)
 - [x] Card "Próxima Atividade" na Home ligado ao Firestore via nextPendingTaskProvider
+- [x] Filtros na Task List — filtro por categoria, prioridade e "hoje" aplicados na query Firestore (ADR-012)
+- [x] Pull-to-refresh na Task List — reset de filtros + refetch completo com toast informativo
 - [ ] Tela Reminders
 - [ ] Tela History
 

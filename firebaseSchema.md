@@ -86,9 +86,37 @@
 
 ---
 
+## Deploy Firebase (Rules + Indexes)
+
+> Os ficheiros de configuração Firebase estão centralizados neste diretório (`memory-bank/`) para que **qualquer projeto** (web ou mobile) possa publicar rules e indexes sem duplicação.
+>
+> Ficheiros presentes:
+> - `firestore.rules` — regras de segurança do Firestore
+> - `firestore.indexes.json` — composite indexes do Firestore
+> - `firebase.json` — config do Firebase CLI (aponta para os dois ficheiros acima)
+>
+> ### Pré-requisito
+> Firebase CLI instalado e autenticado: `npm install -g firebase-tools && firebase login`
+>
+> ### Comandos de deploy (a partir do root de **qualquer** projeto)
+>
+> ```bash
+> # Publicar apenas as Firestore Rules
+> firebase deploy --config memory-bank/firebase.json --only firestore:rules
+>
+> # Publicar apenas os Composite Indexes
+> firebase deploy --config memory-bank/firebase.json --only firestore:indexes
+>
+> # Publicar rules + indexes de uma vez
+> firebase deploy --config memory-bank/firebase.json --only firestore
+> ```
+>
+> Se necessário, especificar o projeto: adicionar `-P seniorease-backend` a qualquer comando acima.
+
+---
+
 ## Regras de Segurança (Firestore Rules)
 
-> As rules abaixo devem estar publicadas no Firebase Console → `seniorease-backend` → Firestore → Rules.
 > O ficheiro `firestore.rules` neste mesmo diretório contém o conteúdo em formato nativo.
 > Última publicação: **2026-06-24**
 
@@ -108,10 +136,28 @@ Ver `firestore.rules` para o código completo.
 
 ---
 
+## Composite Indexes — `tasks`
+
+> Indexes necessários para as queries de filtro implementadas no Módulo Tarefas (ADR-012).
+> O ficheiro `firestore.indexes.json` neste diretório contém o JSON pronto para deploy.
+> Ver secção **Deploy Firebase** acima para o comando de publicação.
+
+| Index | Campos | Tipo | Quando usar |
+|-------|--------|------|-------------|
+| idx-tasks-today | `userId ASC, dueDate ASC` | Collection | Filtro "Hoje" (sem category/priority) |
+| idx-tasks-category-today | `userId ASC, category ASC, dueDate ASC` | Collection | Filtro "Hoje" + Categoria |
+| idx-tasks-priority-today | `userId ASC, priority ASC, dueDate ASC` | Collection | Filtro "Hoje" + Prioridade |
+| idx-tasks-all-filters | `userId ASC, category ASC, priority ASC, dueDate ASC` | Collection | Todos os filtros combinados |
+
+> **Nota:** Filtros apenas por `category` e/ou `priority` (sem "Hoje") usam exclusivamente equality filters e **não precisam de composite index**.
+
+---
+
 ## Changelog
 
 | Data | Mudança | ADR |
 |------|---------|-----|
+| 2026-06-25 | Adicionados 4 composite indexes na collection `tasks` para queries de filtro | ADR-012 |
 | 2026-06-24 | Adicionado `priority`, `category` e `reminderTime` à collection `tasks` | ADR-010 |
 | 2026-06-22 | Adicionado `darkMode: boolean` à collection `preferences` | ADR-009 |
 | 2026-06-22 | Adicionado `largeTouchTargets: boolean` à collection `preferences` | ADR-009 |
