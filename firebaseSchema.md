@@ -28,8 +28,11 @@
 | `userId` | `string` | UID do dono — usado para filtrar por utilizador |
 | `title` | `string` | Título da tarefa |
 | `description` | `string` | Descrição detalhada |
+| `priority` | `string` | `'low'` \| `'medium'` \| `'high'` |
+| `category` | `string` | `'medication'` \| `'health'` \| `'exercise'` \| `'social'` \| `'personal'` |
 | `status` | `string` | `'pending'` \| `'in_progress'` \| `'completed'` |
-| `dueDate` | `Timestamp \| null` | Data limite (opcional) |
+| `reminderTime` | `string \| null` | Horário de lembrete no formato `"HH:mm"` — campo legado, substituído por `dueDate` |
+| `dueDate` | `Timestamp \| null` | Data e hora da tarefa (usado para notificações e ordenação) |
 | `completedAt` | `Timestamp \| null` | Data de conclusão (null se não concluída) |
 | `createdAt` | `Timestamp` | Data de criação |
 | `updatedAt` | `Timestamp` | Data da última atualização |
@@ -109,6 +112,7 @@ Ver `firestore.rules` para o código completo.
 
 | Data | Mudança | ADR |
 |------|---------|-----|
+| 2026-06-24 | Adicionado `priority`, `category` e `reminderTime` à collection `tasks` | ADR-010 |
 | 2026-06-22 | Adicionado `darkMode: boolean` à collection `preferences` | ADR-009 |
 | 2026-06-22 | Adicionado `largeTouchTargets: boolean` à collection `preferences` | ADR-009 |
 | 2026-06-22 | Substituído `visualFeedbackEnabled` por `audioFeedbackEnabled` em `preferences` | ADR-009 |
