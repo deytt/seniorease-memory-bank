@@ -303,6 +303,44 @@ O Módulo Tarefas passou a registar `dueDate` (DateTime completo) em vez de apen
 
 ---
 
+## ADR-012 — Filtros na Task List com Composite Indexes Firestore
+
+**Data:** 2026-06-25
+**Status:** Aceito
+
+**Contexto:**
+A Task List precisava de filtros por prioridade, categoria e data ("hoje"). O requisito era que os filtros fossem aplicados na query Firestore (não em memória). Filtros em memória trariam todo o dataset do utilizador e descartariam os resultados no cliente — ineficiente e sem escala.
+
+**Decisão:**
+1. Criar `TaskFilter` — modelo imutável de valor com `category?`, `priority?` e `isToday`. Inclui `isEmpty`, `activeCount`, `copyWith` e helpers `removeX()`.
+2. Adicionar `watchTasksFiltered(userId, TaskFilter)` à interface `TaskRepository` e implementar no `FirebaseTaskRepository` com `.where()` encadeados condicionalmente.
+3. Criar `GetFilteredTasksUseCase` dedicado (sem alterar o `GetTasksUseCase` original).
+4. Adicionar `taskFilterProvider` (Riverpod `NotifierProvider<TaskFilterNotifier, TaskFilter>`) e `filteredTasksStreamProvider` no `tasks_provider.dart`. O `tasksStreamProvider` original (sem filtro) é mantido para o `nextPendingTaskProvider` e para o pull-to-refresh.
+5. UI: botão de filtro com badge no header, barra de chips activos abaixo do header (com remoção individual), `RefreshIndicator` que reseta filtros + invalida streams + mostra toast se havia filtros.
+6. Bottom sheet `TaskFilterSheet` com seções "Data", "Categoria" e "Prioridade"; chips com touch target ≥44px; estado local até "Aplicar".
+7. Criar 4 composite indexes Firestore (documentados em `firebaseSchema.md`) para as combinações que envolvem `isToday` (range filter em `dueDate`).
+
+**Motivo:**
+- Filtros no Firestore reduzem o tráfego de rede e o custo de leitura (vs. trazer tudo e filtrar em memória).
+- `TaskFilter.empty` como valor sentinela permite que `filteredTasksStreamProvider` se comporte identicamente ao `tasksStreamProvider` quando não há filtro.
+- Pull-to-refresh que limpa filtros é um padrão de UX intuitivo para o público sénior: "puxar para baixo" = "recomeçar do zero".
+- Bottom sheet com botão "Aplicar" evita que cada toque num chip dispare um novo fetch — aplica tudo de uma vez.
+
+**Alternativas consideradas:**
+- Filtros em memória após fetch completo (descartado: ineficiente e contraria o requisito explícito do utilizador).
+- Chips inline na toolbar acima da lista com aplicação imediata (descartado: cada toque dispararia um novo stream; pior para rede e experiência do utilizador sénior que pode tocar por engano).
+- `StateProvider<TaskFilter>` para o filtro (descartado: removido no Riverpod 3.x; substituído por `NotifierProvider`).
+
+**Composite Indexes criados:**
+- `(userId ASC, dueDate ASC)` — filtro "Hoje" isolado
+- `(userId ASC, category ASC, dueDate ASC)` — "Hoje" + Categoria
+- `(userId ASC, priority ASC, dueDate ASC)` — "Hoje" + Prioridade
+- `(userId ASC, category ASC, priority ASC, dueDate ASC)` — todos combinados
+
+> Filtros só por `category` e/ou `priority` (sem "Hoje") são equality filters e não requerem composite index.
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:
