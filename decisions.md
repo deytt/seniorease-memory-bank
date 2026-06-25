@@ -246,6 +246,36 @@ O `AppTheme.light` era estático. A tela de Acessibilidade do Figma (`node 15:90
 
 ---
 
+## ADR-010 — Extensão do schema `tasks` (priority, category, reminderTime)
+
+**Data:** 2026-06-24
+**Status:** Aceito
+
+**Contexto:**
+Os designs do Módulo Tarefas no Figma (Create Task `15:7612`, Task List `15:7134`, Task Details `15:7401`) exigem que cada tarefa tenha um nível de prioridade (exibido como "high"/"medium" na lista e "High Priority" nos detalhes), uma categoria (chips: Medication, Health, Exercise, Social, Personal) e um horário de lembrete (ex: "8:00 AM"). O schema original da collection `tasks` não previa nenhum destes três campos.
+
+**Decisão:**
+Estender a collection partilhada `tasks/{taskId}` com três campos:
+- `priority: 'low' | 'medium' | 'high'`
+- `category: 'medication' | 'health' | 'exercise' | 'social' | 'personal'`
+- `reminderTime: string | null` (formato `"HH:mm"`, ex: `"08:00"`)
+
+A subcollection `steps/{stepId}` mantém-se inalterada. No formulário de criação (mobile), cada passo é um campo de texto único que mapeia para `step.title`; `step.instruction` fica opcional (vazio por agora) e pode ser usado futuramente para enriquecer o Modo Guiado.
+
+**Motivo:**
+- Os três campos são requisitos diretos do design — não há como implementar as telas sem eles.
+- `reminderTime` fica na própria tarefa (não na collection `reminders`) porque representa a hora preferida da tarefa; a criação de lembretes propriamente ditos fica para o módulo de Lembretes.
+- Manter a subcollection `steps` intacta evita migração e preserva compatibilidade com o que já está documentado.
+
+**Alternativas consideradas:**
+- Adicionar apenas `priority` + `category` e deixar o horário para o módulo de Lembretes (descartado: a lista e os detalhes exibem a hora da própria tarefa).
+- Criar uma collection separada para metadados da tarefa (descartado: overhead desnecessário; os campos são 1:1 com a tarefa).
+
+**Impacto cross-projeto:**
+A collection `tasks` é partilhada com `seniorease-web`. Os campos novos são aditivos (não quebram leituras existentes). O time Web deve ler `firebaseSchema.md` antes de implementar o Módulo Tarefas na Web.
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:

@@ -152,11 +152,11 @@
 - [x] Persistência das preferências no Firestore
 
 ### Módulo 2 — Tarefas
-- [ ] Tela Task List
-- [ ] Tela Task Details
-- [ ] Tela Create Task
-- [ ] Tela Guided Task (passo a passo)
-- [ ] Animação Lottie de celebração ao concluir tarefa
+- [x] Tela Task List (Figma `15:7134` — header, contador, TaskCard, promo Modo Guiado)
+- [x] Tela Task Details (Figma `15:7401` — badges, passos, ações, apagar com confirmação)
+- [x] Tela Create Task (Figma `15:7612` — passos dinâmicos com "+" e "X")
+- [x] Tela Guided Task (Figma `15:7818` — passo a passo sequencial inteligente)
+- [x] Animação Lottie de celebração ao concluir tarefa
 - [ ] Tela Reminders
 - [ ] Tela History
 
