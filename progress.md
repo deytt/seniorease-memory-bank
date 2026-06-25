@@ -157,6 +157,13 @@
 - [x] Tela Create Task (Figma `15:7612` — passos dinâmicos com "+" e "X")
 - [x] Tela Guided Task (Figma `15:7818` — passo a passo sequencial inteligente)
 - [x] Animação Lottie de celebração ao concluir tarefa
+- [x] Melhorias UX Create Task (categoria como dropdown, dueDate full datetime, 1 passo pré-aberto, validações, sem botão Guardar no header)
+- [x] Limites de caracteres (título 30, descrição 100, passo 30)
+- [x] TaskDetails com header genérico (título + badges de prioridade/categoria) e data na card
+- [x] Cores de botões alinhadas ao Figma (Guided=teal, Complete=verde)
+- [x] TaskCard com badges de prioridade+categoria e data formatada na lista
+- [x] Ordenação da lista por dueDate ascendente (mais próxima primeiro, nulls no fim)
+- [x] Card "Próxima Atividade" na Home ligado ao Firestore via nextPendingTaskProvider
 - [ ] Tela Reminders
 - [ ] Tela History
 

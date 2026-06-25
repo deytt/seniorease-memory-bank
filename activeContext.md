@@ -1,17 +1,17 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-06-24 (Módulo Tarefas mobile — Create, List, Details, Guided)
+> Última atualização: 2026-06-25 (Melhorias UX do Módulo Tarefas mobile)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Features — Módulo Tarefas (mobile) concluído; próximo: Lembretes e Histórico
+**Fase atual:** Features — Melhorias UX Módulo Tarefas concluídas; próximo: Lembretes e Histórico
 
 O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma.
 
-**Refactor ADR-008 concluído:** projeto migrado para Feature-First + Clean Architecture. **ADR-009 concluído:** Dynamic Theme Engine (`AppTheme.buildDynamic`) + Módulo Acessibilidade implementado (tela `15:9085`, domain/data/presentation, rota `/accessibility`). **ADR-010 concluído:** schema `tasks` estendido (priority, category, reminderTime) e Módulo Tarefas mobile implementado (Create `15:7612`, List `15:7134`, Details `15:7401`, Guided `15:7818`) com passos dinâmicos, modo guiado sequencial inteligente e celebração Lottie. 0 erros de análise estática.
+**Refactor ADR-008 concluído:** projeto migrado para Feature-First + Clean Architecture. **ADR-009 concluído:** Dynamic Theme Engine (`AppTheme.buildDynamic`) + Módulo Acessibilidade implementado (tela `15:9085`, domain/data/presentation, rota `/accessibility`). **ADR-010 concluído:** schema `tasks` estendido (priority, category, reminderTime) e Módulo Tarefas mobile implementado (Create `15:7612`, List `15:7134`, Details `15:7401`, Guided `15:7818`) com passos dinâmicos, modo guiado sequencial inteligente e celebração Lottie. **ADR-011 concluído:** ordenação de tarefas por `dueDate` ascendente em memória + `nextPendingTaskProvider`. **Melhorias UX 2026-06-25:** limites de caracteres (título 30, descrição 100, passo 30); TaskDetails com header genérico (título + badges) e cores de botões alinhadas ao Figma; TaskCard com badges de prioridade+categoria e data formatada; Home com Próxima Atividade dinâmica ligada ao Firestore. 0 erros de análise estática.
 
 ---
 
@@ -33,8 +33,8 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
-**Status:** Refactor Criar Tarefa concluído — próximo: Módulo Lembretes e Histórico
-**Já feito:** CI/CD Mobile; Design System em `core/widgets/`; `core/theme/` com tokens Figma e `AppTheme.buildDynamic`; edge-to-edge; autenticação Firebase com use cases; auth guard GoRouter; telas auth alinhadas ao Figma; estrutura Feature-First; **Módulo Acessibilidade** (dynamic theme, tela, Firestore); **Home/Dashboard** (header gradiente, SOS, quick actions, reminders, bottom nav 5 tabs via StatefulShellRoute); **Settings** (profile banner, 5 nav rows, HelpCard, logout com confirmação); **Módulo Tarefas** (`features/tasks/` domain/data/presentation; Create/List/Details/Guided; passos dinâmicos; modo guiado sequencial; celebração Lottie; rotas `/tasks`, `/tasks/create`, `/tasks/:id`, `/tasks/:id/guided`); **Refactor Criar Tarefa** (`SeniorScreenHeader` genérico com tokens de tema; `AccessibilityScreen` migrada para `SeniorScreenScaffold`; `CategoryDropdown` novo widget; `CreateTaskScreen` com categoria como dropdown, campo data+hora (`dueDate`), 1 passo pré-aberto obrigatório, validações inline, remoção do botão guardar do header).
+**Status:** Melhorias UX Módulo Tarefas concluídas — próximo: Módulo Lembretes e Histórico
+**Já feito:** CI/CD Mobile; Design System em `core/widgets/`; `core/theme/` com tokens Figma e `AppTheme.buildDynamic`; edge-to-edge; autenticação Firebase com use cases; auth guard GoRouter; telas auth alinhadas ao Figma; estrutura Feature-First; **Módulo Acessibilidade** (dynamic theme, tela, Firestore; migrada para `SeniorScreenScaffold`); **Home/Dashboard** (header gradiente, SOS, quick actions, reminders, bottom nav 5 tabs; **Próxima Atividade** ligada a `nextPendingTaskProvider`); **Settings** (profile banner, 5 nav rows, HelpCard, logout com confirmação); **Módulo Tarefas** (`features/tasks/` domain/data/presentation; Create/List/Details/Guided; passos dinâmicos; modo guiado sequencial; celebração Lottie); **Melhorias UX Tarefas** (header `CreateTask` sem botão Guardar; `CategoryDropdown`; `dueDate` full datetime; limites de caracteres título/descrição/passo; `TaskDetails` com header genérico título+badges e data na card; botões Guided=teal, Complete=verde; `TaskCard` com badges prioridade+categoria e data formatada; ordenação por `dueDate` ascendente; `nextPendingTaskProvider`; widgets base: `SeniorInput.maxLength`, `SeniorButton.customColors`, `SeniorScreenHeader.subtitleWidget`).
 **Próximo passo:** Módulo Lembretes (Reminders) e Histórico (History)
 
 ### CI/CD

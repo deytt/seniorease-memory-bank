@@ -276,6 +276,33 @@ A collection `tasks` é partilhada com `seniorease-web`. Os campos novos são ad
 
 ---
 
+## ADR-011 — Ordenação de tarefas por dueDate e provider de próxima atividade
+
+**Data:** 2026-06-25
+**Status:** Aceito
+
+**Contexto:**
+O Módulo Tarefas passou a registar `dueDate` (DateTime completo) em vez de apenas `reminderTime` (string "HH:mm"). Com data e hora disponíveis, surgem dois requisitos: (1) a lista de tarefas deve ser ordenada da mais próxima para a mais distante no tempo; (2) o card "Próxima Atividade" na Home deve exibir a tarefa pendente mais urgente e dirigir o utilizador directamente para o modo guiado.
+
+**Decisão:**
+1. **Ordenação em memória no repositório** (`FirebaseTaskRepository.watchTasks`): sort multi-nível — pendentes/em progresso antes de concluídas; dentro das pendentes, `dueDate` ascendente (nulls no fim, com fallback por `createdAt`); concluídas por `completedAt` descendente. Não é adicionado nenhum índice composto no Firestore.
+2. **`nextPendingTaskProvider`** (Riverpod `Provider<Task?>`): provider derivado de `tasksStreamProvider` que devolve a tarefa pendente mais próxima no tempo. Preferência para `dueDate >= agora`; fallback para qualquer tarefa não concluída; `null` se não existir nenhuma. Liga o `_NextActivityCard` da Home sem nova leitura ao Firestore.
+
+**Motivo:**
+- Ordenação em memória evita exigir índice composto no Firestore (simplifica infra e regras de segurança).
+- `nextPendingTaskProvider` reutiliza o stream já aberto — custo zero de leituras adicionais.
+- Separar a lógica de "próxima tarefa" num provider mantém a Home desacoplada do repositório.
+
+**Alternativas consideradas:**
+- Ordenar no Firestore via `orderBy('dueDate')` (descartado: exigiria índice composto com `userId`; a ordenação multi-nível não é suportada sem índice separado por status).
+- Criar stream dedicado para "próxima tarefa" no repositório (descartado: overhead de ligação extra ao Firestore; o provider derivado é suficiente).
+
+**Impacto:**
+- `FirebaseTaskRepository` é a única camada que ordena — a UI recebe sempre a lista já ordenada.
+- `nextPendingTaskProvider` pode ser reutilizado em futuras widgets (ex: notificações locais).
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:
