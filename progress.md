@@ -180,7 +180,7 @@
 - [x] Tutorial da Lista de Tarefas
 - [x] Botão de ajuda (?) em todas as telas com tour
 - [x] Central "Guias do aplicativo" (`/guides`) acessível a partir de Definições
-- [ ] Publicar a rule da collection `onboarding` no Firebase (`seniorease-backend`)
+- [x] Publicar a rule da collection `onboarding` no Firebase (`seniorease-backend`)
 
 ### Módulo 3 — Perfil
 - [ ] Tela Settings
