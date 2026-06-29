@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-06-29 (Sistema de Tour Guiado — ADR-013)
+> Última atualização: 2026-06-29 (Reorg. progresso: Módulo 3 Mobile concluído, Tour Guiado planeado para Web, avaliação interna pré-entrega)
 
 ---
 
@@ -30,6 +30,8 @@
 - [x] Regras de segurança do Firestore configuradas
 - [x] Firebase Cloud Messaging habilitado (push notifications)
 - [x] Variáveis de ambiente compartilhadas com o time
+- [ ] Firebase Storage ativado (bucket + regras de segurança) — necessário para upload de foto de perfil
+- [ ] APNs configurado (iOS) — necessário para push notifications no iOS
 
 > Coleções Firestore serão populadas automaticamente pela app na primeira gravação. Apps registadas: Web (`seniorease-web`), Android e iOS (`com.seniorease.mobile`). APNs iOS pendente para fase de push notifications.
 
@@ -69,10 +71,18 @@
 - [ ] Tela Forgot Password
 - [ ] Tela Success Screen
 - [ ] Firebase Auth integrado
+- [ ] Login com Google (OAuth)
 - [ ] Rota protegida (redirect se não autenticado)
 
 ### Dashboard
 - [ ] Tela Dashboard
+
+### Documentação de componentes (Storybook)
+> Requisito: todos os componentes da web documentados no Storybook — documentação completa cobrindo cada componente e variações do Design System, além de componentes customizados que eventualmente não existam no DS.
+- [ ] Storybook configurado no projeto web
+- [ ] Stories de todos os componentes do Design System (com todas as variações/estados)
+- [ ] Stories dos componentes customizados fora do Design System
+- [ ] Controls/args (props), estados (hover/disabled/loading/erro) e tokens documentados
 
 ### Módulo 1 — Acessibilidade
 - [ ] Tela Accessibility Center
@@ -90,14 +100,31 @@
 - [ ] Tela Guided Task Mode (passo a passo)
 - [ ] Animação Lottie de celebração ao concluir tarefa
 - [ ] Tela Reminder Center
+- [ ] Lembretes — exibição e visualização de push notifications (Firebase Cloud Messaging / FCM Web + Service Worker)
 - [ ] Tela History
 
 ### Módulo 3 — Perfil / Definições
-- [x] Tela Settings — Figma `15:8860` (renomeada de "My Profile")
-- [x] Profile banner com gradiente + avatar com iniciais
-- [x] 5 rows de navegação (incl. link para Acessibilidade)
-- [x] Card "Precisa de Ajuda?" com número 1-800-SENIOR
-- [x] Botão "Sair da Conta" com confirmação modal
+- [ ] Tela Settings — Figma `15:8860` (renomeada de "My Profile")
+- [ ] Profile banner com gradiente + avatar com iniciais
+- [ ] 5 rows de navegação (incl. link para Acessibilidade)
+- [ ] Card "Precisa de Ajuda?" com número 1-800-SENIOR
+- [ ] Botão "Sair da Conta" com confirmação modal
+- [ ] Configurações de conta — editar dados do utilizador (nome, email/telefone, etc.)
+- [ ] Upload de foto de perfil para o Firebase Storage
+
+### Módulo 4 — Tour Guiado
+> Mesmo comportamento do mobile (ADR-013), com infra/dependências/adaptadores próprios da web (Next.js, Zustand, biblioteca de tour React). A collection Firestore `onboarding/{userId}` e a respetiva rule são partilhadas (já criadas).
+- [ ] Biblioteca de tour/onboarding escolhida e adicionada (ex.: `react-joyride` / `driver.js`)
+- [ ] Infra genérica de tour (abstração/port `TourGate`, componente de showcase com tokens do Design System, hook/store de coordenação, catálogo de `TourId`)
+- [ ] Persistência híbrida: estado local "oferecido/visto" (localStorage) + flag inicial cross-device na collection `onboarding/{userId}` (Firestore)
+- [ ] Adaptador concreto na raiz de composição (inversão de dependência, sem imports feature→feature)
+- [ ] Boas-vindas inicial no Dashboard (persistida cross-device) + tutorial da tela inicial
+- [ ] Tutorial de Criar Tarefa + oferta na 1ª utilização (apenas Modo Básico)
+- [ ] Tutorial da Lista de Tarefas
+- [ ] Botão de ajuda (?) em todas as telas com tour
+- [ ] Central "Guias do aplicativo" acessível a partir das Definições
+- [ ] Requisitos da tela de Guias: lista de tutoriais (re)executáveis, linguagem simples ("Vamos fazer juntos"), cada item inicia o tutorial na respetiva tela
+- [ ] Adaptação ao Modo Básico / Avançado (oferta automática só em Modo Básico)
 
 ---
 
@@ -130,6 +157,7 @@
 - [x] Tela Register (Figma `15:6415` — nome/sobrenome lado a lado, scroll unificado)
 - [x] Tela Forgot Password (Figma `15:6638` — conteúdo centralizado, botão outline)
 - [x] Firebase Auth integrado
+- [ ] Login com Google (OAuth)
 - [x] Rota protegida
 
 ### Home
@@ -167,7 +195,17 @@
 - [x] Filtros na Task List — filtro por categoria, prioridade e "hoje" aplicados na query Firestore (ADR-012)
 - [x] Pull-to-refresh na Task List — reset de filtros + refetch completo com toast informativo
 - [ ] Tela Reminders
+- [ ] Lembretes — exibição e visualização de push notifications (Firebase Cloud Messaging)
 - [ ] Tela History
+
+### Módulo 3 — Perfil / Definições
+- [x] Tela Settings / Definições (`features/profile`)
+- [x] Profile banner com gradiente + avatar com iniciais (nome + email do utilizador)
+- [x] Card de navegação com rows (Informação Pessoal, Notificações, Acessibilidade, Guias do aplicativo, Membros da Família, Segurança)
+- [x] Card "Precisa de Ajuda?" com número 1-800-SENIOR
+- [x] Botão "Sair da Conta" com confirmação modal
+- [ ] Configurações de conta — editar dados do utilizador (nome, email/telefone, etc.)
+- [ ] Upload de foto de perfil para o Firebase Storage
 
 ### Módulo 4 — Tour Guiado (ADR-013)
 - [x] Dependências `showcaseview ^5.1.0` e `shared_preferences` adicionadas
@@ -181,17 +219,24 @@
 - [x] Botão de ajuda (?) em todas as telas com tour
 - [x] Central "Guias do aplicativo" (`/guides`) acessível a partir de Definições
 - [x] Publicar a rule da collection `onboarding` no Firebase (`seniorease-backend`)
+- [x] Balão com botão X de sair (canto superior, alinhado ao título) + auto-scroll ágil e condicional
 
-### Módulo 3 — Perfil
-- [ ] Tela Settings
-- [ ] Tela Profile (dentro de Settings)
-- [ ] Botão Sign Out
-- [ ] Persistência de preferências
+### Testes (unitários)
+> Requisito: todas as camadas da Clean Architecture (Presentation, Domain, Data) devem conter testes unitários (testes de lógica). Não usar testes instrumentados nem testes de view/widget.
+- [x] Camada Domain — entidades (Task, TaskStep, TaskFilter, UserPreferences) + use cases (tasks, auth, accessibility, guides)
+- [x] Camada Data — todos os repositórios Firebase com dependências **injetadas** (providers de `core/firebase`): `FirebaseTaskRepository`, `FirebasePreferencesRepository`, `FirebaseOnboardingRepository` (fake_cloud_firestore), `FirebaseAuthRepository` (firebase_auth_mocks + fake) e `LocalTutorialStateRepository` (shared_preferences mock)
+- [x] Camada Presentation — `TaskFilterNotifier`, `nextPendingTaskProvider`, `TasksController`, `AuthController`, `TourSignal`/`TourSession` (ProviderContainer, sem widgets)
+- [x] Ferramentas: `flutter_test` + `mocktail` + `fake_cloud_firestore`; `test/` espelha `lib/`
 
 ---
 
 ## Vídeo e entrega final
 
+- [ ] Avaliação interna criteriosa antes da entrega (Web + Mobile)
+  - [ ] Criar um agente que conheça o desafio e os requisitos do projeto (projectbrief, productContext, telas obrigatórias, entregáveis)
+  - [ ] Conferir o cumprimento de todos os requisitos em ambos os projetos (Web e Mobile)
+  - [ ] Levantar lacunas, riscos e possíveis soluções/melhorias antes de entregar
+  - [ ] Registar o resultado da avaliação (checklist final + ações)
 - [ ] Vídeo gravado (máx. 15 min)
 - [ ] Vídeo enviado para plataforma FIAP
 - [ ] Links dos repositórios submetidos (arquivo `.docx` ou `.txt`)

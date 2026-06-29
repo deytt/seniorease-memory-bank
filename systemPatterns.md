@@ -346,3 +346,18 @@ Sempre exibir modal de confirmação antes de deletar qualquer item. Nunca delet
 - Contraste mínimo texto/fundo: 4.5:1 (WCAG AA)
 - Todos os botões e inputs devem ter labels semânticos (aria-label no Web, Semantics no Flutter)
 - Fontes nunca abaixo de 16px no tamanho base
+
+### Testes — requisito do projeto
+- **Todas as camadas da Clean Architecture devem ter testes unitários** (testes de lógica): **Presentation**, **Domain** e **Data**.
+- **Apenas testes unitários.** Não usar testes instrumentados nem testes de view/widget (sem `WidgetTester`, sem `testWidgets`, sem testes de UI).
+- O que testar por camada:
+  - **Domain**: entidades (regras, `copyWith`, mapeamentos `fromMap`/`toMap`, getters derivados) e use cases (lógica + delegação ao repositório, com o repositório mockado).
+  - **Data**: implementações de repositórios/adaptadores e a sua lógica (ex.: ordenação, mapeamento, sincronização de estado). Usar fakes/in-memory (ex.: `fake_cloud_firestore`, `SharedPreferences.setMockInitialValues`) — nunca rede/Firebase real.
+  - **Presentation**: notifiers/controllers e providers (transições de estado, orquestração), com use cases/repositórios mockados via `ProviderContainer` + overrides. Sem renderizar widgets.
+- Ferramentas (Mobile): `flutter_test`, `mocktail`, `fake_cloud_firestore`.
+- Estrutura: a pasta `test/` espelha a estrutura de `lib/` (feature → camada).
+
+### Documentação de componentes (Storybook) — requisito (Web)
+- Todos os componentes da web devem estar documentados no **Storybook**.
+- Documentação completa: cada componente do Design System com **todas as variações/estados**, mais os componentes **customizados** que eventualmente não existam no DS.
+- Incluir controls/args (props), estados (hover/disabled/loading/erro) e tokens aplicados.
