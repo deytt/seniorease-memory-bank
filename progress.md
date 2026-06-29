@@ -77,6 +77,13 @@
 ### Dashboard
 - [ ] Tela Dashboard
 
+### Documentação de componentes (Storybook)
+> Requisito: todos os componentes da web documentados no Storybook — documentação completa cobrindo cada componente e variações do Design System, além de componentes customizados que eventualmente não existam no DS.
+- [ ] Storybook configurado no projeto web
+- [ ] Stories de todos os componentes do Design System (com todas as variações/estados)
+- [ ] Stories dos componentes customizados fora do Design System
+- [ ] Controls/args (props), estados (hover/disabled/loading/erro) e tokens documentados
+
 ### Módulo 1 — Acessibilidade
 - [ ] Tela Accessibility Center
 - [ ] Toggle de tamanho de fonte (funcional)
@@ -213,6 +220,13 @@
 - [x] Central "Guias do aplicativo" (`/guides`) acessível a partir de Definições
 - [x] Publicar a rule da collection `onboarding` no Firebase (`seniorease-backend`)
 - [x] Balão com botão X de sair (canto superior, alinhado ao título) + auto-scroll ágil e condicional
+
+### Testes (unitários)
+> Requisito: todas as camadas da Clean Architecture (Presentation, Domain, Data) devem conter testes unitários (testes de lógica). Não usar testes instrumentados nem testes de view/widget.
+- [x] Camada Domain — entidades (Task, TaskStep, TaskFilter, UserPreferences) + use cases (tasks, auth, accessibility, guides)
+- [x] Camada Data — todos os repositórios Firebase com dependências **injetadas** (providers de `core/firebase`): `FirebaseTaskRepository`, `FirebasePreferencesRepository`, `FirebaseOnboardingRepository` (fake_cloud_firestore), `FirebaseAuthRepository` (firebase_auth_mocks + fake) e `LocalTutorialStateRepository` (shared_preferences mock)
+- [x] Camada Presentation — `TaskFilterNotifier`, `nextPendingTaskProvider`, `TasksController`, `AuthController`, `TourSignal`/`TourSession` (ProviderContainer, sem widgets)
+- [x] Ferramentas: `flutter_test` + `mocktail` + `fake_cloud_firestore`; `test/` espelha `lib/`
 
 ---
 
