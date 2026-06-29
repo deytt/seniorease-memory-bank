@@ -1,4 +1,5 @@
 rules_version = '2';
+
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -22,6 +23,12 @@ service cloud.firestore {
 
     // preferences — documento 1:1 com o utilizador (ID == userId)
     match /preferences/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // onboarding — documento 1:1 com o utilizador (ID == userId)
+    // Guarda o estado da boas-vindas inicial do Tour Guiado (cross-device/web).
+    match /onboarding/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
     }
 
