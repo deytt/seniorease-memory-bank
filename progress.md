@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-06-18 (layout auth + Figma)
+> Última atualização: 2026-06-29 (Sistema de Tour Guiado — ADR-013)
 
 ---
 
@@ -168,6 +168,19 @@
 - [x] Pull-to-refresh na Task List — reset de filtros + refetch completo com toast informativo
 - [ ] Tela Reminders
 - [ ] Tela History
+
+### Módulo 4 — Tour Guiado (ADR-013)
+- [x] Dependências `showcaseview ^5.1.0` e `shared_preferences` adicionadas
+- [x] Infra genérica `core/tour/` (port `TourGate`, `SeniorShowcase`, mixin `TourHost`, `TourHelpButton`, `TourId`, sinais de coordenação)
+- [x] Feature `guides/` (use cases + `TutorialStateRepository` local + `OnboardingRepository` Firestore + providers + catálogo)
+- [x] Adaptador `AppTourGate` na camada `app/` injetado via `ProviderScope` (inversão de dependência, sem imports feature→feature)
+- [x] Collection Firestore `onboarding/{userId}` + rule (dono apenas) + schema/ADR documentados
+- [x] Boas-vindas inicial na Home (persistida cross-device) + tutorial da Tela Inicial
+- [x] Tutorial de Criar Tarefa + oferta na 1ª utilização (apenas Modo Básico)
+- [x] Tutorial da Lista de Tarefas
+- [x] Botão de ajuda (?) em todas as telas com tour
+- [x] Central "Guias do aplicativo" (`/guides`) acessível a partir de Definições
+- [ ] Publicar a rule da collection `onboarding` no Firebase (`seniorease-backend`)
 
 ### Módulo 3 — Perfil
 - [ ] Tela Settings

@@ -341,6 +341,39 @@ A Task List precisava de filtros por prioridade, categoria e data ("hoje"). O re
 
 ---
 
+## ADR-013 — Sistema de Tour Guiado (showcaseview) com Port/Adapter e persistência híbrida
+
+**Data:** 2026-06-29
+**Status:** Aceito
+
+**Contexto:**
+Era necessário um sistema de tutoriais interativos para o público sénior: boas-vindas no primeiro arranque, tutoriais curtos por tela, oferta contextual na primeira utilização de um recurso, ajuda sempre acessível e uma Central "Guias do aplicativo" para rever qualquer guia. Os requisitos exigiam: adaptação ao Modo Básico/Avançado, repetição de qualquer tutorial, não interromper navegação desnecessariamente e — sobretudo — **manter a Clean Architecture e o Feature-First (ADR-005/ADR-008)** sem imports feature→feature. A biblioteca escolhida foi `showcaseview` (v5.x), cuja API usa registo por **scope nomeado** (`ShowcaseView.register(scope: ...)`), necessário porque o `IndexedStack` do shell mantém várias telas vivas em simultâneo.
+
+**Decisão:**
+1. **Infraestrutura genérica em `core/tour/`** (sem regra de negócio, importável por qualquer feature): `TourId` (enum), `SeniorShowcase` (wrapper de `Showcase` com tokens do DS e contraste AA), `TourHost` (mixin que regista/limpa o scope, configura o tooltip "sénior" e reage a sinais), `TourHelpButton`, `tourSignalProvider`/`tourSessionProvider` (coordenação efémera de UI) e o **port `TourGate`** + `tourGateProvider` (default no-op).
+2. **Feature `guides`** depende apenas de `core`: contém os contratos `TutorialStateRepository`/`OnboardingRepository`, as implementações (`LocalTutorialStateRepository` em `shared_preferences`; `FirebaseOnboardingRepository` na collection `onboarding/{userId}`), os use cases (`ShouldOfferTutorial`, `MarkTutorialOffered`, `MarkTutorialSeen`, `IsInitialTourCompleted`, `CompleteInitialTour`), os providers, o catálogo de tutoriais (em presentation, por carregar `IconData`/rotas) e a `GuidesScreen`.
+3. **Inversão de dependência (Port & Adapter)** para a comunicação entre telas e features: as telas (`home`, `tasks`) dependem **só do port `TourGate`** em `core`. A implementação real `AppTourGate` vive na camada `app/` (raiz de composição) — único ponto que compõe `guides` (persistência) e `accessibility` (Modo Básico). É injetada via `ProviderScope(overrides:)` na `main.dart`. Nenhuma feature importa outra.
+4. **Persistência híbrida:** estado **local por dispositivo** (offered/seen de cada tutorial) em `shared_preferences`; estado **cross-device/web** (boas-vindas inicial) na collection Firestore própria `onboarding/{userId}` — **sem tocar em `UserPreferences`** (acessibilidade) para não sobrecarregar essa entidade com uma responsabilidade que não é dela.
+
+**Motivo:**
+- O port em `core` permite que as telas tenham tutoriais sem conhecer `guides`/`accessibility`, respeitando o Feature-First.
+- Scope nomeado por tela resolve o conflito real do `IndexedStack` (Home e Tarefas vivas ao mesmo tempo).
+- Separar `onboarding` num documento próprio mantém `preferences` coeso (Single Responsibility) e dá um sinal cross-platform claro e barato (1 doc 1:1 por utilizador).
+- `shared_preferences` é suficiente (e mais barato) para flags efémeras por dispositivo que não precisam de sincronização.
+
+**Alternativas consideradas:**
+- Guardar `onboardingCompleted` em `UserPreferences`/`preferences` (descartado: sobrecarrega a entidade de acessibilidade com uma responsabilidade do domínio `guides`).
+- Telas importarem diretamente providers de `guides` (descartado: viola o Feature-First/ADR-008).
+- Presentation chamar repositórios diretamente (descartado: viola a Clean Architecture; introduzidos use cases dedicados).
+- Guardar todo o estado dos tutoriais no Firestore (descartado: custo e complexidade desnecessários para flags por-dispositivo).
+
+**Impacto:**
+- Nova collection `onboarding/{userId}` + rule (dono apenas) em `firestore.rules`; `firebaseSchema.md` atualizado.
+- Novas dependências: `showcaseview ^5.1.0`, `shared_preferences ^2.3.2`.
+- Adicionar um novo tutorial é incremental: novo valor em `TourId`, entrada no catálogo e `TourHost` na tela alvo — nenhuma estrutura existente muda.
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:

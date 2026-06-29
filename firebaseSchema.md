@@ -71,6 +71,22 @@
 
 ---
 
+### `onboarding/{userId}`
+
+> O document ID é igual ao `userId` — relação 1:1 com `users`.
+> Collection própria da feature `guides` (Tour Guiado). Guarda **apenas** o estado
+> da boas-vindas inicial, partilhado entre Web e Mobile (ADR-013). O estado
+> "oferecido/visto" de cada tutorial é por-dispositivo e fica em `shared_preferences`
+> (local), não aqui.
+
+| Campo | Tipo Firestore | Descrição |
+|-------|---------------|-----------|
+| `userId` | `string` | UID do utilizador (igual ao ID do documento) |
+| `initialTourCompleted` | `boolean` | Se a boas-vindas inicial já foi concluída ou recusada (não volta a aparecer automaticamente) |
+| `updatedAt` | `Timestamp` | Data da última atualização (`serverTimestamp`) |
+
+---
+
 ### `reminders/{reminderId}`
 
 | Campo | Tipo Firestore | Descrição |
@@ -130,6 +146,7 @@ Resumo das permissões:
 | `tasks` | resource.userId == auth.uid | resource.userId == auth.uid | request.resource.userId == auth.uid |
 | `tasks/steps` | auth != null | auth != null | auth != null |
 | `preferences` | próprio userId | próprio userId | — |
+| `onboarding` | próprio userId | próprio userId | — |
 | `reminders` | resource.userId == auth.uid | resource.userId == auth.uid | request.resource.userId == auth.uid |
 
 Ver `firestore.rules` para o código completo.
@@ -157,6 +174,7 @@ Ver `firestore.rules` para o código completo.
 
 | Data | Mudança | ADR |
 |------|---------|-----|
+| 2026-06-29 | Adicionada collection `onboarding/{userId}` (`initialTourCompleted`, `updatedAt`) + rule (dono apenas) para o Tour Guiado | ADR-013 |
 | 2026-06-25 | Adicionados 4 composite indexes na collection `tasks` para queries de filtro | ADR-012 |
 | 2026-06-24 | Adicionado `priority`, `category` e `reminderTime` à collection `tasks` | ADR-010 |
 | 2026-06-22 | Adicionado `darkMode: boolean` à collection `preferences` | ADR-009 |
