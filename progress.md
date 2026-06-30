@@ -216,6 +216,7 @@
 - [x] Boas-vindas inicial na Home (persistida cross-device) + tutorial da Tela Inicial
 - [x] Tutorial de Criar Tarefa + oferta na 1ª utilização (apenas Modo Básico)
 - [x] Tutorial da Lista de Tarefas
+- [x] Tutorial da Acessibilidade (4 passos) + oferta na 1ª utilização (Modo Básico) + entrada na Central
 - [x] Botão de ajuda (?) em todas as telas com tour
 - [x] Central "Guias do aplicativo" (`/guides`) acessível a partir de Definições
 - [x] Publicar a rule da collection `onboarding` no Firebase (`seniorease-backend`)
