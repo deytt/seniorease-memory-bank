@@ -112,6 +112,7 @@
 | `taskId` | `string \| null` | Referência à tarefa (null se lembrete avulso) |
 | `title` | `string` | Título do lembrete |
 | `message` | `string` | Mensagem de notificação |
+| `category` | `string` | `'medication'` \| `'appointment'` \| `'general'` — filtro dos chips da lista |
 | `scheduledAt` | `Timestamp` | Data/hora agendada para disparo |
 | `isRead` | `boolean` | Se o utilizador já leu o lembrete |
 | `createdAt` | `Timestamp` | Data de criação |
@@ -208,6 +209,19 @@ Ver `firestore.rules` para o código completo.
 
 ---
 
+## Composite Indexes — `reminders`
+
+> Indexes opcionais para queries com range em `scheduledAt`. O app mobile filtra "Hoje" **em memória** (após query por `userId`) para funcionar sem deploy imediato de indexes.
+
+| Index | Campos | Tipo | Quando usar |
+|-------|--------|------|-------------|
+| idx-reminders-today | `userId ASC, scheduledAt ASC` | Collection | Filtro "Hoje" (server-side, futuro) |
+| idx-reminders-category-today | `userId ASC, category ASC, scheduledAt ASC` | Collection | Filtro "Hoje" + Categoria (server-side, futuro) |
+
+> **Nota:** Filtros apenas por `category` (Medicação/Consultas) usam equality filters e **não precisam de composite index**.
+
+---
+
 ## Changelog
 
 | Data | Mudança | ADR |
@@ -215,6 +229,8 @@ Ver `firestore.rules` para o código completo.
 | 2026-06-30 | Login com Google (OAuth): `users/{uid}` criado no 1.º login com `name`/`email`/`photoUrl` do provedor (sem sobrescrever perfil existente). Verificação de e-mail via Firebase Auth (`emailVerified`, fora do Firestore) | ADR-015 / ADR-016 |
 | 2026-06-30 | Estendido `users` com `phone`, `birthDate`, `cpf`, `photoUrl`, `address` e `updatedAt`; adicionado Firebase Storage (`profile_photos/{userId}`) + `storage.rules` para o Módulo Perfil | ADR-014 |
 | 2026-06-29 | Adicionada collection `onboarding/{userId}` (`initialTourCompleted`, `updatedAt`) + rule (dono apenas) para o Tour Guiado | ADR-013 |
+| 2026-06-30 | Adicionados composite indexes em `reminders`; filtro "Hoje" filtrado em memória no mobile | — |
+| 2026-06-30 | Adicionado `category` à collection `reminders` (filtros Medicação/Consultas) | — |
 | 2026-06-25 | Adicionados 4 composite indexes na collection `tasks` para queries de filtro | ADR-012 |
 | 2026-06-24 | Adicionado `priority`, `category` e `reminderTime` à collection `tasks` | ADR-010 |
 | 2026-06-22 | Adicionado `darkMode: boolean` à collection `preferences` | ADR-009 |

@@ -1,13 +1,13 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-06-30 (Login com Google + Verificação de e-mail concluídos; próximo na Segurança: biometria e alterar senha)
+> Última atualização: 2026-06-30 (Módulo Lembretes concluído; Login com Google + Verificação de e-mail; próximo: Histórico e pendências na Segurança — biometria e alterar senha)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Features — Módulo Perfil concluído (dados pessoais, endereço, foto no Storage e tour); próximo: Lembretes e Histórico
+**Fase atual:** Features — Módulo Lembretes concluído (lista Figma + Firestore CRUD); próximo: Histórico
 
 O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma.
 
@@ -38,11 +38,11 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
-**Status:** Módulo Perfil concluído; Tela de Segurança adicionada (hub) — próximo: implementar as 3 features de Segurança e Módulo Lembretes/Histórico
+**Status:** Módulo Lembretes concluído — próximo: Histórico; **pendente na Segurança:** biometria e alterar senha
 **Tela de Segurança (2026-06-30):** nova tela `/security` (`features/profile/presentation/screens/security_screen.dart`) acessível em Definições logo abaixo de "Perfil" (`Icons.security_outlined`). Reúne três opções ainda **não implementadas**, visíveis com selo "Em breve" e toast ao toque: **Habilitar biometria**, **Verificar conta (e-mail)** e **Alterar senha**. Inclui Tour Guiado próprio (`TourId.security`, 3 passos) com botão de ajuda e entrada na Central "Guias do aplicativo". **A mesma feature deve ser implementada na Web, exceto a biometria (exclusiva do mobile)** (ver backlog Web em `progress.md`).
 **Tour Guiado (ADR-013):** `core/tour/` (port + widgets reutilizáveis), `features/guides/` (use cases + repos local/Firestore + `GuidesScreen`), `app/tour/app_tour_gate.dart` (composição), tutoriais integrados em Home, Criar Tarefa e Lista de Tarefas, entrada "Guias do aplicativo" em Definições. Requer publicar a rule da collection `onboarding` (ver `firebaseSchema.md`).
 **Já feito:** CI/CD Mobile; Design System em `core/widgets/`; `core/theme/` com tokens Figma e `AppTheme.buildDynamic`; edge-to-edge; autenticação Firebase com use cases; auth guard GoRouter; telas auth alinhadas ao Figma; estrutura Feature-First; **Módulo Acessibilidade** (dynamic theme, tela, Firestore; migrada para `SeniorScreenScaffold`); **Home/Dashboard** (header gradiente, SOS, quick actions, reminders, bottom nav 5 tabs; **Próxima Atividade** ligada a `nextPendingTaskProvider`); **Settings** (profile banner, 5 nav rows, HelpCard, logout com confirmação); **Módulo Tarefas** (`features/tasks/` domain/data/presentation; Create/List/Details/Guided; passos dinâmicos; modo guiado sequencial; celebração Lottie); **Melhorias UX Tarefas** (header `CreateTask` sem botão Guardar; `CategoryDropdown`; `dueDate` full datetime; limites de caracteres título/descrição/passo; `TaskDetails` com header genérico título+badges e data na card; botões Guided=teal, Complete=verde; `TaskCard` com badges prioridade+categoria e data formatada; ordenação por `dueDate` ascendente; `nextPendingTaskProvider`; widgets base: `SeniorInput.maxLength`, `SeniorButton.customColors`, `SeniorScreenHeader.subtitleWidget`).
-**Próximo passo:** Módulo Lembretes (Reminders) e Histórico (History)
+**Próximo passo:** Módulo Histórico (History)
 
 ### CI/CD
 **Status:** Mobile concluído — Web concluído

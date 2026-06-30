@@ -188,7 +188,7 @@
 - [x] Tela Home (Dashboard) — Figma `15:6831`
 - [x] Header gradiente com saudação dinâmica + botão SOS
 - [x] Grid 2×2 Quick Actions (Nova Tarefa, Acessibilidade, Lembretes, Ajuda Rápida)
-- [x] Secção Lembretes de Hoje (placeholder)
+- [x] Secção Lembretes de Hoje (ligada ao Firestore)
 - [x] Banner de sucesso
 - [x] Bottom Navigation Bar com 5 tabs (StatefulShellRoute)
 
@@ -218,8 +218,9 @@
 - [x] Card "Próxima Atividade" na Home ligado ao Firestore via nextPendingTaskProvider
 - [x] Filtros na Task List — filtro por categoria, prioridade e "hoje" aplicados na query Firestore (ADR-012)
 - [x] Pull-to-refresh na Task List — reset de filtros + refetch completo com toast informativo
-- [ ] Tela Reminders
-- [ ] Lembretes — exibição e visualização de push notifications (Firebase Cloud Messaging)
+- [x] Tela Reminders (Figma `15:7912` — lista, chips Hoje/Medicação/Consultas, marcar concluído)
+- [x] Criar lembrete (Firestore CRUD, sem push no device)
+- [x] Secção Lembretes de Hoje na Home ligada ao Firestore
 - [ ] Tela History
 
 ### Módulo 3 — Perfil / Definições
