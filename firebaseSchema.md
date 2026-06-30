@@ -28,6 +28,12 @@
 > `SetOptions(merge: true)`, preservando `id`/`createdAt`. O `email` é incluído
 > por consistência mas nunca é alterado pela UI (vem do Firebase Auth).
 
+> **Nota (ADR-015/ADR-016):** o estado de verificação do e-mail **não** fica no
+> Firestore — vive no Firebase Auth (`user.emailVerified`). Contas criadas via
+> Google (OAuth) chegam com `emailVerified = true`. No primeiro login com Google,
+> `users/{uid}` é criado com `name`/`email`/`photoUrl` do provedor; logins
+> seguintes não sobrescrevem o perfil (apenas preenchem `photoUrl` se vazia).
+
 ---
 
 ### `tasks/{taskId}`
@@ -206,6 +212,7 @@ Ver `firestore.rules` para o código completo.
 
 | Data | Mudança | ADR |
 |------|---------|-----|
+| 2026-06-30 | Login com Google (OAuth): `users/{uid}` criado no 1.º login com `name`/`email`/`photoUrl` do provedor (sem sobrescrever perfil existente). Verificação de e-mail via Firebase Auth (`emailVerified`, fora do Firestore) | ADR-015 / ADR-016 |
 | 2026-06-30 | Estendido `users` com `phone`, `birthDate`, `cpf`, `photoUrl`, `address` e `updatedAt`; adicionado Firebase Storage (`profile_photos/{userId}`) + `storage.rules` para o Módulo Perfil | ADR-014 |
 | 2026-06-29 | Adicionada collection `onboarding/{userId}` (`initialTourCompleted`, `updatedAt`) + rule (dono apenas) para o Tour Guiado | ADR-013 |
 | 2026-06-25 | Adicionados 4 composite indexes na collection `tasks` para queries de filtro | ADR-012 |

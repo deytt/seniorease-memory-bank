@@ -124,6 +124,11 @@
 - [ ] Máscaras de input (telefone, CPF, data, CEP) — lib web equivalente (ex.: `react-input-mask` / `imask`)
 - [ ] CPF (opcional) oculto em Modo Básico
 - [ ] Upload de foto de perfil para o Firebase Storage (`profile_photos/{userId}`; `photoUrl` em `users`)
+- [ ] Tela "Segurança" — hub de proteção da conta nas Definições (abaixo de Perfil), com tour guiado (paridade com mobile `/security`)
+- [ ] Segurança — Verificar conta por e-mail (Firebase Auth email verification) — a implementar
+- [ ] Segurança — Alterar palavra-passe — a implementar
+
+> Nota: a **biometria** é exclusiva do mobile (`local_auth` como trava local de acesso ao app). Não se aplica à Web — por isso não consta deste backlog.
 
 ### Módulo 4 — Tour Guiado
 > Mesmo comportamento do mobile (ADR-013), com infra/dependências/adaptadores próprios da web (Next.js, Zustand, biblioteca de tour React). A collection Firestore `onboarding/{userId}` e a respetiva rule são partilhadas (já criadas).
@@ -138,6 +143,7 @@
 - [ ] Tutorial das Definições + botão de ajuda + entrada na Central
 - [ ] Tutorial da tela Sobre + botão de ajuda + entrada na Central
 - [ ] Tutorial da tela Perfil + oferta na 1ª utilização (Modo Básico) + entrada na Central
+- [ ] Tutorial da tela Segurança + botão de ajuda + entrada na Central
 - [ ] Tutorial da própria Central de Guias (só via botão de ajuda, sem item auto-referencial)
 - [ ] Botão de ajuda (?) em todas as telas com tour
 - [ ] Central "Guias do aplicativo" acessível a partir das Definições
@@ -175,7 +181,7 @@
 - [x] Tela Register (Figma `15:6415` — nome/sobrenome lado a lado, scroll unificado)
 - [x] Tela Forgot Password (Figma `15:6638` — conteúdo centralizado, botão outline)
 - [x] Firebase Auth integrado
-- [ ] Login com Google (OAuth)
+- [x] Login com Google (OAuth) — `google_sign_in` v6, botão no Login, auto-preenche nome/foto no 1.º login, vinculação automática por e-mail (ADR-015)
 - [x] Rota protegida
 
 ### Home
@@ -227,6 +233,10 @@
 - [x] Renomeado "Informação Pessoal" → "Perfil" nas Definições, com navegação para `/profile`
 - [x] Configurações de conta — editar dados do utilizador (nome, telefone, data de nascimento, CPF, endereço; campos mascarados)
 - [x] Upload de foto de perfil para o Firebase Storage (`image_picker` + `profile_photos/{userId}`)
+- [x] Tela "Segurança" (`/security`) — hub de proteção da conta nas Definições (abaixo de Perfil), com tour guiado
+- [ ] Segurança — Habilitar biometria (Android/iOS) — a implementar
+- [x] Segurança — Verificar conta por e-mail (Firebase Auth `emailVerified`; alerta na linha "Segurança" das Definições; painel enviar/confirmar) (ADR-016)
+- [ ] Segurança — Alterar palavra-passe — a implementar
 
 ### Módulo 4 — Tour Guiado (ADR-013)
 - [x] Dependências `showcaseview ^5.1.0` e `shared_preferences` adicionadas
@@ -241,6 +251,7 @@
 - [x] Tutorial das Definições (3 passos: atalhos, ajuda, sair da conta) + botão de ajuda no banner + entrada na Central
 - [x] Tutorial da tela Sobre (2 passos: descrição/versão e aplicação web) + botão de ajuda + entrada na Central
 - [x] Tutorial da tela Perfil (3 passos: foto, dados pessoais, guardar) + oferta na 1ª utilização (Modo Básico) + entrada na Central (ADR-014)
+- [x] Tutorial da tela Segurança (3 passos: biometria, verificar conta, alterar senha) + botão de ajuda + entrada na Central
 - [x] Tutorial da própria Central de Guias (2 passos: o que é + começar um guia) — só via botão de ajuda (sem item auto-referencial)
 - [x] Botão de ajuda (?) em todas as telas com tour
 - [x] Central "Guias do aplicativo" (`/guides`) acessível a partir de Definições

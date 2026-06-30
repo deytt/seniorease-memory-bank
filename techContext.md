@@ -26,6 +26,7 @@ Stack completa, tokens do Design System, schema Firebase e configurações de am
 | Flutter | 3.x (stable) | Cross-platform iOS + Android |
 | Dart | 3.x | Linguagem do Flutter |
 | Firebase Flutter SDK | última | Auth, Firestore, Storage, Messaging |
+| google_sign_in | 6.x | Login social com Google (OAuth) — ADR-015 |
 | Riverpod | 2+ | State management reativo |
 | GoRouter | última | Navegação declarativa |
 | Lottie Flutter | última | Animações de celebração |
@@ -35,7 +36,7 @@ Stack completa, tokens do Design System, schema Firebase e configurações de am
 
 | Serviço | Uso |
 |---|---|
-| Firebase Auth | Autenticação (Email/Password) |
+| Firebase Auth | Autenticação (Email/Password + Google OAuth; verificação de e-mail) |
 | Cloud Firestore | Banco de dados principal |
 | Firebase Storage | Upload de imagens de perfil (futuro) |
 | Firebase Cloud Messaging | Push notifications para lembretes |
