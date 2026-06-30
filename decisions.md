@@ -419,6 +419,67 @@ A Web (`seniorease-web`) deve implementar a tela "Sobre" e a tela Perfil em pari
 
 ---
 
+## ADR-015 — Login com Google (OAuth) via google_sign_in v6 + vinculação automática
+
+**Data:** 2026-06-30
+**Status:** Aceito
+
+**Contexto:**
+A tela de Login só permitia e-mail/senha. Era necessário um login social com Google que fosse simples para o público sénior (menos digitação), aproveitasse a foto/nome do provedor e mantivesse a Clean Architecture/Feature-First (ADR-005/ADR-008). O `google_sign_in` mudou bastante na v7 (API por singleton/eventos); a v6 tem API mais direta e mais exemplos.
+
+**Decisão:**
+1. Adicionar `google_sign_in: ^6.2.1` e o `googleSignInProvider` em `core/firebase/firebase_providers.dart` (injetável/testável), configurado com `serverClientId` = Web Client ID do `seniorease-backend` para obter o `idToken`.
+2. Domain: `AuthRepository.signInWithGoogle()` + `SignInWithGoogleUseCase`. Cancelamento do seletor de contas é modelado por `AuthCancelledException` (em `domain/auth_exceptions.dart`) para a UI ignorar sem toast de erro.
+3. Data (`FirebaseAuthRepository`): `signIn()` → `authentication` → `GoogleAuthProvider.credential` → `signInWithCredential`. No primeiro login, `_ensureUserDocument` cria `users/{uid}` com `name`/`email`/`photoUrl` do Google (`createdAt: serverTimestamp`); em logins seguintes não sobrescreve o perfil, apenas preenche `photoUrl` se estiver vazia.
+4. **Vinculação automática:** a opção "Link accounts that use the same email address" está ativada no Firebase Console — o Firebase vincula contas com o mesmo e-mail sem fluxo manual de re-autenticação.
+5. Presentation: `AuthController.signInWithGoogle()` e botão "Entrar com Google" apenas no `LoginScreen` (abaixo do divisor "ou"), com o logo "G" oficial via novo parâmetro `leading` do `SeniorButton`.
+6. Config nativa: Android sem código (google-services.json + SHA-1 de debug já prontos); iOS com `CFBundleURLTypes` (`REVERSED_CLIENT_ID`) no `Info.plist`.
+
+**Motivo:**
+- v6 reduz a complexidade e o risco do hackathon (API estável e documentada).
+- Vinculação automática evita pedir a senha antiga ao idoso — UX mais simples e segura.
+- Injetar `GoogleSignIn` por provider mantém a testabilidade e o padrão dos outros repositórios.
+- Auto-preencher sem sobrescrever respeita o Módulo Perfil (ADR-014).
+
+**Alternativas consideradas:**
+- `google_sign_in` v7 (descartado: API nova com menos exemplos; risco desnecessário no prazo).
+- Fluxo manual de account-linking (descartado: a vinculação automática no console resolve sem código extra).
+- Botão Google também no Register (descartado a pedido do produto: apenas no Login por ora).
+
+**Impacto cross-projeto:**
+A Web (`seniorease-web`) deve oferecer o mesmo login com Google (Firebase `GoogleAuthProvider`), partilhando a mesma config do projeto Firebase e a mesma regra de auto-preenchimento de `users/{uid}` (sem sobrescrever perfil existente).
+
+---
+
+## ADR-016 — Verificação de e-mail na tela de Segurança + sinalização de alerta
+
+**Data:** 2026-06-30
+**Status:** Aceito
+
+**Contexto:**
+A tela de Segurança (`/security`) tinha a opção "Verificar conta (e-mail)" apenas como "Em breve". Era preciso implementar a verificação real de e-mail do Firebase Auth, sinalizando ao utilizador que há uma ação pendente sem poluir a Home.
+
+**Decisão:**
+1. Entidade `AppUser` ganha `emailVerified` (default `false`); `_mapFirebaseUser` lê `user.emailVerified`. Contas Google chegam verificadas.
+2. `AuthRepository` ganha `sendEmailVerification()` e `reloadAndCheckEmailVerified()` (+ use cases dedicados). O segundo faz `reload()` porque o link de confirmação não dispara o `authStateChanges`.
+3. `AuthController.refreshEmailVerification()` invalida o `authStateProvider` ao confirmar, atualizando selo e alerta em toda a app.
+4. **Sinalização:** `SettingsNavRow` ganha `showAlert` (ícone de exclamação à esquerda do chevron); a linha "Segurança" nas Definições mostra o alerta quando `user != null && !user.emailVerified`. Sem banner na Home (decisão de produto).
+5. `SecurityScreen`: linha dinâmica — selo verde "Verificada" (não-clicável) ou âmbar "Não verificado"; ao tocar, envia o e-mail e revela um painel com instruções + botão "Já confirmei o meu e-mail" (e "Reenviar e-mail").
+
+**Motivo:**
+- Recarregar manualmente é o padrão correto do Firebase (o estado de verificação não chega por stream).
+- Sinalizar o pendente na própria linha de Segurança mantém a Home limpa, como pedido.
+- Centralizar a invalidação no controller garante consistência do selo/alerta.
+
+**Alternativas consideradas:**
+- Banner na Home (descartado a pedido do produto: não poluir a Home).
+- Polling automático do estado de verificação (descartado: custo e complexidade; o botão "Já confirmei" é suficiente e claro).
+
+**Impacto cross-projeto:**
+A Web deve implementar a verificação de e-mail equivalente na sua tela de Segurança (Firebase `sendEmailVerification`/`reload`) e uma sinalização análoga de "ação pendente" no acesso à Segurança.
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:
