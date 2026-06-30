@@ -27,6 +27,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Web (seniorease-web)
 **Status:** Pronto para Etapa 2 — setup do projeto
+**Backlog alinhado (2026-06-30):** o `progress.md` da Web foi atualizado em paridade com o mobile — Acessibilidade (Dark Mode, Botões Maiores, Feedback de Áudio e Tátil), Tarefas (filtros, ordenação por `dueDate`, card "Próxima Atividade", refetch/reset), Perfil (tela "Sobre", edição de dados + endereço, máscaras, CPF oculto em Modo Básico, upload de foto para Storage) e Tour Guiado (tutoriais por tela: Acessibilidade, Definições, Sobre, Perfil e Central). Tudo usando a **mesma base Firebase** (collections/Storage/regras já criados), com **bibliotecas próprias da web** (Zustand, libs React de máscara/tour/etc.) em vez das do mobile. Ver Figma `node 134-851` para o Dashboard.
 **Próximo passo:**
 1. Adicionar memory-bank como submódulo (`git submodule add`)
 2. Copiar `.cursor/rules/memory-bank.mdc` para `.cursor/rules/`
