@@ -15,8 +15,18 @@
 |-------|---------------|-----------|
 | `id` | `string` | Igual ao Firebase Auth UID |
 | `name` | `string` | Nome completo do utilizador |
-| `email` | `string` | Email de autenticação |
+| `email` | `string` | Email de autenticação (nunca editável pela app) |
+| `phone` | `string \| null` | Telefone formatado, ex.: `(19) 9 9999-0034` |
+| `birthDate` | `string \| null` | Data de nascimento mascarada `DD/MM/AAAA` |
+| `cpf` | `string \| null` | CPF formatado (opcional) `999.999.999-99` |
+| `photoUrl` | `string \| null` | URL público da foto de perfil (Firebase Storage ou OAuth futuro) |
+| `address` | `map \| null` | Endereço: `{ neighborhood, street, number, zipCode, city, state, country }` (strings) |
 | `createdAt` | `Timestamp` | Data de criação da conta |
+| `updatedAt` | `Timestamp` | Data da última atualização do perfil |
+
+> **Nota (ADR-014):** os campos de perfil e o `address` são escritos com
+> `SetOptions(merge: true)`, preservando `id`/`createdAt`. O `email` é incluído
+> por consistência mas nunca é alterado pela UI (vem do Firebase Auth).
 
 ---
 
@@ -109,7 +119,8 @@
 > Ficheiros presentes:
 > - `firestore.rules` — regras de segurança do Firestore
 > - `firestore.indexes.json` — composite indexes do Firestore
-> - `firebase.json` — config do Firebase CLI (aponta para os dois ficheiros acima)
+> - `storage.rules` — regras de segurança do Firebase Storage (fotos de perfil)
+> - `firebase.json` — config do Firebase CLI (aponta para os ficheiros acima)
 >
 > ### Pré-requisito
 > Firebase CLI instalado e autenticado: `npm install -g firebase-tools && firebase login`
@@ -125,9 +136,30 @@
 >
 > # Publicar rules + indexes de uma vez
 > firebase deploy --config memory-bank/firebase.json --only firestore
+>
+> # Publicar as Storage Rules (requer bucket ativado — ver secção abaixo)
+> firebase deploy --config memory-bank/firebase.json --only storage
 > ```
 >
 > Se necessário, especificar o projeto: adicionar `-P seniorease-backend` a qualquer comando acima.
+
+---
+
+## Firebase Storage — fotos de perfil
+
+> Regras nativas em `memory-bank/storage.rules`. **Pré-requisito (manual):** o
+> bucket do Storage tem de estar ativado no console `seniorease-backend`
+> (Build → Storage → Get started) antes do primeiro upload e do deploy das
+> regras.
+
+| Caminho | Conteúdo | Acesso |
+|---------|----------|--------|
+| `profile_photos/{userId}` | Foto de perfil (1 ficheiro por utilizador; o upload seguinte substitui o anterior) | Leitura/escrita apenas pelo dono; escrita só de `image/*` até 5 MB |
+
+O `photoUrl` guardado em `users/{userId}` é o `getDownloadURL()` deste ficheiro.
+Quando o login com Google (OAuth) for implementado, `photoUrl` pode também
+apontar para a foto do provedor — a UI usa o `photoUrl` se existir, caindo para
+as iniciais do nome caso contrário.
 
 ---
 
@@ -174,6 +206,7 @@ Ver `firestore.rules` para o código completo.
 
 | Data | Mudança | ADR |
 |------|---------|-----|
+| 2026-06-30 | Estendido `users` com `phone`, `birthDate`, `cpf`, `photoUrl`, `address` e `updatedAt`; adicionado Firebase Storage (`profile_photos/{userId}`) + `storage.rules` para o Módulo Perfil | ADR-014 |
 | 2026-06-29 | Adicionada collection `onboarding/{userId}` (`initialTourCompleted`, `updatedAt`) + rule (dono apenas) para o Tour Guiado | ADR-013 |
 | 2026-06-25 | Adicionados 4 composite indexes na collection `tasks` para queries de filtro | ADR-012 |
 | 2026-06-24 | Adicionado `priority`, `category` e `reminderTime` à collection `tasks` | ADR-010 |
