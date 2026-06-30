@@ -374,6 +374,39 @@ Era necessário um sistema de tutoriais interativos para o público sénior: boa
 
 ---
 
+## ADR-014 — Módulo Perfil: extensão de `users` e foto no Firebase Storage
+
+**Data:** 2026-06-30
+**Status:** Aceito
+
+**Contexto:**
+O Módulo Perfil (Mobile) exige exibir e editar dados pessoais (nome, telefone, data de nascimento, CPF) e endereço, além de permitir mudar a foto do utilizador. A foto precisa de ser persistida (upload) e o conjunto de dados tem de respeitar a Clean Architecture/Feature-First (ADR-005/ADR-008). O login com Google (OAuth) ainda não existe, mas será adicionado a seguir, podendo trazer uma foto do provedor.
+
+**Decisão:**
+1. **Estender a collection `users/{userId}`** (relação 1:1 já lida pelo `auth`) com `phone`, `birthDate` (string `DD/MM/AAAA`), `cpf`, `photoUrl`, um mapa `address` e `updatedAt` — em vez de criar uma collection separada. A escrita usa `SetOptions(merge: true)`, preservando `id`/`createdAt`. O `email` nunca é editável (vem do Firebase Auth).
+2. **Feature `profile` completa** (`domain`/`data`/`presentation`): entidades `UserProfile`/`Address`, contratos `ProfileRepository` (Firestore) e `ProfilePhotoStorage` (Storage), use cases (`GetUserProfile`, `SaveUserProfile`, `UploadProfilePhoto`), providers Riverpod com dependências injetadas (`firebaseFirestoreProvider`/`firebaseStorageProvider`) e `ProfileScreen`.
+3. **Foto no Firebase Storage** em `profile_photos/{userId}` (1 ficheiro por utilizador); `photoUrl` guarda o `getDownloadURL()`. Regras próprias em `storage.rules` (dono apenas, só `image/*` até 5 MB). A UI usa `photoUrl` se existir, caindo para as iniciais — desenho compatível com a futura foto do Google.
+4. **Tour Guiado da tela** seguindo o ADR-013 (port `TourGate`): `TourId.profile`, `TourHost` na `ProfileScreen`, alvos `SeniorShowcase`, oferta na 1.ª utilização apenas em Modo Básico e entrada no catálogo da Central de Guias.
+5. **Máscaras** via `mask_text_input_formatter` com fábricas partilhadas em `core/utils/input_masks.dart`; `SeniorInput` ganha `inputFormatters` e `readOnly`. O CPF (opcional) é ocultado em Modo Básico.
+
+**Motivo:**
+- Reutilizar `users` evita duplicação e mantém a leitura existente do `auth` válida; o merge protege campos não geridos pelo perfil.
+- Separar `ProfileRepository` de `ProfilePhotoStorage` respeita o Single Responsibility e facilita os testes (Storage abstraído por contrato).
+- Storage por utilizador com regras estritas garante privacidade e custo previsível.
+- Reaproveitar o port `TourGate` mantém o Feature-First (nenhum import feature→feature).
+
+**Alternativas consideradas:**
+- Collection `profiles` separada (descartado: duplica o 1:1 já existente em `users`).
+- Guardar a foto em base64 no Firestore (descartado: custo/limite de 1 MB por documento; Storage é o local correto).
+- Formatadores de máscara manuais (descartado a favor de uma dependência mantida, com `inputFormatters` exposto no DS).
+
+**Impacto:**
+- `users` estendido + nova secção/secção Storage em `firebaseSchema.md`; novo `storage.rules` + entrada `storage` em `firebase.json`.
+- **Pré-requisito manual:** ativar o bucket do Storage no console `seniorease-backend` e publicar as regras (`firebase deploy --config memory-bank/firebase.json --only storage`).
+- Novas dependências: `firebase_storage`, `image_picker`, `mask_text_input_formatter`; permissões iOS (`NSPhotoLibraryUsageDescription`, `NSCameraUsageDescription`).
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:

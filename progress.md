@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-06-30 (Tours guiados das telas Sobre e da Central de Guias)
+> Última atualização: 2026-06-30 (Módulo Perfil — dados pessoais, endereço, foto no Storage e tour)
 
 ---
 
@@ -30,7 +30,7 @@
 - [x] Regras de segurança do Firestore configuradas
 - [x] Firebase Cloud Messaging habilitado (push notifications)
 - [x] Variáveis de ambiente compartilhadas com o time
-- [ ] Firebase Storage ativado (bucket + regras de segurança) — necessário para upload de foto de perfil
+- [x] Firebase Storage — `storage.rules` criado (`profile_photos/{userId}`) e referenciado em `firebase.json` (ADR-014); **pendente ativar o bucket no console + publicar regras**
 - [ ] APNs configurado (iOS) — necessário para push notifications no iOS
 
 > Coleções Firestore serão populadas automaticamente pela app na primeira gravação. Apps registadas: Web (`seniorease-web`), Android e iOS (`com.seniorease.mobile`). APNs iOS pendente para fase de push notifications.
@@ -205,8 +205,10 @@
 - [x] Card "Precisa de Ajuda?" com número 1-800-SENIOR
 - [x] Botão "Sair da Conta" com confirmação modal
 - [x] Tela "Sobre" (`/about`) — identidade do app, versão e ligação clicável para a web app (url_launcher)
-- [ ] Configurações de conta — editar dados do utilizador (nome, email/telefone, etc.)
-- [ ] Upload de foto de perfil para o Firebase Storage
+- [x] Tela "Perfil" (`/profile`) — exibe foto/nome/email/telefone e edita Informações Pessoais + Endereço (ADR-014)
+- [x] Renomeado "Informação Pessoal" → "Perfil" nas Definições, com navegação para `/profile`
+- [x] Configurações de conta — editar dados do utilizador (nome, telefone, data de nascimento, CPF, endereço; campos mascarados)
+- [x] Upload de foto de perfil para o Firebase Storage (`image_picker` + `profile_photos/{userId}`)
 
 ### Módulo 4 — Tour Guiado (ADR-013)
 - [x] Dependências `showcaseview ^5.1.0` e `shared_preferences` adicionadas
@@ -220,6 +222,7 @@
 - [x] Tutorial da Acessibilidade (4 passos) + oferta na 1ª utilização (Modo Básico) + entrada na Central
 - [x] Tutorial das Definições (3 passos: atalhos, ajuda, sair da conta) + botão de ajuda no banner + entrada na Central
 - [x] Tutorial da tela Sobre (2 passos: descrição/versão e aplicação web) + botão de ajuda + entrada na Central
+- [x] Tutorial da tela Perfil (3 passos: foto, dados pessoais, guardar) + oferta na 1ª utilização (Modo Básico) + entrada na Central (ADR-014)
 - [x] Tutorial da própria Central de Guias (2 passos: o que é + começar um guia) — só via botão de ajuda (sem item auto-referencial)
 - [x] Botão de ajuda (?) em todas as telas com tour
 - [x] Central "Guias do aplicativo" (`/guides`) acessível a partir de Definições
