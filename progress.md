@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-06-30 (Módulo Perfil — dados pessoais, endereço, foto no Storage e tour)
+> Última atualização: 2026-06-30 (Backlog Web alinhado em paridade com o mobile — acessibilidade, tarefas, perfil e tour)
 
 ---
 
@@ -75,6 +75,7 @@
 - [ ] Rota protegida (redirect se não autenticado)
 
 ### Dashboard
+> Deve espelhar a Home do mobile (saudação, SOS, quick actions, lembretes de hoje, card "Próxima Atividade"), com diferenças próprias da web (ex.: header/topbar adaptado em vez do header gradiente mobile). Ver Figma `node 134-851`. Detalhe ao critério do design web.
 - [ ] Tela Dashboard
 
 ### Documentação de componentes (Storybook)
@@ -85,32 +86,44 @@
 - [ ] Controls/args (props), estados (hover/disabled/loading/erro) e tokens documentados
 
 ### Módulo 1 — Acessibilidade
+> Mesma funcionalidade e mesma collection `preferences/{userId}` do mobile; lógica idêntica (incl. `maximum` derivado pelo `SavePreferencesUseCase`). Adaptação web: tema dinâmico via CSS custom properties / theme context (não `ThemeData`).
 - [ ] Tela Accessibility Center
 - [ ] Toggle de tamanho de fonte (funcional)
+- [ ] Toggle de Dark Mode (funcional) — mapeia `preferences.darkMode`; `contrast: 'maximum'` derivado quando `darkMode && high` (ADR-009)
 - [ ] Toggle de contraste (funcional)
 - [ ] Toggle de espaçamento (funcional)
 - [ ] Toggle de Modo Básico / Avançado (funcional)
-- [ ] Toggle de feedback visual (funcional)
+- [ ] Toggle de Feedback de Áudio e Tátil (funcional) — `audioFeedbackEnabled` (ADR-009)
+- [ ] Toggle de Botões Maiores / áreas de toque (funcional) — `largeTouchTargets`
 - [ ] Persistência das preferências no Firestore
 
 ### Módulo 2 — Tarefas
+> Mesma collection `tasks/{taskId}` (+ subcollection `steps`) e mesma lógica do mobile; adaptação web: estado via Zustand selectors (não Riverpod), ordenação em memória no repositório.
 - [ ] Tela Task List
 - [ ] Tela Task Details
 - [ ] Tela Create Task
 - [ ] Tela Guided Task Mode (passo a passo)
 - [ ] Animação Lottie de celebração ao concluir tarefa
+- [ ] Filtros na Task List (categoria, prioridade, "hoje") via queries Firestore + composite indexes já criados (ADR-012)
+- [ ] Ordenação da lista por dueDate ascendente (pendentes primeiro, nulls no fim) (ADR-011)
+- [ ] Card "Próxima Atividade" no Dashboard ligado ao Firestore — equivalente a `nextPendingTaskProvider` (ADR-011)
+- [ ] Atualizar lista / refetch com reset de filtros — equivalente web ao pull-to-refresh do mobile
 - [ ] Tela Reminder Center
 - [ ] Lembretes — exibição e visualização de push notifications (Firebase Cloud Messaging / FCM Web + Service Worker)
 - [ ] Tela History
 
 ### Módulo 3 — Perfil / Definições
+> Mesma collection `users/{userId}` (estendida no ADR-014) e mesmo bucket Storage `profile_photos/{userId}` do mobile; lógica idêntica, adaptação web nas bibliotecas (máscaras, upload).
 - [ ] Tela Settings — Figma `15:8860` (renomeada de "My Profile")
 - [ ] Profile banner com gradiente + avatar com iniciais
 - [ ] 5 rows de navegação (incl. link para Acessibilidade)
 - [ ] Card "Precisa de Ajuda?" com número 1-800-SENIOR
 - [ ] Botão "Sair da Conta" com confirmação modal
-- [ ] Configurações de conta — editar dados do utilizador (nome, email/telefone, etc.)
-- [ ] Upload de foto de perfil para o Firebase Storage
+- [ ] Tela "Sobre" — identidade do app, versão e ligação clicável para a app (paridade com mobile `/about`)
+- [ ] Tela Perfil — exibe foto/nome/email/telefone e edita Informação Pessoal (nome; email só-leitura; data de nascimento; telefone; CPF) + Endereço (bairro/rua/número/CEP/cidade/estado/país) (ADR-014)
+- [ ] Máscaras de input (telefone, CPF, data, CEP) — lib web equivalente (ex.: `react-input-mask` / `imask`)
+- [ ] CPF (opcional) oculto em Modo Básico
+- [ ] Upload de foto de perfil para o Firebase Storage (`profile_photos/{userId}`; `photoUrl` em `users`)
 
 ### Módulo 4 — Tour Guiado
 > Mesmo comportamento do mobile (ADR-013), com infra/dependências/adaptadores próprios da web (Next.js, Zustand, biblioteca de tour React). A collection Firestore `onboarding/{userId}` e a respetiva rule são partilhadas (já criadas).
@@ -121,6 +134,11 @@
 - [ ] Boas-vindas inicial no Dashboard (persistida cross-device) + tutorial da tela inicial
 - [ ] Tutorial de Criar Tarefa + oferta na 1ª utilização (apenas Modo Básico)
 - [ ] Tutorial da Lista de Tarefas
+- [ ] Tutorial da Acessibilidade + oferta na 1ª utilização (Modo Básico) + entrada na Central
+- [ ] Tutorial das Definições + botão de ajuda + entrada na Central
+- [ ] Tutorial da tela Sobre + botão de ajuda + entrada na Central
+- [ ] Tutorial da tela Perfil + oferta na 1ª utilização (Modo Básico) + entrada na Central
+- [ ] Tutorial da própria Central de Guias (só via botão de ajuda, sem item auto-referencial)
 - [ ] Botão de ajuda (?) em todas as telas com tour
 - [ ] Central "Guias do aplicativo" acessível a partir das Definições
 - [ ] Requisitos da tela de Guias: lista de tutoriais (re)executáveis, linguagem simples ("Vamos fazer juntos"), cada item inicia o tutorial na respetiva tela

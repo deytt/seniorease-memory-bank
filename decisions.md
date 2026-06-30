@@ -239,6 +239,9 @@ O `AppTheme.light` era estático. A tela de Acessibilidade do Figma (`node 15:90
 - `ThemeExtension` para spacing — mantido como work-in-progress; o campo `spacing` existe no Firestore mas o toggle não está exposto na UI por ora (implementar na iteração de Spacing avançado).
 - Três modos de contraste como segmented control — descartado em favor de dois toggles (Dark Mode + High Contrast) para não sobrecarregar a UX do público sénior.
 
+**Impacto cross-projeto:**
+A collection `preferences` é partilhada com `seniorease-web`. A Web deve implementar os mesmos toggles (Dark Mode, High Contrast, Botões Maiores/`largeTouchTargets`, Feedback de Áudio e Tátil/`audioFeedbackEnabled`) e a mesma derivação de `contrast: 'maximum'` no `SavePreferencesUseCase`, adaptando o tema dinâmico a CSS custom properties / theme context (não `ThemeData`).
+
 **Regras imutáveis:**
 - `AppTheme.buildDynamic()` é o único ponto de construção de `ThemeData` em produção.
 - `AppTheme.light` e `AppTheme.dark` existem apenas como base interna; nunca passados directamente ao `MaterialApp`.
@@ -301,6 +304,9 @@ O Módulo Tarefas passou a registar `dueDate` (DateTime completo) em vez de apen
 - `FirebaseTaskRepository` é a única camada que ordena — a UI recebe sempre a lista já ordenada.
 - `nextPendingTaskProvider` pode ser reutilizado em futuras widgets (ex: notificações locais).
 
+**Impacto cross-projeto:**
+A Web (`seniorease-web`) deve replicar a mesma ordenação em memória (pendentes/em progresso antes de concluídas; `dueDate` ascendente, nulls no fim) e um equivalente ao `nextPendingTaskProvider` para o card "Próxima Atividade" no Dashboard, usando o estado web (Zustand selectors) em vez de Riverpod. Nenhum índice composto adicional é necessário para esta ordenação.
+
 ---
 
 ## ADR-012 — Filtros na Task List com Composite Indexes Firestore
@@ -338,6 +344,9 @@ A Task List precisava de filtros por prioridade, categoria e data ("hoje"). O re
 - `(userId ASC, category ASC, priority ASC, dueDate ASC)` — todos combinados
 
 > Filtros só por `category` e/ou `priority` (sem "Hoje") são equality filters e não requerem composite index.
+
+**Impacto cross-projeto:**
+A Web (`seniorease-web`) deve implementar os mesmos filtros (categoria, prioridade, "hoje") aplicados na query Firestore e reutiliza os mesmos composite indexes já criados (são partilhados — não é preciso recriar). Adaptar a UX de filtros e o "atualizar/reset" ao contexto web (em vez de bottom sheet + pull-to-refresh do mobile).
 
 ---
 
@@ -404,6 +413,9 @@ O Módulo Perfil (Mobile) exige exibir e editar dados pessoais (nome, telefone, 
 - `users` estendido + nova secção/secção Storage em `firebaseSchema.md`; novo `storage.rules` + entrada `storage` em `firebase.json`.
 - **Pré-requisito manual:** ativar o bucket do Storage no console `seniorease-backend` e publicar as regras (`firebase deploy --config memory-bank/firebase.json --only storage`).
 - Novas dependências: `firebase_storage`, `image_picker`, `mask_text_input_formatter`; permissões iOS (`NSPhotoLibraryUsageDescription`, `NSCameraUsageDescription`).
+
+**Impacto cross-projeto:**
+A Web (`seniorease-web`) deve implementar a tela "Sobre" e a tela Perfil em paridade: ler/editar os mesmos campos de `users/{userId}` (com `merge`, `email` só-leitura), endereço, máscaras (telefone/CPF/data/CEP) com lib web equivalente (ex.: `react-input-mask`/`imask`), CPF oculto em Modo Básico, e upload da foto para o mesmo bucket `profile_photos/{userId}` (regras partilhadas). A seleção de ficheiro usa input web (`<input type="file">`) em vez de `image_picker`.
 
 ---
 
