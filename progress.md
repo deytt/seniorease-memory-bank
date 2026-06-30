@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-06-29 (Reorg. progresso: Módulo 3 Mobile concluído, Tour Guiado planeado para Web, avaliação interna pré-entrega)
+> Última atualização: 2026-06-30 (Tours guiados das telas Sobre e da Central de Guias)
 
 ---
 
@@ -201,9 +201,10 @@
 ### Módulo 3 — Perfil / Definições
 - [x] Tela Settings / Definições (`features/profile`)
 - [x] Profile banner com gradiente + avatar com iniciais (nome + email do utilizador)
-- [x] Card de navegação com rows (Informação Pessoal, Notificações, Acessibilidade, Guias do aplicativo, Membros da Família, Segurança)
+- [x] Card de navegação com rows (Informação Pessoal, Notificações, Acessibilidade, Guias do aplicativo, Sobre)
 - [x] Card "Precisa de Ajuda?" com número 1-800-SENIOR
 - [x] Botão "Sair da Conta" com confirmação modal
+- [x] Tela "Sobre" (`/about`) — identidade do app, versão e ligação clicável para a web app (url_launcher)
 - [ ] Configurações de conta — editar dados do utilizador (nome, email/telefone, etc.)
 - [ ] Upload de foto de perfil para o Firebase Storage
 
@@ -217,6 +218,9 @@
 - [x] Tutorial de Criar Tarefa + oferta na 1ª utilização (apenas Modo Básico)
 - [x] Tutorial da Lista de Tarefas
 - [x] Tutorial da Acessibilidade (4 passos) + oferta na 1ª utilização (Modo Básico) + entrada na Central
+- [x] Tutorial das Definições (3 passos: atalhos, ajuda, sair da conta) + botão de ajuda no banner + entrada na Central
+- [x] Tutorial da tela Sobre (2 passos: descrição/versão e aplicação web) + botão de ajuda + entrada na Central
+- [x] Tutorial da própria Central de Guias (2 passos: o que é + começar um guia) — só via botão de ajuda (sem item auto-referencial)
 - [x] Botão de ajuda (?) em todas as telas com tour
 - [x] Central "Guias do aplicativo" (`/guides`) acessível a partir de Definições
 - [x] Publicar a rule da collection `onboarding` no Firebase (`seniorease-backend`)
