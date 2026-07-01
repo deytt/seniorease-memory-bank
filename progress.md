@@ -188,7 +188,7 @@
 - [x] Tela Home (Dashboard) — Figma `15:6831`
 - [x] Header gradiente com saudação dinâmica + botão SOS
 - [x] Grid 2×2 Quick Actions (Nova Tarefa, Acessibilidade, Lembretes, Ajuda Rápida)
-- [x] Secção Lembretes de Hoje (placeholder)
+- [x] Secção Lembretes de Hoje (ligada ao Firestore)
 - [x] Banner de sucesso
 - [x] Bottom Navigation Bar com 5 tabs (StatefulShellRoute)
 
@@ -218,8 +218,16 @@
 - [x] Card "Próxima Atividade" na Home ligado ao Firestore via nextPendingTaskProvider
 - [x] Filtros na Task List — filtro por categoria, prioridade e "hoje" aplicados na query Firestore (ADR-012)
 - [x] Pull-to-refresh na Task List — reset de filtros + refetch completo com toast informativo
-- [ ] Tela Reminders
-- [ ] Lembretes — exibição e visualização de push notifications (Firebase Cloud Messaging)
+- [x] Tela Reminders (lista, marcar concluído, ordenação crescente por `scheduledAt`)
+- [x] Criar lembrete (Firestore CRUD, sem push no device)
+- [x] Editar lembrete reutilizando a tela de criação (rota `/reminders/:id/edit`, `UpdateReminderUseCase`) — bloqueado para lembretes concluídos
+- [x] Card de lembrete: swipe bidirecional (esquerda apaga / direita edita, bloqueado quando concluído), toque para expandir a descrição completa (acessível), data no card e dica de swipe ("peek") na 1ª abertura da sessão
+- [x] Home → lista: toque no lembrete limpa filtros, navega para a aba de Lembretes e destaca o item com `ensureVisible` + pulso; preview mostra os 3 primeiros; data também exibida no card da Home
+- [x] Header Reminders alinhado ao de Tarefas (botão ajuda "?" + filtro com badge + criar) e header Novo Lembrete estilo Nova Tarefa (botão "?", hints, título 30, validação de data no passado)
+- [x] Categorias de lembrete (Medicação, Consulta, Hidratação, Alimentação, Contas e Pagamentos) em combo box na criação
+- [x] Filtros combináveis (Categoria + "Hoje") via `ReminderFilter` + `ReminderFilterSheet` + barra de chips activos (estilo Tarefas)
+- [x] Tour Guiado dos Lembretes (`TourId.remindersList` e `TourId.createReminder`) com oferta na 1ª utilização e entradas na Central
+- [x] Secção Lembretes de Hoje na Home ligada ao Firestore
 - [ ] Tela History
 
 ### Módulo 3 — Perfil / Definições
