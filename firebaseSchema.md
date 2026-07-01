@@ -211,12 +211,12 @@ Ver `firestore.rules` para o código completo.
 
 ## Composite Indexes — `reminders`
 
-> Indexes opcionais para queries com range em `scheduledAt`. O app mobile filtra "Hoje" **em memória** (após query por `userId`) para funcionar sem deploy imediato de indexes.
+> Indexes **necessários e já publicados**. O app mobile filtra "Hoje" **server-side** (range em `scheduledAt`) e ordena por `scheduledAt` na própria query.
 
 | Index | Campos | Tipo | Quando usar |
 |-------|--------|------|-------------|
-| idx-reminders-today | `userId ASC, scheduledAt ASC` | Collection | Filtro "Hoje" (server-side, futuro) |
-| idx-reminders-category-today | `userId ASC, category ASC, scheduledAt ASC` | Collection | Filtro "Hoje" + Categoria (server-side, futuro) |
+| idx-reminders-today | `userId ASC, scheduledAt ASC` | Collection | Filtro "Hoje" (range + orderBy `scheduledAt`) |
+| idx-reminders-category-today | `userId ASC, category ASC, scheduledAt ASC` | Collection | Filtro por Categoria (Medicação/Consultas) + orderBy `scheduledAt` |
 
 > **Nota:** Filtros apenas por `category` (Medicação/Consultas) usam equality filters e **não precisam de composite index**.
 
@@ -229,7 +229,8 @@ Ver `firestore.rules` para o código completo.
 | 2026-06-30 | Login com Google (OAuth): `users/{uid}` criado no 1.º login com `name`/`email`/`photoUrl` do provedor (sem sobrescrever perfil existente). Verificação de e-mail via Firebase Auth (`emailVerified`, fora do Firestore) | ADR-015 / ADR-016 |
 | 2026-06-30 | Estendido `users` com `phone`, `birthDate`, `cpf`, `photoUrl`, `address` e `updatedAt`; adicionado Firebase Storage (`profile_photos/{userId}`) + `storage.rules` para o Módulo Perfil | ADR-014 |
 | 2026-06-29 | Adicionada collection `onboarding/{userId}` (`initialTourCompleted`, `updatedAt`) + rule (dono apenas) para o Tour Guiado | ADR-013 |
-| 2026-06-30 | Adicionados composite indexes em `reminders`; filtro "Hoje" filtrado em memória no mobile | — |
+| 2026-07-01 | Filtro "Hoje" e ordenação de `reminders` passam a ser **server-side** (range + `orderBy` em `scheduledAt`); composite indexes publicados no Firestore | — |
+| 2026-06-30 | Adicionados composite indexes em `reminders` (inicialmente com filtro "Hoje" em memória no mobile) | — |
 | 2026-06-30 | Adicionado `category` à collection `reminders` (filtros Medicação/Consultas) | — |
 | 2026-06-25 | Adicionados 4 composite indexes na collection `tasks` para queries de filtro | ADR-012 |
 | 2026-06-24 | Adicionado `priority`, `category` e `reminderTime` à collection `tasks` | ADR-010 |
