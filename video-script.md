@@ -10,6 +10,7 @@
 | Recurso | Link |
 |---------|------|
 | Protótipo Figma publicado (Figma Make → Figma Design) | https://senior-ease.figma.site |
+| Figma Design (ficheiro oficial, Design System + telas) | https://www.figma.com/design/3avWJD9n4gI9mZHw9dksIy/SeniorEase?node-id=2-2396&p=f&m=dev |
 | Kanban do projeto (GitHub Projects) | https://github.com/users/deytt/projects/3 |
 | Repositório Mobile | *(adicionar link)* |
 | Repositório Web | *(adicionar link)* |
@@ -62,11 +63,18 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 - A persistência é híbrida: `shared_preferences` local (rápido) + Firestore `onboarding/{userId}` (cross-device).
 - A Central "Guias do aplicativo" nas Definições permite rever qualquer tutorial quando o utilizador quiser.
 
-### 7. CI/CD Automatizado desde o Início
+### 7. CI/CD Automatizado desde o Início — Mais do que Qualidade de Código
 
 - **Mobile:** GitHub Actions — CI (analyze + test) em todo push/PR; CD (build APK + Firebase App Distribution) só na `master`.
 - **Web:** GitHub Actions — CI (lint + type-check + build); CD (Vercel `--prebuilt`) só na `master` após CI passar.
 - Isto garantiu que o código que chega à `master` está sempre compilando, testado e distribuído — mesmo trabalhando em velocidade de hackathon.
+- **Colaboração assíncrona entre plataformas:** como a web estava sempre deployada no Vercel e o mobile sempre distribuído via App Distribution, cada developer podia **ver o trabalho do outro sem clonar nem subir ambiente**. Por exemplo: eu, como dev Android, pude verificar como a feature de Histórico foi implementada na web simplesmente abrindo o deploy do Vercel — e vice-versa. Isto elimina um dos maiores atritos num projeto multi-plataforma: a necessidade de configurar e correr dois projetos diferentes para entender o que foi feito.
+- O CI/CD não foi só uma ferramenta de qualidade — foi também uma ferramenta de **comunicação e transparência** entre as frentes do projeto.
+
+### 8. Kanban e Rastreabilidade — Gestão de Projeto Integrada
+
+- Utilizámos o **GitHub Projects** como quadro Kanban do projeto (https://github.com/users/deytt/projects/3), rastreando tarefas, bugs e melhorias diretamente ligados aos commits e PRs.
+- Combinado com o memory-bank (que documenta decisões e progresso) e o CI/CD (que valida e distribui cada mudança), tínhamos uma visão completa do estado do projeto em qualquer momento — sem reuniões de alinhamento desnecessárias.
 
 ---
 
@@ -77,8 +85,8 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 | # | Bloco | Duração estimada | Notas |
 |---|-------|-----------------|-------|
 | 1 | **Problema e público-alvo** — Quem é o idoso digital? O que o SeniorEase resolve? | ~1 min | Usar dados/contexto do `projectbrief.md` e `productContext.md` |
-| 2 | **Processo de Design** — Figma Make → Design System → Figma MCP → código | ~2 min | Mostrar o protótipo: https://senior-ease.figma.site |
-| 3 | **Arquitetura do projeto** — Memory-bank, Clean Architecture, plataforma dupla, base Firebase única | ~2 min | Mostrar estrutura de pastas, ADRs, submódulo |
+| 2 | **Processo de Design** — Figma Make → Design System → Figma MCP → código | ~2 min | Mostrar o protótipo: https://senior-ease.figma.site e o Figma Design |
+| 3 | **Arquitetura do projeto** — Memory-bank, Clean Architecture, plataforma dupla, base Firebase única, Kanban | ~2 min | Mostrar estrutura de pastas, ADRs, submódulo, GitHub Projects |
 | 4 | **Demo Mobile** — fluxo completo: login, criar tarefa, lembrete, histórico, acessibilidade, tour | ~4 min | Usar APK via App Distribution |
 | 5 | **Demo Web** — mesmos fluxos na plataforma web | ~3 min | Usar deploy Vercel |
 | 6 | **Acessibilidade em detalhe** — Modo Básico, fonte 150%, Dark Mode, Alto Contraste, tour | ~1 min | Demonstrar ao vivo nas duas plataformas |
@@ -96,6 +104,8 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 - *"Acessibilidade foi uma constraint de arquitetura, não um afterthought."*
 - *"O Figma Make gerou o protótipo; o Figma Design criou o sistema; o Figma MCP conectou o design ao código."*
 - *"O tour guiado existe porque os nossos utilizadores não devem precisar de manual."*
+- *"Com o CI/CD sempre ativo, eu, como dev Android, sabia exatamente o que estava na web — só abrindo o browser. Sem clonar, sem configurar ambiente, sem esperar."*
+- *"O Kanban, o memory-bank e o CI/CD formaram um sistema de gestão de projeto que funcionava mesmo sem reuniões."*
 
 ---
 
