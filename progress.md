@@ -110,7 +110,13 @@
 - [ ] Atualizar lista / refetch com reset de filtros — equivalente web ao pull-to-refresh do mobile
 - [ ] Tela Reminder Center
 - [ ] Lembretes — exibição e visualização de push notifications (Firebase Cloud Messaging / FCM Web + Service Worker)
-- [ ] Tela History
+- [ ] Tela History (Figma `15:8316`) — replicar a experiência do mobile (ADR-017):
+  - [ ] Mesma collection `history/{id}` e mesmos indexes/rules (já publicados — nada a criar no Firebase)
+  - [ ] Port `HistoryRecorder` equivalente em TS (hook/serviço injetado) com No-op default + adaptador na raiz de composição, evitando acoplamento entre módulos (espelha o mobile)
+  - [ ] Disparar `record(...)` nos mesmos pontos (criar/concluir/editar/apagar tarefa e lembrete, ajustar acessibilidade, atualizar perfil, verificar conta), best-effort
+  - [ ] Portar 1:1 a função pura de streak/contagem semanal (`computeStats`)
+  - [ ] Contadores computados on-read via Zustand selectors; contraste/tamanho de fonte via CSS custom properties; Modo Básico oculta eventos de baixa relevância
+  - [ ] Tour da tela History com a lib de tour da Web
 
 ### Módulo 3 — Perfil / Definições
 > Mesma collection `users/{userId}` (estendida no ADR-014) e mesmo bucket Storage `profile_photos/{userId}` do mobile; lógica idêntica, adaptação web nas bibliotecas (máscaras, upload).
@@ -228,7 +234,12 @@
 - [x] Filtros combináveis (Categoria + "Hoje") via `ReminderFilter` + `ReminderFilterSheet` + barra de chips activos (estilo Tarefas)
 - [x] Tour Guiado dos Lembretes (`TourId.remindersList` e `TourId.createReminder`) com oferta na 1ª utilização e entradas na Central
 - [x] Secção Lembretes de Hoje na Home ligada ao Firestore
-- [ ] Tela History
+- [x] Tela History (Figma `15:8316`) — feature `history` em Clean Architecture; stats cards, banner de streak dinâmico e lista "Atividade Recente" agrupada por dia (ADR-017)
+- [x] Registo cross-feature via port `HistoryRecorder` (`core/history/`) + adaptador `AppHistoryRecorder` (`app/history/`), best-effort, disparado por tasks/reminders/accessibility/profile/auth
+- [x] Contadores "Tarefas esta semana" e "Sequência (streak)" computados on-read (função pura `computeStats`)
+- [x] Collection `history/{id}` + 2 composite indexes + rule (dono) publicados no Firestore (ADR-017)
+- [x] Acessibilidade (FittedBox nos números, Semantics nos ícones, Modo Básico oculta eventos de baixa relevância) + Tour Guiado (`TourId.history`) e entrada na Central
+- [x] Testes das 3 camadas (domínio streak/mapa, data com `fake_cloud_firestore`, presentation stats + adaptador)
 
 ### Módulo 3 — Perfil / Definições
 - [x] Tela Settings / Definições (`features/profile`)
