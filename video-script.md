@@ -1,0 +1,109 @@
+# Roteiro do Vídeo de Entrega — SeniorEase
+
+> Máximo: **15 minutos** | Destino: Plataforma FIAP
+> Status: **em construção** — ir complementando à medida que a entrega se aproxima
+
+---
+
+## Links e Recursos para o Vídeo
+
+| Recurso | Link |
+|---------|------|
+| Protótipo Figma publicado (Figma Make → Figma Design) | https://senior-ease.figma.site |
+| Repositório Mobile | *(adicionar link)* |
+| Repositório Web | *(adicionar link)* |
+| App Distribution (APK) | *(adicionar link)* |
+| Deploy Web (Vercel) | *(adicionar link)* |
+
+---
+
+## Diferenciais do Projeto — O que vale destacar no vídeo
+
+Esta secção documenta os pontos de destaque da **forma como o projeto foi construído**, não apenas o produto em si. São os argumentos mais fortes para a apresentação.
+
+### 1. Processo de Design — Figma Make → Figma Design → Código
+
+- Começámos pelo **Figma Make** para gerar um protótipo navegável rapidamente: exploração de conceito, paleta de cores, identidade visual e fluxos de navegação — tudo antes de escrever uma linha de código.
+- Com o protótipo validado, migrámos para o **Figma Design** para criar o Design System formal: tokens de cor, tipografia, espaçamento, componentes reutilizáveis, variantes de estado (hover, disabled, erro), Modo Básico vs. Avançado e Dark Mode.
+- O desenvolvimento das telas foi assistido pelo **Figma MCP** (Model Context Protocol), que permitiu ao agente de IA ler o design diretamente do Figma e gerar código Flutter/React alinhado ao Design System — acelerando drasticamente a implementação e reduzindo divergências entre design e código.
+
+### 2. Plataforma Dupla com Base Única (Mobile + Web)
+
+- Desenvolvemos simultaneamente uma **app mobile em Flutter** e uma **plataforma web em Next.js**.
+- As duas partilham a **mesma base Firebase** (`seniorease-backend`): mesmas collections Firestore, regras de segurança, indexes e Firebase Storage — sem duplicação de infra.
+- A coerência visual e de UX é garantida pelo mesmo Design System (tokens exportados do Figma para os dois projetos).
+- As regras de negócio do domínio são portadas 1:1 entre as plataformas (ex.: algoritmo de streak do Histórico).
+
+### 3. Memory-Bank Centralizado — O "Cérebro" do Projeto
+
+- Criámos um **submódulo Git partilhado** (`seniorease-memory-bank`) que vive dentro dos dois repositórios (mobile e web).
+- O memory-bank contém toda a documentação viva do projeto: brief de requisitos, contexto de produto, padrões de arquitetura, schema Firestore, regras de segurança, ADRs (decisões arquiteturais), contexto ativo e progresso.
+- Qualquer agente de IA ou dev que abra o projeto lê primeiro o memory-bank e fica imediatamente alinhado — sem precisar de briefings manuais, sem divergências entre equipas.
+- Isto permitiu trabalhar com **agentes de IA como colaboradores reais**: o agente conhecia os requisitos do hackathon, as decisões já tomadas, o estado atual e as regras invioláveis (acessibilidade, Clean Architecture, tokens do DS).
+
+### 4. Arquitetura — Clean Architecture + Feature-First
+
+- Tanto o mobile (Flutter/Riverpod) como o web (Next.js/Zustand) seguem **Clean Architecture** com separação estrita entre Domain, Data e Presentation.
+- A regra "uma feature nunca importa outra feature" é garantida por um padrão **Port/Adapter** (usado no Tour Guiado e no Módulo Histórico): a comunicação cross-feature passa por abstrações em `core/`, nunca por imports diretos.
+- Isto torna o código testável, extensível e fácil de compreender por qualquer dev (ou agente IA) que entre no projeto.
+
+### 5. Acessibilidade como Requisito de Primeira Classe
+
+- A acessibilidade não foi um "extra" — foi uma **constraint de arquitetura** desde o início.
+- Design System com tokens de contraste validados (WCAG AA mínimo), áreas de toque ≥ 44px, `Semantics` em todos os elementos interativos.
+- **Modo Básico / Avançado**: simplifica a UI em tempo real, ocultando elementos não essenciais — implementado como lógica real no tema e nos providers, não apenas visualmente.
+- **Dynamic Theme Engine**: tipografia escalável (87% a 150%), Dark Mode, Alto Contraste e `largeTouchTargets` persistidos por utilizador no Firestore e aplicados globalmente via `ThemeData` dinâmico.
+
+### 6. Tour Guiado — Onboarding Ativo para Idosos
+
+- O público-alvo (idosos) tem baixa tolerância a interfaces desconhecidas. Implementámos um **sistema de tour guiado** (showcaseview no mobile) em todas as telas principais.
+- O tour é **persistido**: no primeiro uso oferece-se automaticamente; depois só aparece se o utilizador clicar no botão "?" — sem spam.
+- A persistência é híbrida: `shared_preferences` local (rápido) + Firestore `onboarding/{userId}` (cross-device).
+- A Central "Guias do aplicativo" nas Definições permite rever qualquer tutorial quando o utilizador quiser.
+
+### 7. CI/CD Automatizado desde o Início
+
+- **Mobile:** GitHub Actions — CI (analyze + test) em todo push/PR; CD (build APK + Firebase App Distribution) só na `master`.
+- **Web:** GitHub Actions — CI (lint + type-check + build); CD (Vercel `--prebuilt`) só na `master` após CI passar.
+- Isto garantiu que o código que chega à `master` está sempre compilando, testado e distribuído — mesmo trabalhando em velocidade de hackathon.
+
+---
+
+## Estrutura Sugerida para o Vídeo (15 min)
+
+> A preencher e ajustar à medida que o produto estiver mais completo.
+
+| # | Bloco | Duração estimada | Notas |
+|---|-------|-----------------|-------|
+| 1 | **Problema e público-alvo** — Quem é o idoso digital? O que o SeniorEase resolve? | ~1 min | Usar dados/contexto do `projectbrief.md` e `productContext.md` |
+| 2 | **Processo de Design** — Figma Make → Design System → Figma MCP → código | ~2 min | Mostrar o protótipo: https://senior-ease.figma.site |
+| 3 | **Arquitetura do projeto** — Memory-bank, Clean Architecture, plataforma dupla, base Firebase única | ~2 min | Mostrar estrutura de pastas, ADRs, submódulo |
+| 4 | **Demo Mobile** — fluxo completo: login, criar tarefa, lembrete, histórico, acessibilidade, tour | ~4 min | Usar APK via App Distribution |
+| 5 | **Demo Web** — mesmos fluxos na plataforma web | ~3 min | Usar deploy Vercel |
+| 6 | **Acessibilidade em detalhe** — Modo Básico, fonte 150%, Dark Mode, Alto Contraste, tour | ~1 min | Demonstrar ao vivo nas duas plataformas |
+| 7 | **Encerramento** — o que ficaria fora de escopo, próximos passos, reflexão | ~2 min | Ligeiro e positivo |
+
+---
+
+## Frases e Argumentos-Chave
+
+> Ideias de frases para usar na narração do vídeo.
+
+- *"O nosso diferencial não é só o produto — é a forma como o construímos."*
+- *"Dois projetos, uma base, zero duplicação de infraestrutura."*
+- *"O memory-bank é o único briefing que qualquer dev (ou agente IA) precisa para contribuir imediatamente."*
+- *"Acessibilidade foi uma constraint de arquitetura, não um afterthought."*
+- *"O Figma Make gerou o protótipo; o Figma Design criou o sistema; o Figma MCP conectou o design ao código."*
+- *"O tour guiado existe porque os nossos utilizadores não devem precisar de manual."*
+
+---
+
+## Pendências para o Vídeo
+
+- [ ] Adicionar links dos repositórios e deploy na tabela acima
+- [ ] Gravar demo mobile (APK final, fluxo completo)
+- [ ] Gravar demo web (deploy Vercel, fluxo completo)
+- [ ] Rever e ajustar duração estimada de cada bloco
+- [ ] Ensaiar a narração dos diferenciais (secção acima)
+- [ ] Gravar e editar o vídeo (máx. 15 min)
+- [ ] Submeter na plataforma FIAP
