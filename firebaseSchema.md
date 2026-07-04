@@ -119,6 +119,22 @@
 
 ---
 
+### `history/{historyId}`
+
+> Eventos de atividade do utilizador para a tela **Histórico** (Módulo 2). Alimentados via port `HistoryRecorder` (ADR-017). Os contadores "Tarefas esta semana" e "Sequência (streak)" são **computados on-read** a partir destes eventos — não são denormalizados.
+
+| Campo | Tipo Firestore | Descrição |
+|-------|---------------|-----------|
+| `id` | `string` | ID gerado pelo Firestore |
+| `userId` | `string` | UID do dono |
+| `type` | `string` | `HistoryActionType`: `taskCreated` \| `taskCompleted` \| `taskStepCompleted` \| `taskDeleted` \| `reminderCreated` \| `reminderCompleted` \| `reminderEdited` \| `reminderDeleted` \| `accessibilityChanged` \| `profileUpdated` \| `accountVerified`. Só `taskCompleted` e `reminderCompleted` contam para streak/semana |
+| `title` | `string` | Snapshot do texto pronto para exibir (ex.: `"Concluiu: Tomar remédio"`) — preserva o histórico mesmo após apagar o item de origem |
+| `entityId` | `string \| null` | ID da tarefa/lembrete de origem (navegação futura) |
+| `category` | `string \| null` | Categoria do item de origem (ícone/cor do card) |
+| `occurredAt` | `Timestamp` | Data/hora do evento — base de todas as queries e ordenação |
+
+---
+
 ## Deploy Firebase (Rules + Indexes)
 
 > Os ficheiros de configuração Firebase estão centralizados neste diretório (`memory-bank/`) para que **qualquer projeto** (web ou mobile) possa publicar rules e indexes sem duplicação.
@@ -173,7 +189,7 @@ as iniciais do nome caso contrário.
 ## Regras de Segurança (Firestore Rules)
 
 > O ficheiro `firestore.rules` neste mesmo diretório contém o conteúdo em formato nativo.
-> Última publicação: **2026-06-24**
+> Última publicação: **2026-07-03**
 
 Princípio: **cada utilizador só acede aos seus próprios dados**. Não existe acesso admin via cliente — operações administrativas (se necessárias) devem usar Firebase Admin SDK num ambiente seguro.
 
@@ -187,6 +203,7 @@ Resumo das permissões:
 | `preferences` | próprio userId | próprio userId | — |
 | `onboarding` | próprio userId | próprio userId | — |
 | `reminders` | resource.userId == auth.uid | resource.userId == auth.uid | request.resource.userId == auth.uid |
+| `history` | resource.userId == auth.uid | resource.userId == auth.uid | request.resource.userId == auth.uid |
 
 Ver `firestore.rules` para o código completo.
 
@@ -222,10 +239,22 @@ Ver `firestore.rules` para o código completo.
 
 ---
 
+## Composite Indexes — `history`
+
+> Indexes **necessários e já publicados** para a tela Histórico (ADR-017).
+
+| Index | Campos | Tipo | Quando usar |
+|-------|--------|------|-------------|
+| idx-history-recent | `userId ASC, occurredAt DESC` | Collection | Lista de "Atividade Recente" (`watchRecent`) |
+| idx-history-completions | `userId ASC, type ASC, occurredAt DESC` | Collection | Estatísticas de streak/semana (`fetchCompletions`, `whereIn type` + `orderBy occurredAt`) |
+
+---
+
 ## Changelog
 
 | Data | Mudança | ADR |
 |------|---------|-----|
+| 2026-07-03 | Adicionada collection `history/{historyId}` (eventos de atividade) + 2 composite indexes (`userId,occurredAt` e `userId,type,occurredAt`) + rule (dono apenas). Contadores de semana/streak computados on-read | ADR-017 |
 | 2026-06-30 | Login com Google (OAuth): `users/{uid}` criado no 1.º login com `name`/`email`/`photoUrl` do provedor (sem sobrescrever perfil existente). Verificação de e-mail via Firebase Auth (`emailVerified`, fora do Firestore) | ADR-015 / ADR-016 |
 | 2026-06-30 | Estendido `users` com `phone`, `birthDate`, `cpf`, `photoUrl`, `address` e `updatedAt`; adicionado Firebase Storage (`profile_photos/{userId}`) + `storage.rules` para o Módulo Perfil | ADR-014 |
 | 2026-06-29 | Adicionada collection `onboarding/{userId}` (`initialTourCompleted`, `updatedAt`) + rule (dono apenas) para o Tour Guiado | ADR-013 |

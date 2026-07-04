@@ -480,6 +480,38 @@ A Web deve implementar a verificação de e-mail equivalente na sua tela de Segu
 
 ---
 
+## ADR-017 — Módulo Histórico: port `HistoryRecorder`, streak on-read e collection `history`
+
+**Data:** 2026-07-03
+**Status:** Aceito
+
+**Contexto:**
+A tela de Histórico (Figma `15:8316`) precisa registar ações do utilizador (criar/concluir/editar/apagar tarefas e lembretes, ajustar acessibilidade, atualizar perfil, verificar conta) e exibir atividade recente + dois contadores: "Tarefas esta semana" e "Sequência (streak)". O registo tem de ser disparado por várias features, mas a regra Feature-First (ADR-008) proíbe uma feature importar outra.
+
+**Decisão:**
+1. **Port/Adapter (igual ao Tour, ADR-013):** enum `HistoryActionType` + port `HistoryRecorder` (+ `NoopHistoryRecorder` default) vivem em `core/history/`. O adaptador real `AppHistoryRecorder` vive em `app/history/` e é injetado no `main.dart` via `historyRecorderProvider.overrideWith(...)`. As features consumidoras dependem só do port em `core/`.
+2. **best-effort:** `AppHistoryRecorder.record(...)` encapsula erros em try/catch e nunca propaga — falhar a gravar histórico jamais faz falhar a ação principal do utilizador.
+3. **Feature `history`** (Clean Architecture): `HistoryEvent`/`HistoryStats`, `HistoryRepository` (`log`/`watchRecent`/`fetchCompletions`), use cases (`LogHistoryEvent`, `GetHistory`, `GetHistoryStats`) e `FirebaseHistoryRepository`.
+4. **Contadores computados on-read (não denormalizados):** `GetHistoryStatsUseCase.computeStats` é uma função pura que calcula contador semanal (conclusões desde segunda-feira) e streaks (dias consecutivos terminando hoje/ontem) a partir das conclusões. Sem write-amplification, sem risco de dessincronização e portável 1:1 para a Web.
+5. **Collection `history/{historyId}`** com `userId`, `type`, `title` (snapshot do texto no momento do evento), `entityId?`, `category?`, `occurredAt`. Dois composite indexes: `(userId, occurredAt DESC)` para a lista e `(userId, type, occurredAt DESC)` para as estatísticas (`whereIn` conclusões).
+6. **Acessibilidade:** `FittedBox` nos números grandes, `Semantics` nos ícones, tokens do Design System, e no **Modo Básico** ocultam-se eventos de baixa relevância (edições, exclusões, ajustes de acessibilidade e perfil) — lido via `preferencesProvider`.
+7. **Tour Guiado:** novo `TourId.history` + entrada na Central + `TourHost` na tela (3 passos).
+
+**Motivo:**
+- O Port/Adapter mantém o domínio de cada feature isolado sem duplicar lógica de registo.
+- On-read é mais simples e seguro que denormalizar (que exigiria transações e correria risco de contadores dessincronizados) — adequado ao prazo e à escala.
+- Guardar o `title` como snapshot preserva o histórico mesmo após apagar o item de origem.
+
+**Alternativas consideradas:**
+- **Denormalizar streak/contadores em `users/{uid}`** (descartado: write-amplification e risco de dessincronização; fica como otimização futura se o volume crescer).
+- **Cada feature importar a use case de `history`** (descartado: viola a regra Feature-First de não-importação entre features).
+- **Contar passos concluídos no streak** (descartado: só `taskCompleted` e `reminderCompleted` contam para o streak/semana, evitando inflar a métrica).
+
+**Impacto cross-projeto:**
+A Web (`seniorease-web`) deve replicar a mesma experiência com stack própria: mesmo `history/{id}` e mesmos indexes/rules (já publicados — nada a criar no Firebase); port `HistoryRecorder` equivalente em TS com No-op default e adaptador na raiz de composição; disparar `record(...)` nos mesmos pontos; portar a função pura de streak/contagem 1:1; contadores on-read via Zustand selectors; Modo Básico oculta eventos de baixa relevância; tour da tela History com a lib de tour da Web.
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:
