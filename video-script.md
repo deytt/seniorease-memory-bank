@@ -10,6 +10,7 @@
 | Recurso | Link |
 |---------|------|
 | Protótipo Figma publicado (Figma Make → Figma Design) | https://senior-ease.figma.site |
+| Kanban do projeto (GitHub Projects) | https://github.com/users/deytt/projects/3 |
 | Repositório Mobile | *(adicionar link)* |
 | Repositório Web | *(adicionar link)* |
 | App Distribution (APK) | *(adicionar link)* |
@@ -99,6 +100,12 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 ---
 
 ## Pendências para o Vídeo
+
+> ⚠️ **ANTES DE ENTREGAR — AÇÕES OBRIGATÓRIAS:**
+> - [ ] **Tornar público o repositório Mobile** (está privado atualmente)
+> - [ ] **Tornar público o repositório Web** (está privado atualmente)
+> - [ ] **Tornar público o Figma Design** (ficheiro de design está privado atualmente)
+> - [ ] Verificar se o protótipo https://senior-ease.figma.site continua acessível publicamente
 
 - [ ] Adicionar links dos repositórios e deploy na tabela acima
 - [ ] Gravar demo mobile (APK final, fluxo completo)

@@ -293,6 +293,9 @@
   - [ ] Conferir o cumprimento de todos os requisitos em ambos os projetos (Web e Mobile)
   - [ ] Levantar lacunas, riscos e possíveis soluções/melhorias antes de entregar
   - [ ] Registar o resultado da avaliação (checklist final + ações)
+- [ ] **Tornar público o repositório Mobile** (está privado — obrigatório antes da entrega)
+- [ ] **Tornar público o repositório Web** (está privado — obrigatório antes da entrega)
+- [ ] **Tornar público o Figma Design** (ficheiro de design está privado — obrigatório antes da entrega)
 - [ ] Vídeo gravado (máx. 15 min)
 - [ ] Vídeo enviado para plataforma FIAP
 - [ ] Links dos repositórios submetidos (arquivo `.docx` ou `.txt`)
