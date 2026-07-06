@@ -317,8 +317,8 @@
 
 ### GAP-004 — "Passo X de Y" no Guided Task
 
-- [ ] Substituir `'$current/$total'` por `'Passo $current de $total'` em `guided_task_screen.dart`
-- [ ] Adicionar `Semantics(label: ...)` no contador de passos
+- [x] Substituir `'$current/$total'` por `'Passo $current de $total'` em `guided_task_screen.dart`
+- [x] Adicionar `Semantics(label: ...)` no contador de passos
 
 ### GAP-005 — `core/` não deve importar `features/`
 
