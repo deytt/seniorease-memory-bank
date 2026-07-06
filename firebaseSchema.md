@@ -47,11 +47,13 @@
 | `priority` | `string` | `'low'` \| `'medium'` \| `'high'` |
 | `category` | `string` | `'medication'` \| `'health'` \| `'exercise'` \| `'social'` \| `'personal'` |
 | `status` | `string` | `'pending'` \| `'in_progress'` \| `'completed'` |
-| `reminderTime` | `string \| null` | Horário de lembrete no formato `"HH:mm"` — campo legado, substituído por `dueDate` |
 | `dueDate` | `Timestamp \| null` | Data e hora da tarefa (usado para notificações e ordenação) |
 | `completedAt` | `Timestamp \| null` | Data de conclusão (null se não concluída) |
+| `notified` | `boolean` | `false` por defeito; a Cloud Function marca `true` após enviar o push — evita reenvios. Deve ser reposto a `false` se `dueDate` for alterada pelo cliente |
 | `createdAt` | `Timestamp` | Data de criação |
 | `updatedAt` | `Timestamp` | Data da última atualização |
+
+> **Nota (ADR-020):** campo `reminderTime` removido. Usar `dueDate` para toda a lógica de notificação.
 
 #### Sub-collection: `tasks/{taskId}/steps/{stepId}`
 
@@ -79,9 +81,13 @@
 | `interfaceMode` | `string` | `'basic'` \| `'advanced'` |
 | `audioFeedbackEnabled` | `boolean` | Ativa feedback sonoro e tátil |
 | `largeTouchTargets` | `boolean` | Ativa botões com touch target 64×64px |
-| `remindersEnabled` | `boolean` | Ativa notificações push de lembretes |
-| `notificationTime` | `string \| null` | Horário preferido de notificação (ex: `"08:00"`) |
+| `tasksNotificationsEnabled` | `boolean` | Ativa notificações push para tarefas — default `true` |
+| `taskNotificationOffset` | `string` | Antecedência do push de tarefa: `'15m'` \| `'30m'` \| `'1h'` \| `'6h'` \| `'1d'` — default `'30m'` |
+| `remindersNotificationsEnabled` | `boolean` | Ativa notificações push para lembretes — default `true` |
+| `reminderNotificationOffset` | `string` | Antecedência do push de lembrete (mesmos valores que `taskNotificationOffset`) — default `'30m'` |
 | `updatedAt` | `Timestamp` | Data da última atualização |
+
+> **Nota (ADR-020):** campos `remindersEnabled` e `notificationTime` removidos e substituídos pelos 4 campos acima.
 
 > **Nota (ADR-009):** `contrast: 'maximum'` nunca é guardado diretamente. É derivado em runtime quando `darkMode == true && contrast == 'high'`. O `SavePreferencesUseCase` é responsável por esta lógica em ambas as plataformas.
 
@@ -115,7 +121,42 @@
 | `category` | `string` | `'medication'` \| `'appointment'` \| `'hydration'` \| `'meal'` \| `'bills'` — categoria do lembrete (combo na criação e filtro da lista). Valores legados/desconhecidos caem no fallback `'medication'` |
 | `scheduledAt` | `Timestamp` | Data/hora agendada para disparo |
 | `isRead` | `boolean` | Se o utilizador já leu o lembrete |
+| `notified` | `boolean` | `false` por defeito; a Cloud Function marca `true` após enviar o push — reposto a `false` se `scheduledAt` for alterado |
 | `createdAt` | `Timestamp` | Data de criação |
+
+
+---
+
+### `notifications/{notifId}`
+
+> Histórico de notificações push enviadas pela Cloud Function. **Escrita exclusiva pelo Admin SDK** (Cloud Functions) — nunca pelo cliente. Os clientes lêem apenas as suas próprias notificações (para o "sino" do web).
+
+| Campo | Tipo Firestore | Descrição |
+|-------|---------------|-----------|
+| `userId` | `string` | UID do dono da notificação |
+| `entityId` | `string` | ID da tarefa ou lembrete que originou o push |
+| `entityType` | `string` | `'task'` \| `'reminder'` |
+| `title` | `string` | Título da notificação (ex: `"Tarefa em 30 minutos"`) |
+| `body` | `string` | Corpo da notificação (título do item) |
+| `sentAt` | `Timestamp` | Momento de envio (serverTimestamp) |
+| `successCount` | `number` | Número de dispositivos que receberam o push |
+| `failureCount` | `number` | Número de dispositivos que falharam |
+
+> **Nota (ADR-020):** esta collection serve como histórico para o "sino" da web (Next.js). No mobile (iteração atual) não existe UI dedicada — o push chega via FCM e, se o app estiver em primeiro plano, é exibido um `SeniorToast`.
+
+---
+
+### `users/{userId}/fcmTokens/{tokenId}`
+
+> Subcollection dos tokens FCM por dispositivo. Cada dispositivo tem um documento próprio cujo ID é o próprio token. A Cloud Function lê esta subcollection para enviar pushes multicast. Tokens inválidos são removidos automaticamente após um envio falhado.
+
+| Campo | Tipo Firestore | Descrição |
+|-------|---------------|-----------|
+| `token` | `string` | Token FCM do dispositivo |
+| `platform` | `string` | `'android'` \| `'ios'` \| `'web'` |
+| `updatedAt` | `Timestamp` | Data de registo/renovação (serverTimestamp) |
+
+> **Nota (ADR-020):** o token é usado como ID do documento — garante unicidade e permite remoção directa por `doc(token).delete()` sem query prévia.
 
 ---
 
@@ -204,6 +245,8 @@ Resumo das permissões:
 | `onboarding` | próprio userId | próprio userId | — |
 | `reminders` | resource.userId == auth.uid | resource.userId == auth.uid | request.resource.userId == auth.uid |
 | `history` | resource.userId == auth.uid | resource.userId == auth.uid | request.resource.userId == auth.uid |
+| `notifications` | resource.userId == auth.uid | Admin SDK apenas | Admin SDK apenas |
+| `users/{uid}/fcmTokens` | uid == auth.uid | uid == auth.uid | uid == auth.uid |
 
 Ver `firestore.rules` para o código completo.
 
@@ -250,10 +293,23 @@ Ver `firestore.rules` para o código completo.
 
 ---
 
+## Composite Indexes — Cloud Functions (GAP-002)
+
+> Indexes necessários para as queries da Cloud Function `sendDueNotifications` (cron a cada minuto).
+
+| Index | Campos | Tipo | Quando usar |
+|-------|--------|------|-------------|
+| idx-tasks-notified | `notified ASC, dueDate ASC` | Collection | Cloud Function: tasks com notified==false na janela de tempo |
+| idx-reminders-notified | `notified ASC, isRead ASC, scheduledAt ASC` | Collection | Cloud Function: reminders com notified==false e isRead==false na janela de tempo |
+| idx-notifications-user | `userId ASC, sentAt DESC` | Collection | Web: sino de notificações do utilizador |
+
+---
+
 ## Changelog
 
 | Data | Mudança | ADR |
 |------|---------|-----|
+| 2026-07-06 | GAP-002: campo `reminderTime` removido de `tasks`; campo `notified` adicionado a `tasks` e `reminders`; campos `remindersEnabled`/`notificationTime` removidos de `preferences` e substituídos por `tasksNotificationsEnabled`, `taskNotificationOffset`, `remindersNotificationsEnabled`, `reminderNotificationOffset`; novas collections `notifications/{id}` e `users/{uid}/fcmTokens/{tokenId}`; 3 novos composite indexes; novas Firestore Rules para `notifications` e `fcmTokens` | ADR-020 |
 | 2026-07-03 | Adicionada collection `history/{historyId}` (eventos de atividade) + 2 composite indexes (`userId,occurredAt` e `userId,type,occurredAt`) + rule (dono apenas). Contadores de semana/streak computados on-read | ADR-017 |
 | 2026-06-30 | Login com Google (OAuth): `users/{uid}` criado no 1.º login com `name`/`email`/`photoUrl` do provedor (sem sobrescrever perfil existente). Verificação de e-mail via Firebase Auth (`emailVerified`, fora do Firestore) | ADR-015 / ADR-016 |
 | 2026-06-30 | Estendido `users` com `phone`, `birthDate`, `cpf`, `photoUrl`, `address` e `updatedAt`; adicionado Firebase Storage (`profile_photos/{userId}`) + `storage.rules` para o Módulo Perfil | ADR-014 |

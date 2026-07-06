@@ -49,9 +49,9 @@ O `UserPreferences` tem o campo `spacing` (compact/comfortable/spacious) e o Fir
 
 ---
 
-## GAP-002 — Notificações reais de lembretes não implementadas
+## GAP-002 — Notificações Push FCM (Tarefas + Lembretes)
 
-**Status:** `[ ]` Pendente  
+**Status:** `[x]` Concluído — 2026-07-06  
 **Prioridade:** Alta (Módulo 2 do Hackathon — "Lembretes com linguagem clara")
 
 ### Descrição

@@ -300,11 +300,31 @@
 - [x] Aplicar `SeniorSpacingTheme` nas telas principais (Home, Tasks, Reminders, History, Accessibility)
 - [x] Atualizar testes de `UserPreferences` para cobrir `spacing` + fator
 
-### GAP-002 — Notificações reais de lembretes
+### GAP-002 — Notificações Push FCM (Tarefas + Lembretes)
 
-- [ ] Adicionar dependência `flutter_local_notifications` no `pubspec.yaml`
-- [ ] Criar `core/notifications/notification_service.dart` (inicialização, permissão, schedule, cancel)
-- [ ] Agendar notificação ao criar/editar lembrete
+**Concluído: 2026-07-06**
+
+- [x] Adicionar `firebase_messaging` ao `pubspec.yaml`
+- [x] Enum `NotificationOffset` + 4 campos em `UserPreferences` (remover `remindersEnabled`/`notificationTime`)
+- [x] Campo `notified` em `Task` (remover `reminderTime`) e `Reminder`
+- [x] `core/notifications/push_notification_service.dart` (wrapper FCM)
+- [x] Feature `notifications`: `FcmTokenRepository` + use cases + `notifications_provider.dart`
+- [x] `AppNotificationsGate`: init FCM, token refresh, `onMessage` (toast), `onMessageOpenedApp`/`getInitialMessage` (nav)
+- [x] Sign-out: `removeFcmTokenOnSignOut` antes do `signOut()`
+- [x] `notificationPreferencesControllerProvider` em `preferences_provider.dart`
+- [x] Tela `NotificationPreferencesScreen` + widget `NotificationOffsetCard`
+- [x] Tour guiado: `TourId.notificationPreferences`, `SeniorShowcase`, `TourHelpButton`
+- [x] Entrada em `kTutorials` + rota `AppRoutes.notificationPreferences`
+- [x] Ligação no `settings_screen.dart`
+- [x] Cloud Functions TypeScript: `sendDueNotifications` (cron 1min) + `resetReminderNotified`
+- [x] `memory-bank/firebase.json` atualizado com bloco `functions`
+- [x] `firestore.rules`: `notifications` (read-only) + `fcmTokens` (dono)
+- [x] `firestore.indexes.json`: 3 novos composite indexes
+- [x] `memory-bank/notifications.md`: spec completa mobile + web
+- [x] `memory-bank/decisions.md`: ADR-020
+- [x] `memory-bank/firebaseSchema.md`: atualizado
+- [x] `memory-bank/techContext.md`: atualizado
+- [x] Testes: `user_preferences_test.dart` (NotificationOffset + novos campos)
 - [ ] Cancelar notificação ao deletar ou marcar lembrete como concluído
 - [ ] Respeitar `prefs.remindersEnabled` (skip/cancel quando `false`)
 - [ ] Registar ADR-018 (notificações locais vs FCM)
