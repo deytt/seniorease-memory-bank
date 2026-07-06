@@ -566,6 +566,36 @@ Manter a dependência directa para o Hackathon. Não migrar `auth_provider` para
 
 ---
 
+## ADR-020 — Arquitetura FCM: cron + token storage + collection `notifications` + remoção de campos legados
+
+**Data:** 2026-07-06
+**Status:** Aceito
+
+**Contexto:**
+O GAP-002 identificou que o projeto não tinha notificações push implementadas. Os campos `reminderTime` (tasks) e `remindersEnabled`/`notificationTime` (preferences) eram legados e sem utilização real. Era necessário definir uma arquitetura de notificações push configurável (offset variável), compatível com mobile (Flutter) e web (Next.js), e documentada de forma que ambas as plataformas possam implementá-la de forma idêntica.
+
+**Decisão:**
+- **Backend:** Cloud Function cron (`onSchedule every 1 minutes`) percorre `tasks` e `reminders` com `notified==false` na janela `[agora, agora+25h]`, lê as `preferences` do dono, aplica o `offset` configurado, envia FCM multicast, grava histórico em `notifications/{id}` e marca `notified=true`.
+- **Token storage:** `users/{uid}/fcmTokens/{token}` — cada dispositivo regista o seu token; tokens inválidos são removidos automaticamente após falha no envio.
+- **Offsets configuráveis:** enum `NotificationOffset` (5 valores: 15m, 30m, 1h, 6h, 1d) com 4 campos em `preferences` (tasks + reminders × enabled + offset).
+- **Campos removidos:** `reminderTime` de `tasks`, `remindersEnabled` e `notificationTime` de `preferences` — substituídos pelos novos campos.
+- **Cloud Functions location:** `memory-bank/functions/` — partilhado entre mobile e web.
+- **Documentação:** `memory-bank/notifications.md` como spec única para ambas as plataformas.
+
+**Motivo:**
+- Cron + flag `notified` é robusto: lida naturalmente com edições, exclusões e mudanças de preferência; sem necessidade de Cloud Tasks ou agendamentos individuais por item.
+- FCM garante entrega em Android, iOS e Web com um único contrato de API.
+- Documentar em `notifications.md` garante que a equipa Web pode replicar a implementação de forma idêntica sem ambiguidade.
+
+**Alternativas consideradas:**
+- Cloud Tasks (uma task por item): mais complexo, mais caro, mais difícil de lidar com edições/exclusões — descartado.
+- Notificações locais (flutter_local_notifications): não funciona com app fechado e não cobre Web — descartado.
+- Agendamento on-write (onCreate trigger): não lida com mudanças de preferência após criação — descartado.
+
+**Referência:** `memory-bank/notifications.md` — especificação completa para mobile e web.
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:

@@ -25,7 +25,8 @@ Stack completa, tokens do Design System, schema Firebase e configurações de am
 |---|---|---|
 | Flutter | 3.x (stable) | Cross-platform iOS + Android |
 | Dart | 3.x | Linguagem do Flutter |
-| Firebase Flutter SDK | última | Auth, Firestore, Storage, Messaging |
+| Firebase Flutter SDK | última | Auth, Firestore, Storage |
+| firebase_messaging | ^16.x | Push notifications FCM (GAP-002, ADR-020) |
 | google_sign_in | 6.x | Login social com Google (OAuth) — ADR-015 |
 | Riverpod | 2+ | State management reativo |
 | GoRouter | última | Navegação declarativa |
@@ -39,7 +40,8 @@ Stack completa, tokens do Design System, schema Firebase e configurações de am
 | Firebase Auth | Autenticação (Email/Password + Google OAuth; verificação de e-mail) |
 | Cloud Firestore | Banco de dados principal |
 | Firebase Storage | Upload de imagens de perfil (futuro) |
-| Firebase Cloud Messaging | Push notifications para lembretes |
+| Firebase Cloud Messaging (FCM) | Push notifications configuráveis (tasks + reminders, offsets variáveis, ADR-020) |
+| Cloud Functions (Node 20 / TypeScript) | Cron `sendDueNotifications` (cada minuto) + trigger `resetReminderNotified` — `memory-bank/functions/` |
 
 ---
 
