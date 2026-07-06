@@ -512,6 +512,60 @@ A Web (`seniorease-web`) deve replicar a mesma experiência com stack própria: 
 
 ---
 
+## ADR-018 — Módulo core/preferences/: mover UserPreferences para core e desacoplar SeniorFeedback
+
+**Data:** 2026-07-06
+**Status:** Aceito
+
+**Contexto:**
+Três ficheiros em `lib/core/` importavam directamente de `lib/features/`:
+- `app_spacing.dart` e `app_theme.dart` importavam `SpacingMode`/`UserPreferences` de `features/accessibility/domain/entities/`.
+- `senior_feedback.dart` importavam `preferencesProvider` de `features/accessibility/presentation/providers/`.
+Isto violava a regra "core nunca importa features" da Clean Architecture.
+
+**Decisão:**
+1. Criar `lib/core/preferences/user_preferences.dart` com o conteúdo completo da entidade e enums.
+2. Converter `features/accessibility/domain/entities/user_preferences.dart` num re-export de `core/preferences/`, preservando todos os imports existentes em features sem alteração.
+3. Criar `lib/core/preferences/preferences_state.dart` com `audioFeedbackEnabledProvider` (default `false`).
+4. `senior_feedback.dart` usa `audioFeedbackEnabledProvider` de `core/preferences/`.
+5. `lib/app/app.dart` (que já importa features) adiciona um `ProviderScope` aninhado que faz override de `audioFeedbackEnabledProvider` com o valor real de `preferencesProvider`.
+
+**Motivo:**
+A arquitectura alvo exige que `core/` seja independente de `features/`. A solução com `ProviderScope` override é o padrão idiomático em Riverpod para injecção de dependências em camadas que não se podem importar mutuamente — sem introduzir service locators nem singletons globais.
+
+**Alternativas consideradas:**
+- Passar `bool audioEnabled` como parâmetro a `SeniorFeedback`: descartado, pois obriga todos os call sites a ler `preferencesProvider` explicitamente, espalhando a responsabilidade.
+- Manter `UserPreferences` em `features/` e criar um typedef/abstract em `core/`: descartado, complexidade desnecessária; a entidade não tem dependências de UI.
+
+---
+
+## ADR-019 — Manter `auth_provider` como comunicação directa entre features
+
+**Data:** 2026-07-06
+**Status:** Aceito
+
+**Contexto:**
+8 features (`tasks`, `reminders`, `home`, `profile`, `guides`, `history`, etc.) importam `auth_provider.dart` directamente de `features/auth/presentation/providers/`. Isto é uma violação da regra "features nunca importam directamente de outras features".
+
+**Decisão:**
+Manter a dependência directa para o Hackathon. Não migrar `auth_provider` para `core/auth/` nesta iteração.
+
+**Motivo:**
+- Risco muito baixo para o âmbito do Hackathon: `auth_provider` é apenas um `StateNotifierProvider` que expõe o estado de autenticação, sem lógica de negócio acoplada.
+- O volume de mudança (8 features + testes) não traz valor diferenciador para os entregáveis do Hackathon.
+- O padrão de re-export (usado em ADR-018) pode ser aplicado numa futura iteração com custo mínimo.
+
+**Plano de migração futura:**
+1. Criar `lib/core/auth/auth_state.dart` com `authStateProvider` (tipo abstracto ou equivalente).
+2. Registar override em `app.dart` ligando `authStateProvider` ao `FirebaseAuthNotifier` existente.
+3. Substituir os 8 imports por `core/auth/auth_state.dart`.
+
+**Alternativas consideradas:**
+- Migrar agora: descartado pelo custo vs. benefício no contexto do Hackathon.
+- Criar barrel file em `features/auth/`: descartado, não resolve a violação arquitectural — apenas a camufla.
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:

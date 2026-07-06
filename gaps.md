@@ -146,7 +146,7 @@ Text(
 
 ## GAP-005 — Violação da regra "core nunca importa features"
 
-**Status:** `[ ]` Pendente  
+**Status:** `[x]` Concluído — 2026-07-06  
 **Prioridade:** Média (viola Clean Architecture documentada; pode ser apontado pelos avaliadores)
 
 ### Descrição

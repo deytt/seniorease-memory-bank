@@ -324,10 +324,11 @@
 
 ### GAP-005 — `core/` não deve importar `features/`
 
-- [ ] Mover `UserPreferences` e enums relacionados para `core/preferences/user_preferences.dart`
-- [ ] Atualizar todos os imports existentes para o novo caminho
-- [ ] Definir estratégia para `auth_provider` cross-feature (port `AuthStateReader` em `core/auth/`) — registar ADR-019
-- [ ] Confirmar `flutter analyze` com 0 erros após refactor
+- [x] Mover `UserPreferences` e enums relacionados para `core/preferences/user_preferences.dart`
+- [x] Atualizar todos os imports existentes para o novo caminho (`app_spacing.dart`, `app_theme.dart`, `app_spacing_test.dart`); `features/` usa re-export para compatibilidade
+- [x] Criar `core/preferences/preferences_state.dart` com `audioFeedbackEnabledProvider`; `senior_feedback.dart` migrado para usar este provider; override em `app.dart` liga ao valor real de `preferencesProvider`
+- [x] Definir estratégia para `auth_provider` cross-feature — registado ADR-018 + ADR-019 em `decisions.md`; decisão de manter import directo para o Hackathon com plano de migração documentado
+- [x] Confirmar `flutter analyze` com 0 erros após refactor
 
 ---
 
