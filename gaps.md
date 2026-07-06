@@ -87,7 +87,7 @@ O CRUD de lembretes existe e funciona (Firestore). Porém não há nenhum mecani
 
 ## GAP-003 — `audioFeedbackEnabled` não controla o comportamento de haptics no runtime
 
-**Status:** `[ ]` Pendente  
+**Status:** `[x]` Concluído em 2026-07-06  
 **Prioridade:** Média
 
 ### Descrição
