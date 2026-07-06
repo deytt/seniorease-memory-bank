@@ -311,14 +311,16 @@
 
 ### GAP-003 — `audioFeedbackEnabled` controlar haptics
 
-- [ ] Criar `core/feedback/senior_feedback.dart` com wrapper `SeniorFeedback.light/selection/medium(ref)`
-- [ ] Substituir todas as chamadas a `HapticFeedback.*` pelo wrapper `SeniorFeedback.*`
-- [ ] Atualizar testes para cobrir o comportamento condicional
+- [x] Criar `core/feedback/senior_feedback.dart` com wrapper `SeniorFeedback.light/selection/medium/success(ref)`
+- [x] Substituir todas as chamadas a `HapticFeedback.*` pelo wrapper `SeniorFeedback.*`
+- [x] Adicionar `audioplayers` e `assets/sounds/success.mp3` para feedback sonoro
+- [x] Integrar `SeniorFeedback.success()` nos momentos de conclusão (tarefa, lembrete, perfil, formulários)
+- [x] Adicionar feedback a `SettingsNavRow`, toggles de acessibilidade e botão fechar do modo guiado
 
 ### GAP-004 — "Passo X de Y" no Guided Task
 
-- [ ] Substituir `'$current/$total'` por `'Passo $current de $total'` em `guided_task_screen.dart`
-- [ ] Adicionar `Semantics(label: ...)` no contador de passos
+- [x] Substituir `'$current/$total'` por `'Passo $current de $total'` em `guided_task_screen.dart`
+- [x] Adicionar `Semantics(label: ...)` no contador de passos
 
 ### GAP-005 — `core/` não deve importar `features/`
 

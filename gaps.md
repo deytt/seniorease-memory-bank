@@ -87,7 +87,7 @@ O CRUD de lembretes existe e funciona (Firestore). Porém não há nenhum mecani
 
 ## GAP-003 — `audioFeedbackEnabled` não controla o comportamento de haptics no runtime
 
-**Status:** `[ ]` Pendente  
+**Status:** `[x]` Concluído em 2026-07-06  
 **Prioridade:** Média
 
 ### Descrição
@@ -115,7 +115,7 @@ O app usa `HapticFeedback.lightImpact()` / `HapticFeedback.selectionClick()` / `
 
 ## GAP-004 — Guided Task exibe "1/5" em vez de "Passo 1 de 5"
 
-**Status:** `[ ]` Pendente  
+**Status:** `[x]` Concluído em 2026-07-06  
 **Prioridade:** Baixa (detalhe textual, mas é requisito explícito do protocolo)
 
 ### Descrição
