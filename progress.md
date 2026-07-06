@@ -286,6 +286,49 @@
 
 ---
 
+## Correção de Gaps (análise de aderência 2026-07-06)
+
+> Ver `gaps.md` para descrição completa, evidências e plano de cada gap.
+
+### GAP-001 — Espaçamento ajustável
+
+- [ ] Criar `SpacingScale` / `AppSpacing.factor(SpacingMode)` em `core/theme/app_spacing.dart`
+- [ ] Criar `ThemeExtension<SeniorSpacingTheme>` em `core/theme/senior_spacing_theme.dart`
+- [ ] Integrar `SeniorSpacingTheme` em `AppTheme.buildDynamic()` a partir de `prefs.spacing`
+- [ ] Criar widget `SpacingModeCard` em `features/accessibility/presentation/widgets/`
+- [ ] Adicionar `SpacingModeCard` na `AccessibilityScreen` + novo alvo de tour (`_spacingShowcaseKey`)
+- [ ] Aplicar `SeniorSpacingTheme` nas telas principais (Home, Tasks, Reminders, History, Accessibility)
+- [ ] Atualizar testes de `UserPreferences` para cobrir `spacing` + fator
+
+### GAP-002 — Notificações reais de lembretes
+
+- [ ] Adicionar dependência `flutter_local_notifications` no `pubspec.yaml`
+- [ ] Criar `core/notifications/notification_service.dart` (inicialização, permissão, schedule, cancel)
+- [ ] Agendar notificação ao criar/editar lembrete
+- [ ] Cancelar notificação ao deletar ou marcar lembrete como concluído
+- [ ] Respeitar `prefs.remindersEnabled` (skip/cancel quando `false`)
+- [ ] Registar ADR-018 (notificações locais vs FCM)
+
+### GAP-003 — `audioFeedbackEnabled` controlar haptics
+
+- [ ] Criar `core/feedback/senior_feedback.dart` com wrapper `SeniorFeedback.light/selection/medium(ref)`
+- [ ] Substituir todas as chamadas a `HapticFeedback.*` pelo wrapper `SeniorFeedback.*`
+- [ ] Atualizar testes para cobrir o comportamento condicional
+
+### GAP-004 — "Passo X de Y" no Guided Task
+
+- [ ] Substituir `'$current/$total'` por `'Passo $current de $total'` em `guided_task_screen.dart`
+- [ ] Adicionar `Semantics(label: ...)` no contador de passos
+
+### GAP-005 — `core/` não deve importar `features/`
+
+- [ ] Mover `UserPreferences` e enums relacionados para `core/preferences/user_preferences.dart`
+- [ ] Atualizar todos os imports existentes para o novo caminho
+- [ ] Definir estratégia para `auth_provider` cross-feature (port `AuthStateReader` em `core/auth/`) — registar ADR-019
+- [ ] Confirmar `flutter analyze` com 0 erros após refactor
+
+---
+
 ## Vídeo e entrega final
 
 - [ ] Avaliação interna criteriosa antes da entrega (Web + Mobile)
