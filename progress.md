@@ -292,13 +292,13 @@
 
 ### GAP-001 — Espaçamento ajustável
 
-- [ ] Criar `SpacingScale` / `AppSpacing.factor(SpacingMode)` em `core/theme/app_spacing.dart`
-- [ ] Criar `ThemeExtension<SeniorSpacingTheme>` em `core/theme/senior_spacing_theme.dart`
-- [ ] Integrar `SeniorSpacingTheme` em `AppTheme.buildDynamic()` a partir de `prefs.spacing`
-- [ ] Criar widget `SpacingModeCard` em `features/accessibility/presentation/widgets/`
-- [ ] Adicionar `SpacingModeCard` na `AccessibilityScreen` + novo alvo de tour (`_spacingShowcaseKey`)
-- [ ] Aplicar `SeniorSpacingTheme` nas telas principais (Home, Tasks, Reminders, History, Accessibility)
-- [ ] Atualizar testes de `UserPreferences` para cobrir `spacing` + fator
+- [x] Criar `SpacingScale` / `AppSpacing.factor(SpacingMode)` em `core/theme/app_spacing.dart`
+- [x] Criar `ThemeExtension<SeniorSpacingTheme>` em `core/theme/senior_spacing_theme.dart`
+- [x] Integrar `SeniorSpacingTheme` em `AppTheme.buildDynamic()` a partir de `prefs.spacing`
+- [x] Criar widget `SpacingModeCard` em `features/accessibility/presentation/widgets/`
+- [x] Adicionar `SpacingModeCard` na `AccessibilityScreen` + novo alvo de tour (`_spacingShowcaseKey`)
+- [x] Aplicar `SeniorSpacingTheme` nas telas principais (Home, Tasks, Reminders, History, Accessibility)
+- [x] Atualizar testes de `UserPreferences` para cobrir `spacing` + fator
 
 ### GAP-002 — Notificações reais de lembretes
 
