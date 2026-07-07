@@ -311,7 +311,95 @@ Exemplos:
 
 ---
 
-## 7. Offsets disponíveis
+## 7. Sino de notificações — Tela de histórico (Mobile + Web)
+
+### 7.1 Comportamento
+
+O sininho substitui o botão SOS no header da tela inicial e dá acesso ao histórico de notificações push registado em `notifications/{id}`.
+
+| Situação | Comportamento |
+|---|---|
+| Sem notificações hoje | Badge não aparece |
+| ≥ 1 notificação hoje | Badge vermelho com o número (ex: `3`) |
+| Toque no sininho | Navega para a tela `/notifications` |
+| Toque num card | Navega para a entidade (`task` → `/tasks/:id`, `reminder` → `/reminders`) |
+
+### 7.2 Query Firestore (igual em mobile e web)
+
+```
+collection: notifications
+where: userId == <uid_autenticado>
+orderBy: sentAt DESC
+limit: 50
+```
+
+### 7.3 Mobile (Flutter) — implementado
+
+- **Sininho:** `_NotificationBell` em `lib/features/home/presentation/widgets/home_header.dart`
+  - `ConsumerWidget` que observa `todayNotificationCountProvider`
+  - Badge: `Stack` + `Positioned` com `Container` vermelho (cor `AppColors.danger`)
+  - Navega: `context.push(AppRoutes.notifications)` → `/notifications`
+- **Tela:** `lib/features/notifications/presentation/screens/notifications_screen.dart`
+  - Route: `AppRoutes.notifications = '/notifications'` (full-screen, fora da shell)
+  - Tour: `TourId.notifications`, 3 passos
+  - Entrada na Central de Guias: `TourId.notifications` em `kTutorials`
+- **Providers:** `notificationHistoryProvider` (StreamProvider), `todayNotificationCountProvider`
+- **Clean Architecture:**
+  - Entity: `NotificationItem` (`features/notifications/domain/entities/`)
+  - Repo: `NotificationHistoryRepository` (abstrato) + `FirebaseNotificationHistoryRepository`
+  - Use case: `WatchNotificationHistoryUseCase`
+
+### 7.4 Web (Next.js) — a implementar
+
+**Objetivo:** Replicar o mesmo comportamento no header da aplicação web.
+
+**1. Registo do token FCM web (se ainda não feito)**
+
+```typescript
+// Usar a chave VAPID gerada no Firebase Console
+const token = await getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_VAPID_KEY });
+// Guardar em users/{uid}/fcmTokens/{token} com platform: 'web'
+```
+
+**2. Componente `NotificationBell`**
+
+```tsx
+// Zustand store ou React Query para o stream de notifications
+// Contar documentos onde sentAt >= início do dia de hoje
+const todayCount = notifications.filter(n =>
+  n.sentAt.toDate() >= startOfDay(new Date())
+).length;
+
+// Badge: número vermelho se todayCount > 0
+// Toque: navegar para /notifications
+```
+
+**3. Página `/notifications`**
+
+- Listar `notifications` do utilizador autenticado (query acima)
+- Card por notificação: ícone por `entityType`, título, body, hora formatada
+- Tap: `entityType === 'task'` → `/tasks/:entityId`; `'reminder'` → `/reminders`
+- Estado vazio com mensagem amigável
+
+**4. Campos esperados em cada documento**
+
+```typescript
+interface NotificationRecord {
+  id: string;          // document ID
+  userId: string;
+  entityId: string;
+  entityType: 'task' | 'reminder';
+  title: string;       // ex: "Tarefa em 30 minutos"
+  body: string;        // título da tarefa/lembrete
+  sentAt: Timestamp;
+  successCount: number;
+  failureCount: number;
+}
+```
+
+---
+
+## 8. Offsets disponíveis
 
 | Chave Firestore | Minutos | Label (PT) |
 |-----------------|---------|------------|
