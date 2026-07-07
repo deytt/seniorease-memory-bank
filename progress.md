@@ -325,6 +325,13 @@
 - [x] `memory-bank/firebaseSchema.md`: atualizado
 - [x] `memory-bank/techContext.md`: atualizado
 - [x] Testes: `user_preferences_test.dart` (NotificationOffset + novos campos)
+- [x] Sininho no header da Home (substitui SOS) — badge hoje + navega para `/notifications`
+- [x] Tela `NotificationsScreen` (`/notifications`): lista histórico `notifications/{id}`, tour 3 passos
+- [x] `NotificationItemCard` (ícone por entityType, tempo formatado, tap navega à entidade)
+- [x] `NotificationHistoryRepository` + `FirebaseNotificationHistoryRepository` + `WatchNotificationHistoryUseCase`
+- [x] `notificationHistoryProvider` (StreamProvider) + `todayNotificationCountProvider` (badge)
+- [x] `TourId.notifications` + entrada em `kTutorials` + rota `AppRoutes.notifications`
+- [x] `notifications.md` — secção 7 "Sino de notificações" com spec web
 - [ ] Cancelar notificação ao deletar ou marcar lembrete como concluído
 - [ ] Respeitar `prefs.remindersEnabled` (skip/cancel quando `false`)
 - [ ] Registar ADR-018 (notificações locais vs FCM)
