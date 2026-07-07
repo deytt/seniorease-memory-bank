@@ -238,6 +238,56 @@ export const sendDueNotifications = onSchedule(
 );
 
 // ---------------------------------------------------------------------------
+// resetTaskNotified — repõe notified=false quando dueDate muda ou tarefa
+//                     é reactivada depois de concluída
+// ---------------------------------------------------------------------------
+
+/**
+ * Duas situações repõem notified=false nas tarefas:
+ *
+ *   1. dueDate foi alterado — o utilizador mudou a data/hora; o push deve
+ *      ser reenviado com base no novo prazo.
+ *
+ *   2. Status voltou de "completed" para "pending" ou "in_progress" —
+ *      a tarefa foi reaberta; faz sentido re-notificar no novo ciclo.
+ *
+ * Não é necessário cancelar nada no FCM: o cron já não notifica tarefas
+ * com status "completed" (guarda verificação explícita). Esta função
+ * apenas garante que um item que foi reactivado volte a receber push.
+ */
+export const resetTaskNotified = onDocumentUpdated(
+  {
+    document: "tasks/{taskId}",
+    region: "southamerica-east1",
+  },
+  async (event) => {
+    const before = event.data?.before.data();
+    const after = event.data?.after.data();
+    if (!before || !after) return;
+
+    // Só precisa de agir se já estava marcado como notificado.
+    if (after.notified !== true) return;
+
+    const dueBefore = (
+      before.dueDate as admin.firestore.Timestamp
+    )?.toMillis();
+    const dueAfter = (
+      after.dueDate as admin.firestore.Timestamp
+    )?.toMillis();
+
+    const dueDateChanged = dueBefore !== dueAfter;
+
+    // "Reactivada" = estava concluída e voltou a um estado activo.
+    const reactivated =
+      before.status === "completed" && after.status !== "completed";
+
+    if (dueDateChanged || reactivated) {
+      await event.data?.after.ref.update({ notified: false });
+    }
+  }
+);
+
+// ---------------------------------------------------------------------------
 // resetReminderNotified — repõe notified=false quando scheduledAt muda
 // ---------------------------------------------------------------------------
 

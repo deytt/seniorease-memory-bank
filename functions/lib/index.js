@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resetReminderNotified = exports.sendDueNotifications = void 0;
+exports.resetReminderNotified = exports.resetTaskNotified = exports.sendDueNotifications = void 0;
 const admin = require("firebase-admin");
 const firestore_1 = require("firebase-functions/v2/firestore");
 const scheduler_1 = require("firebase-functions/v2/scheduler");
@@ -191,6 +191,44 @@ exports.sendDueNotifications = (0, scheduler_1.onSchedule)({
         });
     });
     await Promise.allSettled([...taskPromises, ...reminderPromises]);
+});
+// ---------------------------------------------------------------------------
+// resetTaskNotified — repõe notified=false quando dueDate muda ou tarefa
+//                     é reactivada depois de concluída
+// ---------------------------------------------------------------------------
+/**
+ * Duas situações repõem notified=false nas tarefas:
+ *
+ *   1. dueDate foi alterado — o utilizador mudou a data/hora; o push deve
+ *      ser reenviado com base no novo prazo.
+ *
+ *   2. Status voltou de "completed" para "pending" ou "in_progress" —
+ *      a tarefa foi reaberta; faz sentido re-notificar no novo ciclo.
+ *
+ * Não é necessário cancelar nada no FCM: o cron já não notifica tarefas
+ * com status "completed" (guarda verificação explícita). Esta função
+ * apenas garante que um item que foi reactivado volte a receber push.
+ */
+exports.resetTaskNotified = (0, firestore_1.onDocumentUpdated)({
+    document: "tasks/{taskId}",
+    region: "southamerica-east1",
+}, async (event) => {
+    var _a, _b, _c, _d, _e;
+    const before = (_a = event.data) === null || _a === void 0 ? void 0 : _a.before.data();
+    const after = (_b = event.data) === null || _b === void 0 ? void 0 : _b.after.data();
+    if (!before || !after)
+        return;
+    // Só precisa de agir se já estava marcado como notificado.
+    if (after.notified !== true)
+        return;
+    const dueBefore = (_c = before.dueDate) === null || _c === void 0 ? void 0 : _c.toMillis();
+    const dueAfter = (_d = after.dueDate) === null || _d === void 0 ? void 0 : _d.toMillis();
+    const dueDateChanged = dueBefore !== dueAfter;
+    // "Reactivada" = estava concluída e voltou a um estado activo.
+    const reactivated = before.status === "completed" && after.status !== "completed";
+    if (dueDateChanged || reactivated) {
+        await ((_e = event.data) === null || _e === void 0 ? void 0 : _e.after.ref.update({ notified: false }));
+    }
 });
 // ---------------------------------------------------------------------------
 // resetReminderNotified — repõe notified=false quando scheduledAt muda

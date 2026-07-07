@@ -46,9 +46,16 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Tour Guiado (ADR-013):** `core/tour/` (port + widgets reutilizáveis), `features/guides/` (use cases + repos local/Firestore + `GuidesScreen`), `app/tour/app_tour_gate.dart` (composição), tutoriais integrados em Home, Criar Tarefa e Lista de Tarefas, entrada "Guias do aplicativo" em Definições. Requer publicar a rule da collection `onboarding` (ver `firebaseSchema.md`).
 **Já feito:** CI/CD Mobile; Design System em `core/widgets/`; `core/theme/` com tokens Figma e `AppTheme.buildDynamic`; edge-to-edge; autenticação Firebase com use cases; auth guard GoRouter; telas auth alinhadas ao Figma; estrutura Feature-First; **Módulo Acessibilidade** (dynamic theme, tela, Firestore; migrada para `SeniorScreenScaffold`); **Home/Dashboard** (header gradiente, SOS, quick actions, reminders, bottom nav 5 tabs; **Próxima Atividade** ligada a `nextPendingTaskProvider`); **Settings** (profile banner, 5 nav rows, HelpCard, logout com confirmação); **Módulo Tarefas** (`features/tasks/` domain/data/presentation; Create/List/Details/Guided; passos dinâmicos; modo guiado sequencial; celebração Lottie); **Melhorias UX Tarefas** (header `CreateTask` sem botão Guardar; `CategoryDropdown`; `dueDate` full datetime; limites de caracteres título/descrição/passo; `TaskDetails` com header genérico título+badges e data na card; botões Guided=teal, Complete=verde; `TaskCard` com badges prioridade+categoria e data formatada; ordenação por `dueDate` ascendente; `nextPendingTaskProvider`; widgets base: `SeniorInput.maxLength`, `SeniorButton.customColors`, `SeniorScreenHeader.subtitleWidget`).
 **Próximo passo (Mobile):**
-- Tela de histórico de notificações implementada (sininho no header da Home, `/notifications`, tour guiado, entrada no guia do app).
-- Cloud Functions deployadas e funcionais; token FCM registado após fix ao `AppNotificationsGate` (ref.watch em vez de ref.read).
-- Pendentes opcionais: cancelar notificação ao deletar entidade; ADR-018 (local vs FCM).
+- Todos os 5 gaps corrigidos e validados (2026-07-06).
+- Cloud Functions: `sendDueNotifications`, `resetTaskNotified` (novo), `resetReminderNotified` deployadas.
+- `resetTaskNotified` repõe `notified=false` quando `dueDate` muda ou tarefa é reactivada após conclusão.
+- `prefs.tasksNotificationsEnabled` / `prefs.remindersNotificationsEnabled` verificados pelo cron antes de cada push.
+- Documentação `notifications.md` actualizada com tabela de comportamento ao deletar/completar entidades (secção 3a).
+- **Passos manuais necessários:** recompilar e publicar as Cloud Functions:
+  ```bash
+  cd memory-bank/functions && npm run build
+  firebase deploy --config memory-bank/firebase.json --only functions
+  ```
 
 ### CI/CD
 **Status:** Mobile concluído — Web concluído
