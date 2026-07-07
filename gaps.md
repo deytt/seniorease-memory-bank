@@ -8,7 +8,7 @@
 
 ## GAP-001 — Espaçamento ajustável não aplicado na UI
 
-**Status:** `[ ]` Pendente  
+**Status:** `[x]` Concluído — 2026-07-06  
 **Prioridade:** Alta (requisito direto do Hackathon)
 
 ### Descrição
@@ -51,7 +51,7 @@ O `UserPreferences` tem o campo `spacing` (compact/comfortable/spacious) e o Fir
 
 ## GAP-002 — Notificações Push FCM (Tarefas + Lembretes)
 
-**Status:** `[x]` Concluído — 2026-07-06  
+**Status:** `[x]` Concluído — 2026-07-06 (correcções finais: 2026-07-06)  
 **Prioridade:** Alta (Módulo 2 do Hackathon — "Lembretes com linguagem clara")
 
 ### Descrição

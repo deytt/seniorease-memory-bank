@@ -19,14 +19,19 @@ Firestore: users/{uid}/fcmTokens/{token}
   │  ② Cron a cada minuto
   ▼
 Cloud Function: sendDueNotifications
-  │  ③ Lê tasks/reminders + preferences
-  │  ④ Envia FCM multicast
-  │  ⑤ Grava notifications/{id}
-  │  ⑥ Marca notified=true
+  │  ③ Lê tasks/reminders (notified=false) + preferences
+  │  ④ Verifica flag activa (tasksNotificationsEnabled / remindersNotificationsEnabled)
+  │  ⑤ Aplica offset configurado pelo utilizador
+  │  ⑥ Envia FCM multicast
+  │  ⑦ Grava notifications/{id}
+  │  ⑧ Marca notified=true
   ▼
 Dispositivos (push)
   ▼
 Firestore: notifications/{id}  ← web pode ler para o "sino"
+
+Cloud Function: resetTaskNotified     ← repõe notified=false se dueDate muda
+Cloud Function: resetReminderNotified ← repõe notified=false se scheduledAt muda
 ```
 
 ---
@@ -51,6 +56,8 @@ Campos removidos: ~~`remindersEnabled`~~, ~~`notificationTime`~~.
 | `notified` | `boolean` | `false` por defeito; `true` após o push ter sido enviado |
 
 Campo removido: ~~`reminderTime`~~ — usar `dueDate`.
+
+> `notified` é reposto a `false` automaticamente pela função `resetTaskNotified` quando `dueDate` é alterado ou quando a tarefa é reactivada após ter sido concluída.
 
 ### Reminders (`reminders/{reminderId}`)
 
@@ -112,9 +119,37 @@ Para cada item com `notified == false`:
 }
 ```
 
+### `resetTaskNotified` — onDocumentUpdated
+
+Quando `tasks/{id}` é atualizado, repõe `notified = false` em dois cenários:
+
+| Cenário | Condição | Motivo |
+|---------|----------|--------|
+| `dueDate` alterado | `before.dueDate != after.dueDate` | O prazo mudou — push deve ser enviado no novo horário |
+| Tarefa reactivada | `before.status == "completed"` e `after.status != "completed"` | A tarefa foi reaberta — faz sentido re-notificar |
+
+> Nota: o cron já ignora tarefas com `status == "completed"`, por isso não é possível enviar um push indevido. Este trigger apenas garante que um item reactivado ou com prazo alterado volta ao ciclo de notificações.
+
 ### `resetReminderNotified` — onDocumentUpdated
 
 Quando `reminders/{id}` é atualizado e `scheduledAt` muda, repõe `notified = false` para que o push seja reenviado no novo horário.
+
+---
+
+## 3a. Comportamento ao deletar ou concluir
+
+> **Importante para o time Web:** a abordagem FCM não precisa de "cancelar" notificações activas, porque o mecanismo cron verifica o estado actual antes de cada envio.
+
+| Acção do utilizador | Efeito nas notificações |
+|---------------------|------------------------|
+| **Deletar tarefa** | Documento removido → cron não o encontra → sem push |
+| **Completar tarefa** (`status = completed`) | Cron verifica `status != "completed"` antes de enviar → sem push; `notified` fica `true` |
+| **Reabrir tarefa** (`status = pending/in_progress`) | `resetTaskNotified` repõe `notified = false` → cron re-notifica |
+| **Alterar `dueDate` da tarefa** | `resetTaskNotified` repõe `notified = false` → cron envia push para o novo horário |
+| **Deletar lembrete** | Documento removido → cron não o encontra → sem push |
+| **Marcar lembrete como lido** (`isRead = true`) | Cron verifica `isRead == false` → sem push |
+| **Alterar `scheduledAt` do lembrete** | `resetReminderNotified` repõe `notified = false` → cron re-notifica |
+| **Desligar notificações nas prefs** (`tasksNotificationsEnabled = false`) | Cron lê prefs antes de cada envio e retorna sem push |
 
 ---
 

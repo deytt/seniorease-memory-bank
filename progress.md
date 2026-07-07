@@ -283,6 +283,7 @@
 - [x] Camada Data — todos os repositórios Firebase com dependências **injetadas** (providers de `core/firebase`): `FirebaseTaskRepository`, `FirebasePreferencesRepository`, `FirebaseOnboardingRepository` (fake_cloud_firestore), `FirebaseAuthRepository` (firebase_auth_mocks + fake) e `LocalTutorialStateRepository` (shared_preferences mock)
 - [x] Camada Presentation — `TaskFilterNotifier`, `nextPendingTaskProvider`, `TasksController`, `AuthController`, `TourSignal`/`TourSession` (ProviderContainer, sem widgets)
 - [x] Ferramentas: `flutter_test` + `mocktail` + `fake_cloud_firestore`; `test/` espelha `lib/`
+- [x] Feature `notifications` — domain (`NotificationItem`, use cases FCM token + history), data (`FirebaseFcmTokenRepository`, `FirebaseNotificationHistoryRepository`), presentation (`notificationHistoryProvider`, `todayNotificationCountProvider`) — **226 testes passam** (2026-07-06)
 
 ---
 
@@ -291,6 +292,8 @@
 > Ver `gaps.md` para descrição completa, evidências e plano de cada gap.
 
 ### GAP-001 — Espaçamento ajustável
+
+**Concluído: 2026-07-06**
 
 - [x] Criar `SpacingScale` / `AppSpacing.factor(SpacingMode)` em `core/theme/app_spacing.dart`
 - [x] Criar `ThemeExtension<SeniorSpacingTheme>` em `core/theme/senior_spacing_theme.dart`
@@ -332,9 +335,10 @@
 - [x] `notificationHistoryProvider` (StreamProvider) + `todayNotificationCountProvider` (badge)
 - [x] `TourId.notifications` + entrada em `kTutorials` + rota `AppRoutes.notifications`
 - [x] `notifications.md` — secção 7 "Sino de notificações" com spec web
-- [ ] Cancelar notificação ao deletar ou marcar lembrete como concluído
-- [ ] Respeitar `prefs.remindersEnabled` (skip/cancel quando `false`)
-- [ ] Registar ADR-018 (notificações locais vs FCM)
+- [x] `resetTaskNotified` Cloud Function: repõe `notified=false` quando `dueDate` muda ou tarefa é reactivada (2026-07-06)
+- [x] Cancelar/re-notificar ao deletar/completar: confirmado que cron já verifica `status != completed` e `isRead == false`; `resetTaskNotified` garante re-notificação ao reabrir tarefa
+- [x] Respeitar `prefs.tasksNotificationsEnabled` / `prefs.remindersNotificationsEnabled`: já implementado no cron `sendDueNotifications` — verificado e documentado (2026-07-06)
+- [x] Registar decisão "local vs FCM": coberto por ADR-020 (alternativas consideradas); documentado em `notifications.md` secção 3a (2026-07-06)
 
 ### GAP-003 — `audioFeedbackEnabled` controlar haptics
 
