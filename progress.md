@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-06-30 (Backlog Web alinhado em paridade com o mobile — acessibilidade, tarefas, perfil e tour)
+> Última atualização: 2026-07-07 (Web: correções de aderência concluídas e commitadas na branch develop — ESLint 0, TypeScript 0)
 
 ---
 
@@ -47,36 +47,44 @@
 
 ## Web Platform — seniorease-web
 
+> Última atualização: 2026-07-07 (Revisão e correção de aderência — análise de código + lint/type-check zerados)
+
 ### Configuração inicial
 - [x] Projeto Next.js 16 inicializado com TypeScript
-- [ ] Estrutura de pastas Clean Architecture criada (`domain/`, `infrastructure/`, `presentation/`)
-- [ ] memory-bank adicionado como submódulo
-- [ ] `.cursor/rules/memory-bank.mdc` copiado para o projeto
-- [ ] Tailwind CSS configurado com tokens do Design System
-- [ ] Firebase SDK configurado
-- [ ] Zustand configurado
+- [x] Estrutura de pastas Clean Architecture criada (`domain/`, `infrastructure/`, `presentation/`)
+- [x] memory-bank adicionado como submódulo
+- [x] `.cursor/rules/memory-bank.mdc` copiado para o projeto
+- [x] Tailwind CSS configurado com tokens do Design System (`globals.css` com todas as CSS custom properties)
+- [x] Firebase SDK configurado
+- [x] Zustand configurado
 
 ### Design System (componentes base)
-- [ ] Button (Primary, Secondary, Destructive, Ghost)
-- [ ] Input (Text, Password, Email)
-- [ ] Card
-- [ ] Modal de confirmação
-- [ ] Toast / Notificação
-- [ ] Badge
-- [ ] Tema dinâmico (CSS custom properties para fonte, contraste, espaçamento)
+- [x] Button (Primary, Secondary, Destructive, Ghost) — via shadcn/ui
+- [x] Input (Text, Password, Email) — via shadcn/ui
+- [x] Card — via shadcn/ui
+- [x] Modal de confirmação (Dialog) — via shadcn/ui; usado em Logout, Exclusão de Tarefa e Reset de Acessibilidade
+- [x] Toast / Notificação — via sonner
+- [x] Badge — via shadcn/ui
+- [x] Tema dinâmico (CSS custom properties para fonte, contraste, espaçamento) — `PreferencesProvider` aplica no `<html>`
+- [ ] Storybook — **pendente** (ver secção Documentação abaixo)
 
 ### Autenticação
-- [ ] Tela Login
-- [ ] Tela Register
-- [ ] Tela Forgot Password
-- [ ] Tela Success Screen
-- [ ] Firebase Auth integrado
-- [ ] Login com Google (OAuth)
-- [ ] Rota protegida (redirect se não autenticado)
+- [x] Tela Login (email/password + Google OAuth)
+- [x] Tela Register
+- [x] Tela Forgot Password
+- [x] Tela Success Screen
+- [x] Firebase Auth integrado
+- [x] Login com Google (OAuth) — `SignInWithGoogleUseCase` + botão na UI com logo Google
+- [x] Rota protegida (redirect se não autenticado) — guard no `(app)/layout.tsx`
 
 ### Dashboard
-> Deve espelhar a Home do mobile (saudação, SOS, quick actions, lembretes de hoje, card "Próxima Atividade"), com diferenças próprias da web (ex.: header/topbar adaptado em vez do header gradiente mobile). Ver Figma `node 134-851`. Detalhe ao critério do design web.
-- [ ] Tela Dashboard
+> Espelha a Home do mobile: saudação dinâmica, botão de emergência, quick actions (Nova Tarefa, Acessibilidade, Emergência, Histórico), lembretes próximos, tarefas do dia e card de status de acessibilidade. Ver Figma `node 134-851`.
+- [x] Tela Dashboard com saudação dinâmica (bom dia/tarde/noite)
+- [x] Botão Emergência (SOS) no header
+- [x] Grid de Ações Rápidas (2×2: Nova Tarefa, Acessibilidade, Emergência, Histórico)
+- [x] Seção "Tarefas de Hoje" ligada ao Firestore (até 4 tarefas)
+- [x] Seção "Lembretes Próximos" ligada ao Firestore (até 3 lembretes)
+- [x] Card "Status de Acessibilidade" lendo preferências reais do store (corrigido 2026-07-07)
 
 ### Documentação de componentes (Storybook)
 > Requisito: todos os componentes da web documentados no Storybook — documentação completa cobrindo cada componente e variações do Design System, além de componentes customizados que eventualmente não existam no DS.
@@ -86,75 +94,78 @@
 - [ ] Controls/args (props), estados (hover/disabled/loading/erro) e tokens documentados
 
 ### Módulo 1 — Acessibilidade
-> Mesma funcionalidade e mesma collection `preferences/{userId}` do mobile; lógica idêntica (incl. `maximum` derivado pelo `SavePreferencesUseCase`). Adaptação web: tema dinâmico via CSS custom properties / theme context (não `ThemeData`).
-- [ ] Tela Accessibility Center
-- [ ] Toggle de tamanho de fonte (funcional)
-- [ ] Toggle de Dark Mode (funcional) — mapeia `preferences.darkMode`; `contrast: 'maximum'` derivado quando `darkMode && high` (ADR-009)
-- [ ] Toggle de contraste (funcional)
-- [ ] Toggle de espaçamento (funcional)
-- [ ] Toggle de Modo Básico / Avançado (funcional)
-- [ ] Toggle de Feedback de Áudio e Tátil (funcional) — `audioFeedbackEnabled` (ADR-009)
-- [ ] Toggle de Botões Maiores / áreas de toque (funcional) — `largeTouchTargets`
-- [ ] Persistência das preferências no Firestore
+> Mesma funcionalidade e mesma collection `preferences/{userId}` do mobile; lógica idêntica (incl. `maximum` derivado pelo `SavePreferencesUseCase`). Adaptação web: tema dinâmico via CSS custom properties.
+- [x] Tela Accessibility Center (`/acessibility`)
+- [x] Toggle de tamanho de fonte — slider com 4 níveis (Pequena/Média/Grande/Extra Grande)
+- [x] Toggle de Dark Mode — mapeia `preferences.darkMode`; classe `.dark` no `<html>`
+- [x] Toggle de contraste (Alto Contraste) — `[data-contrast="high"]` e `.dark[data-contrast="maximum"]` no CSS
+- [x] Toggle de Espaçamento (Compacto / Confortável / Espaçoso) — adicionado 2026-07-07
+- [x] Toggle de Modo Básico / Avançado — `data-interface-mode` no `<html>`
+- [x] Toggle de Feedback de Áudio e Tátil — `audioFeedbackEnabled`
+- [x] Toggle de Botões Maiores / áreas de toque — `.a11y-large-touch` com `min-height: 64px`
+- [x] Persistência das preferências no Firestore
+- [x] Redefinir para padrões com modal de confirmação
 
 ### Módulo 2 — Tarefas
-> Mesma collection `tasks/{taskId}` (+ subcollection `steps`) e mesma lógica do mobile; adaptação web: estado via Zustand selectors (não Riverpod), ordenação em memória no repositório.
-- [ ] Tela Task List
-- [ ] Tela Task Details
-- [ ] Tela Create Task
-- [ ] Tela Guided Task Mode (passo a passo)
-- [ ] Animação Lottie de celebração ao concluir tarefa
-- [ ] Filtros na Task List (categoria, prioridade, "hoje") via queries Firestore + composite indexes já criados (ADR-012)
-- [ ] Ordenação da lista por dueDate ascendente (pendentes primeiro, nulls no fim) (ADR-011)
-- [ ] Card "Próxima Atividade" no Dashboard ligado ao Firestore — equivalente a `nextPendingTaskProvider` (ADR-011)
-- [ ] Atualizar lista / refetch com reset de filtros — equivalente web ao pull-to-refresh do mobile
-- [ ] Tela Reminder Center
-- [ ] Lembretes — exibição e visualização de push notifications (Firebase Cloud Messaging / FCM Web + Service Worker)
-- [ ] Tela History (Figma `15:8316`) — replicar a experiência do mobile (ADR-017):
-  - [ ] Mesma collection `history/{id}` e mesmos indexes/rules (já publicados — nada a criar no Firebase)
-  - [ ] Port `HistoryRecorder` equivalente em TS (hook/serviço injetado) com No-op default + adaptador na raiz de composição, evitando acoplamento entre módulos (espelha o mobile)
-  - [ ] Disparar `record(...)` nos mesmos pontos (criar/concluir/editar/apagar tarefa e lembrete, ajustar acessibilidade, atualizar perfil, verificar conta), best-effort
-  - [ ] Portar 1:1 a função pura de streak/contagem semanal (`computeStats`)
-  - [ ] Contadores computados on-read via Zustand selectors; contraste/tamanho de fonte via CSS custom properties; Modo Básico oculta eventos de baixa relevância
-  - [ ] Tour da tela History com a lib de tour da Web
+> Mesma collection `tasks/{taskId}` do mobile; adaptação web com filtros em memória.
+- [x] Tela Task List (`/tasks`) com filtros por categoria/data e busca por texto
+- [x] Tela Task Details (`/tasks/[id]`) com badges em PT, deleção com modal de confirmação
+- [x] Tela Create Task (`/tasks/create`)
+- [x] Tela Guided Task Mode (`/tasks/[id]/guided`) — "Passo X de Y" correto, barra de progresso, botão Passo Anterior
+- [x] Animação Lottie de celebração ao concluir tarefa (via lottie-react + `public/celebration.json`)
+- [x] Filtros na Task List (categoria + "hoje" + busca por título) — processamento em memória
+- [x] Labels de prioridade/categoria/status em português (corrigido 2026-07-07)
+- [ ] Ordenação por dueDate ascendente no repositório (pendente)
+- [ ] Card "Próxima Atividade" isolado no Dashboard (pendente — atualmente mostra lista de tarefas)
+- [x] Tela Reminder Center (`/reminders`) — lista, marcar concluído, ordenação por scheduledAt
+- [x] Tela Create Reminder (`/reminders/create`)
+- [ ] FCM Web + Service Worker para push notifications (pendente — infra existe mas não integrada)
+- [x] Tela History (`/history`) — stats (semana/streak/total/mês), banner de conquista, timeline de eventos
 
 ### Módulo 3 — Perfil / Definições
-> Mesma collection `users/{userId}` (estendida no ADR-014) e mesmo bucket Storage `profile_photos/{userId}` do mobile; lógica idêntica, adaptação web nas bibliotecas (máscaras, upload).
-- [ ] Tela Settings — Figma `15:8860` (renomeada de "My Profile")
-- [ ] Profile banner com gradiente + avatar com iniciais
-- [ ] 5 rows de navegação (incl. link para Acessibilidade)
-- [ ] Card "Precisa de Ajuda?" com número 1-800-SENIOR
-- [ ] Botão "Sair da Conta" com confirmação modal
-- [ ] Tela "Sobre" — identidade do app, versão e ligação clicável para a app (paridade com mobile `/about`)
-- [ ] Tela Perfil — exibe foto/nome/email/telefone e edita Informação Pessoal (nome; email só-leitura; data de nascimento; telefone; CPF) + Endereço (bairro/rua/número/CEP/cidade/estado/país) (ADR-014)
-- [ ] Máscaras de input (telefone, CPF, data, CEP) — lib web equivalente (ex.: `react-input-mask` / `imask`)
-- [ ] CPF (opcional) oculto em Modo Básico
-- [ ] Upload de foto de perfil para o Firebase Storage (`profile_photos/{userId}`; `photoUrl` em `users`)
-- [ ] Tela "Segurança" — hub de proteção da conta nas Definições (abaixo de Perfil), com tour guiado (paridade com mobile `/security`)
-- [ ] Segurança — Verificar conta por e-mail (Firebase Auth email verification) — a implementar
-- [ ] Segurança — Alterar palavra-passe — a implementar
+> Mesma collection `users/{userId}` do mobile; lógica análoga.
+- [x] Tela Perfil (`/profile`) — avatar com iniciais, informações pessoais, preferências de notificação, links para segurança
+- [x] Tela Edit Profile (`/profile/edit`) — formulário de edição de dados
+- [x] Tela Segurança (`/profile/security`) — formulário de alteração de senha (UI completa)
+- [x] Modal de confirmação no Logout (corrigido 2026-07-07 — estava sem confirmação)
+- [ ] Tela "Sobre" (About) — **pendente** (sem rota `/about`)
+- [ ] Upload de foto de perfil para Firebase Storage — **pendente** (TODO no código)
+- [ ] Máscaras de input (telefone, CPF, data, CEP) — **pendente** (lib não instalada)
+- [ ] CPF oculto em Modo Básico — **pendente**
+- [ ] Verificar conta por e-mail (Firebase email verification UI) — **pendente**
+- [ ] Alterar senha — implementação real Firebase (`updatePassword`) — **pendente** (UI existe, lógica não)
+- [ ] Card "Precisa de Ajuda?" (1-800-SENIOR) — **pendente**
 
-> Nota: a **biometria** é exclusiva do mobile (`local_auth` como trava local de acesso ao app). Não se aplica à Web — por isso não consta deste backlog.
+> Nota: a **biometria** é exclusiva do mobile. Não se aplica à Web.
 
 ### Módulo 4 — Tour Guiado
-> Mesmo comportamento do mobile (ADR-013), com infra/dependências/adaptadores próprios da web (Next.js, Zustand, biblioteca de tour React). A collection Firestore `onboarding/{userId}` e a respetiva rule são partilhadas (já criadas).
+> Mesmo comportamento do mobile (ADR-013), com biblioteca React equivalente.
 - [ ] Biblioteca de tour/onboarding escolhida e adicionada (ex.: `react-joyride` / `driver.js`)
-- [ ] Infra genérica de tour (abstração/port `TourGate`, componente de showcase com tokens do Design System, hook/store de coordenação, catálogo de `TourId`)
-- [ ] Persistência híbrida: estado local "oferecido/visto" (localStorage) + flag inicial cross-device na collection `onboarding/{userId}` (Firestore)
-- [ ] Adaptador concreto na raiz de composição (inversão de dependência, sem imports feature→feature)
-- [ ] Boas-vindas inicial no Dashboard (persistida cross-device) + tutorial da tela inicial
-- [ ] Tutorial de Criar Tarefa + oferta na 1ª utilização (apenas Modo Básico)
-- [ ] Tutorial da Lista de Tarefas
-- [ ] Tutorial da Acessibilidade + oferta na 1ª utilização (Modo Básico) + entrada na Central
-- [ ] Tutorial das Definições + botão de ajuda + entrada na Central
-- [ ] Tutorial da tela Sobre + botão de ajuda + entrada na Central
-- [ ] Tutorial da tela Perfil + oferta na 1ª utilização (Modo Básico) + entrada na Central
-- [ ] Tutorial da tela Segurança + botão de ajuda + entrada na Central
-- [ ] Tutorial da própria Central de Guias (só via botão de ajuda, sem item auto-referencial)
-- [ ] Botão de ajuda (?) em todas as telas com tour
-- [ ] Central "Guias do aplicativo" acessível a partir das Definições
-- [ ] Requisitos da tela de Guias: lista de tutoriais (re)executáveis, linguagem simples ("Vamos fazer juntos"), cada item inicia o tutorial na respetiva tela
-- [ ] Adaptação ao Modo Básico / Avançado (oferta automática só em Modo Básico)
+- [ ] Infra genérica de tour e todas as telas — **pendente** (nenhum item iniciado)
+
+### Qualidade de código
+- [x] ESLint: 0 erros, 0 warnings (verificado 2026-07-07)
+- [x] TypeScript strict: 0 erros (verificado 2026-07-07)
+- [x] CI/CD configurado (GitHub Actions: lint + type-check + build em PR; deploy Vercel em master)
+- [ ] Testes unitários (Domain, Data, Presentation) — **pendente** (0 testes existem)
+
+---
+
+### Features parcialmente implementadas (para segunda fase)
+
+| Feature | Status atual | O que falta |
+|---------|-------------|-------------|
+| Upload de foto | UI pronta (botão + file input) | Integrar `getStorage`, `uploadBytes`, `getDownloadURL` do Firebase Storage |
+| Alterar senha | Formulário de UI completo | Chamar `reauthenticateWithCredential` + `updatePassword` do Firebase Auth |
+| Verificar e-mail | Sem UI | Adicionar botão em `/profile/security` que chama `sendEmailVerification` |
+| Storybook | Não iniciado | Instalar `@storybook/nextjs`, criar stories para Button, Input, Card, Badge, Dialog, Toast |
+| Testes unitários | 0 testes | Implementar com `vitest` ou `jest` para domain entities, use cases e hooks |
+| Tela "Sobre" | Ausente | Criar rota `/about` com identidade do app, versão e link para o repositório |
+| Tour Guiado | Ausente | Instalar `driver.js` ou `react-joyride`, criar abstração port/adapter análoga ao mobile |
+| Ordenação por dueDate | Sem ordenação no repo | Adicionar `.orderBy('dueDate', 'asc')` nas queries Firestore + `nulls last` em memória |
+| FCM Web | Config existe (`fcmService.ts`) | Registrar Service Worker, solicitar permissão, integrar no `FCMProvider` |
+| Máscaras de input | Sem lib | Instalar `imask` ou `react-input-mask`, aplicar em telefone/CPF/CEP |
+| CPF em Modo Básico | Campo existe no form | Ler `preferences.interfaceMode` e ocultar campo CPF quando `basic` |
 
 ---
 
