@@ -1,13 +1,13 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-06 (Análise de aderência ao Hackathon concluída — 5 gaps documentados em `gaps.md`; foco atual: correção dos gaps por prioridade, iniciando pelo GAP-001 Espaçamento)
+> Última atualização: 2026-07-07 (Correções de aderência Web aplicadas — ESLint 0 erros, TypeScript 0 erros; memory-bank e web commitados na branch develop)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Correção de gaps de aderência ao Hackathon — ver `gaps.md` para a lista completa (5 gaps identificados em 2026-07-06). Iniciando pelo GAP-001 (Espaçamento ajustável).
+**Fase atual:** Web — segunda fase (Storybook, testes unitários, features pendentes). Mobile — todos os 5 gaps corrigidos. Ambos os projetos commitados na branch `develop` em 2026-07-07.
 
 O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma.
 
@@ -28,13 +28,29 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Pendente (não bloqueante):** Configuração APNs para push notifications no iOS.
 
 ### Web (seniorease-web)
-**Status:** Pronto para Etapa 2 — setup do projeto
-**Backlog alinhado (2026-06-30):** o `progress.md` da Web foi atualizado em paridade com o mobile — Acessibilidade (Dark Mode, Botões Maiores, Feedback de Áudio e Tátil), Tarefas (filtros, ordenação por `dueDate`, card "Próxima Atividade", refetch/reset), Perfil (tela "Sobre", edição de dados + endereço, máscaras, CPF oculto em Modo Básico, upload de foto para Storage), **Segurança** (hub nas Definições com verificar e-mail e alterar senha + tour; biometria é exclusiva do mobile, não se aplica à Web) e Tour Guiado (tutoriais por tela: Acessibilidade, Definições, Sobre, Perfil, Segurança e Central). Tudo usando a **mesma base Firebase** (collections/Storage/regras já criados), com **bibliotecas próprias da web** (Zustand, libs React de máscara/tour/etc.) em vez das do mobile. Ver Figma `node 134-851` para o Dashboard.
-**Próximo passo:**
-1. Adicionar memory-bank como submódulo (`git submodule add`)
-2. Copiar `.cursor/rules/memory-bank.mdc` para `.cursor/rules/`
-3. Configurar projeto Next.js 14 com estrutura Clean Architecture definida em `systemPatterns.md`
-4. Implementar autenticação (Login, Register, Forgot Password)
+**Status:** Fase de correção concluída (2026-07-07) — commitado na branch `develop`
+**Implementado:** Next.js 16 App Router com TypeScript, Clean Architecture (domain/infrastructure/presentation), Firebase Auth + Firestore, Zustand, todas as 13 telas obrigatórias (Login, Register, ForgotPassword, Success, Dashboard, Accessibility Center, Task List, Task Details, Create Task, Guided Task, Reminder Center, History, Profile). ESLint 0 erros, TypeScript 0 erros.
+**Correções aplicadas e commitadas em 2026-07-07:**
+- Labels de prioridade/categoria/status em português (tasks, reminders)
+- Modal de confirmação no Logout (Navigation.tsx)
+- Dashboard lendo preferências reais do Zustand store (não hardcoded)
+- Toggle de Espaçamento (Compacto/Confortável/Espaçoso) na Accessibility Center
+- Celebração Lottie ao concluir tarefa guiada (via `lottie-react` + `public/celebration.json`)
+- Aria-labels WCAG nos botões de navegação mobile (Navigation.tsx)
+- Guided Task Mode corrigido: "Passo X de Y", barra de progresso, botão "Passo Anterior" sempre visível
+- Task Details com badges em PT, modal de confirmação na exclusão
+- FCM Service: correção de tipagem e imports (fcmService.ts)
+- History: GetStatsUseCase limpeza de importação desnecessária
+- ESLint: 31 → 0 problemas; TypeScript: 16 → 0 erros
+**Próximos passos prioritários (segunda fase):**
+1. Storybook — instalar e criar stories de todos os componentes DS (obrigatório para avaliação)
+2. Testes unitários — vitest/jest para Domain, Data e Presentation
+3. Upload de foto de perfil (Firebase Storage)
+4. Alterar senha real (Firebase Auth `updatePassword`)
+5. Tela "Sobre" (`/about`)
+6. Tour Guiado (instalar `driver.js`, criar infra port/adapter)
+7. Ordenação por dueDate no Firestore
+8. FCM Web + Service Worker
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
