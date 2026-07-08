@@ -21,9 +21,9 @@ Este repositório funciona como **submódulo Git** dentro dos projetos `seniorea
 
 ---
 
-## Protocolo obrigatório para agentes (Cursor)
+## Protocolo obrigatório para agentes (Cursor e GitHub Copilot)
 
-Todo agente Cursor que trabalhar nos projetos `seniorease-web` ou `seniorease-mobile` deve seguir este protocolo:
+Todo agente (Cursor ou GitHub Copilot no VS Code) que trabalhar nos projetos `seniorease-web` ou `seniorease-mobile` deve seguir este protocolo:
 
 ### Antes de qualquer tarefa
 Ler obrigatoriamente:
@@ -50,25 +50,31 @@ Ler obrigatoriamente:
 4. Se a mudança for estrutural, criar um ADR em `decisions.md`
 5. Commitar o submódulo e avisar o time: `git submodule update --remote`
 
-> A Cursor Rule que aplica este protocolo automaticamente está em `.cursor/rules/memory-bank.mdc` e deve ser copiada para `.cursor/rules/` em cada projeto.
+> **Cursor:** a rule está em `.cursor/rules/memory-bank.mdc` e deve ser sincronizada para `.cursor/rules/` em cada projeto.  
+> **GitHub Copilot (VS Code):** as instruções estão em `.github/copilot-instructions.md` e devem ser sincronizadas para `.github/copilot-instructions.md` em cada projeto. O Copilot **não** lê `.cursor/rules/` nativamente.
 
 ---
 
-## Cursor Skills
+## Skills (Cursor e GitHub Copilot)
 
-Este repositório inclui skills para o Cursor Agent que devem ser copiadas para cada projeto.
+Este repositório inclui skills para agentes. Cada ferramenta usa o seu caminho:
 
-| Skill | Caminho | O que faz |
-|---|---|---|
-| `project-overview` | `.cursor/skills/project-overview/` | Apresenta o status atual do desenvolvimento por frente |
+| Skill | Cursor | GitHub Copilot | O que faz |
+|---|---|---|---|
+| `project-overview` | `.cursor/skills/project-overview/` | `.github/skills/project-overview/` | Apresenta o status atual do desenvolvimento por frente |
 
 ### Copiar skills para um projeto (feito uma vez)
 ```bash
+# Cursor
 mkdir -p .cursor/skills
 cp -r memory-bank/.cursor/skills/project-overview .cursor/skills/
+
+# GitHub Copilot
+mkdir -p .github/skills
+cp -r memory-bank/.github/skills/project-overview .github/skills/
 ```
 
-> As skills são atualizadas ao executar o script `update-memory-bank.sh` presente em cada projeto.
+> As skills (Cursor e Copilot) são atualizadas ao executar o script `update-memory-bank.sh` presente em cada projeto.
 
 ---
 
@@ -83,11 +89,20 @@ git commit -m "chore: add seniorease-memory-bank as submodule"
 ### Copiar rules e skills para o projeto (feito uma vez)
 ```bash
 # Cursor Rule
+mkdir -p .cursor/rules
 cp memory-bank/.cursor/rules/memory-bank.mdc .cursor/rules/memory-bank.mdc
 
 # Cursor Skills
 mkdir -p .cursor/skills
 cp -r memory-bank/.cursor/skills/project-overview .cursor/skills/
+
+# GitHub Copilot instructions
+mkdir -p .github
+cp memory-bank/.github/copilot-instructions.md .github/copilot-instructions.md
+
+# GitHub Copilot Skills
+mkdir -p .github/skills
+cp -r memory-bank/.github/skills/project-overview .github/skills/
 ```
 
 ### Atualizar o memory-bank para o commit mais recente
@@ -95,7 +110,7 @@ cp -r memory-bank/.cursor/skills/project-overview .cursor/skills/
 bash scripts/update-memory-bank.sh
 ```
 
-O script (mantido em cada projeto individualmente) atualiza o submodule, re-sincroniza rules e skills automaticamente, e informa o que foi alterado. Não faz commit — fica a teu cargo.
+O script (mantido em cada projeto individualmente) atualiza o submodule, re-sincroniza rules e skills do **Cursor** e do **GitHub Copilot**, e informa o que foi alterado. Não faz commit — fica a teu cargo.
 
 ### Clonar um projeto que já tem o submódulo
 ```bash
