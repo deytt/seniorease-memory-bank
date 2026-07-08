@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-07 (Web: correções de aderência concluídas e commitadas na branch develop — ESLint 0, TypeScript 0)
+> Última atualização: 2026-07-08 (branch feat/adding-github-copilot-support — suporte a instruções/skills do GitHub Copilot + sync no update-memory-bank.sh)
 
 ---
 
@@ -16,6 +16,9 @@
 - [x] progress.md criado
 - [x] decisions.md criado
 - [x] `.cursor/rules/memory-bank.mdc` criado (template)
+- [x] `.github/copilot-instructions.md` criado (protocolo equivalente para GitHub Copilot / VS Code)
+- [x] `.github/skills/project-overview/` criado (skill Copilot espelhada da Cursor)
+- [x] `scripts/update-memory-bank.sh` atualizado para sincronizar Cursor **e** Copilot
 
 ---
 
@@ -54,6 +57,9 @@
 - [x] Estrutura de pastas Clean Architecture criada (`domain/`, `infrastructure/`, `presentation/`)
 - [x] memory-bank adicionado como submódulo
 - [x] `.cursor/rules/memory-bank.mdc` copiado para o projeto
+- [x] `.github/copilot-instructions.md` sincronizado a partir do memory-bank (branch `feat/adding-github-copilot-support`)
+- [x] `.github/skills/project-overview/` sincronizado a partir do memory-bank
+- [x] `scripts/update-memory-bank.sh` atualizado para sincronizar Cursor + Copilot
 - [x] Tailwind CSS configurado com tokens do Design System (`globals.css` com todas as CSS custom properties)
 - [x] Firebase SDK configurado
 - [x] Zustand configurado

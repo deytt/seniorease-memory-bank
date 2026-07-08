@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-07 (Correções de aderência Web aplicadas — ESLint 0 erros, TypeScript 0 erros; memory-bank e web commitados na branch develop)
+> Última atualização: 2026-07-08 (David — branch feat/adding-github-copilot-support: suporte GitHub Copilot no memory-bank + sync no web)
 
 ---
 
@@ -21,6 +21,12 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ## Foco atual por frente
 
+### Memory Bank / Agentes
+**Responsável:** David
+**Status:** Em andamento — branch `feat/adding-github-copilot-support` (sem commit ainda)
+**Em curso:** Suporte a GitHub Copilot (VS Code) espelhado do protocolo Cursor: `.github/copilot-instructions.md`, `.github/skills/project-overview/`, e `scripts/update-memory-bank.sh` a sincronizar Cursor + Copilot nos projetos consumidores.
+**Próximo passo:** Revisar, commit no memory-bank e no web, e avisar o time (sobretudo quem usa VS Code + Copilot no Windows) para puxar a branch / correr o script após merge.
+
 ### Firebase / Infra
 **Responsável:** David (Tech Lead)
 **Status:** Concluído
@@ -28,7 +34,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Pendente (não bloqueante):** Configuração APNs para push notifications no iOS.
 
 ### Web (seniorease-web)
-**Status:** Fase de correção concluída (2026-07-07) — commitado na branch `develop`
+**Status:** Em paralelo — branch `feat/adding-github-copilot-support` (sincronização Copilot); base ainda na fase pós-correção da `develop` (2026-07-07)
 **Implementado:** Next.js 16 App Router com TypeScript, Clean Architecture (domain/infrastructure/presentation), Firebase Auth + Firestore, Zustand, todas as 13 telas obrigatórias (Login, Register, ForgotPassword, Success, Dashboard, Accessibility Center, Task List, Task Details, Create Task, Guided Task, Reminder Center, History, Profile). ESLint 0 erros, TypeScript 0 erros.
 **Correções aplicadas e commitadas em 2026-07-07:**
 - Labels de prioridade/categoria/status em português (tasks, reminders)
