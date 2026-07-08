@@ -294,6 +294,8 @@
 - [x] Publicar a rule da collection `onboarding` no Firebase (`seniorease-backend`)
 - [x] Balão com botão X de sair (canto superior, alinhado ao título) + auto-scroll ágil e condicional
 - [x] **ADR-021** — Tour automático em TODAS as 16 telas na 1ª visita (Modo Básico): `_maybeOfferFirstUse()` adicionado às 11 telas sem oferta automática; `tourSessionProvider` removido (redundante face ao `isOffered` por `TourId`); diferenciação Modo Básico vs. Avançado documentada
+- [x] Animação de atenção no ícone `?` (pulse) e no sininho de notificações (shake) — sempre exibida, em qualquer modo
+- [x] Pop-up "Conheça as funções" — exibido apenas na 1ª visita em Modo Básico (via `TourGate.shouldOfferFirstUse` dentro de `TourAttentionWrapper`); modal de convite de tour (`_maybeOfferFirstUse`) substituído pelo pop-up em todas as 16 telas
 
 ### Testes (unitários)
 > Requisito: todas as camadas da Clean Architecture (Presentation, Domain, Data) devem conter testes unitários (testes de lógica). Não usar testes instrumentados nem testes de view/widget.
