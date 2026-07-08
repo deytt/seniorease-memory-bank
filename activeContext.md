@@ -38,7 +38,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
-**Status:** Animação Lottie "Check animation" adicionada em todos os modais de confirmação de tarefas e lembretes (2026-07-08)
+**Status:** Dark Mode corrigido nas telas secundárias (2026-07-08) — fundo escuro, inputs e labels legíveis, containers e badges semânticos adaptados ao tema
 - `core/widgets/senior_feedback_overlay.dart` — novo widget genérico reutilizável com `check_animation.json`
 - Tarefas: guided task, task details (conclusão), create task (criação) usam `SeniorFeedbackOverlay`
 - Lembretes: criação, edição e conclusão (mark done) usam `SeniorFeedbackOverlay`; feedback `SeniorFeedback.success()` em todos os fluxos de sucesso

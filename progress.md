@@ -364,6 +364,23 @@
 - [x] Definir estratégia para `auth_provider` cross-feature — registado ADR-018 + ADR-019 em `decisions.md`; decisão de manter import directo para o Hackathon com plano de migração documentado
 - [x] Confirmar `flutter analyze` com 0 erros após refactor
 
+### Dark Mode — Correção nas telas secundárias (2026-07-08)
+
+- [x] `SeniorScreenScaffold` — `backgroundColor` nullable; resolve para `Theme.of(context).scaffoldBackgroundColor` (fundo escuro em dark mode em todas as telas secundárias)
+- [x] `SeniorInput` — labels e texto do campo: `AppColors.slate900` → `theme.colorScheme.onSurface` (inputs legíveis em dark mode)
+- [x] `create_task_screen.dart` — `_LabeledField` e `_StepsSection`: labels corrigidos para `onSurface`
+- [x] `create_reminder_screen.dart` — `_LabeledField`: label corrigido para `onSurface`
+- [x] `settings_nav_row.dart` — fundo do ícone: `AppColors.primaryLight` → `primary.withValues(alpha: 0.15)`
+- [x] `profile_screen.dart` — fundo do placeholder de foto e `_PhotoSourceTile` ícone container
+- [x] `security_screen.dart` — `_VerificationPanel` (fundo tint âmbar + texto `AppColors.warning`), `_VerifiedBadge`, `_NotVerifiedBadge`, `_ComingSoonBadge` e `_SecurityRow` ícone container
+- [x] `about_screen.dart` — `_WebAppCard`: fundo `primary.withValues(alpha: 0.10)`, container interno `Colors.white` → `surface`, texto `primaryDark` → `colorScheme.primary`
+- [x] `guides_screen.dart` — `_IntroCard` e ícone de `_TutorialCard` corrigidos
+- [x] `settings_screen.dart` — `_HelpCard`: fundo e texto corrigidos (bónus)
+- [x] `notification_offset_card.dart` — chip selecionado: `primaryLight` → `primary.withValues(alpha: 0.15)`
+- [x] `spacing_mode_card.dart` — botão selecionado: `primaryLight` → `primary.withValues(alpha: 0.15)`
+- [x] `interface_mode_card.dart` — botões selecionados: `primaryLight`/`secondaryLight` → tint transparente via `selectedBorder.withValues(alpha:)`
+- [x] `font_size_slider_card.dart` — `inactiveTrackColor`: `AppColors.slate200` → `onSurface.withValues(alpha: 0.2)`
+
 ---
 
 ## Vídeo e entrega final
