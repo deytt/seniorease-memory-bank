@@ -257,7 +257,7 @@
 - [x] Segurança — Verificar conta por e-mail (Firebase Auth `emailVerified`; alerta na linha "Segurança" das Definições; painel enviar/confirmar) (ADR-016)
 - [ ] Segurança — Alterar palavra-passe — a implementar
 
-### Módulo 4 — Tour Guiado (ADR-013)
+### Módulo 4 — Tour Guiado (ADR-013 + ADR-021)
 - [x] Dependências `showcaseview ^5.1.0` e `shared_preferences` adicionadas
 - [x] Infra genérica `core/tour/` (port `TourGate`, `SeniorShowcase`, mixin `TourHost`, `TourHelpButton`, `TourId`, sinais de coordenação)
 - [x] Feature `guides/` (use cases + `TutorialStateRepository` local + `OnboardingRepository` Firestore + providers + catálogo)
@@ -276,12 +276,13 @@
 - [x] Central "Guias do aplicativo" (`/guides`) acessível a partir de Definições
 - [x] Publicar a rule da collection `onboarding` no Firebase (`seniorease-backend`)
 - [x] Balão com botão X de sair (canto superior, alinhado ao título) + auto-scroll ágil e condicional
+- [x] **ADR-021** — Tour automático em TODAS as 16 telas na 1ª visita (Modo Básico): `_maybeOfferFirstUse()` adicionado às 11 telas sem oferta automática; `tourSessionProvider` removido (redundante face ao `isOffered` por `TourId`); diferenciação Modo Básico vs. Avançado documentada
 
 ### Testes (unitários)
 > Requisito: todas as camadas da Clean Architecture (Presentation, Domain, Data) devem conter testes unitários (testes de lógica). Não usar testes instrumentados nem testes de view/widget.
 - [x] Camada Domain — entidades (Task, TaskStep, TaskFilter, UserPreferences) + use cases (tasks, auth, accessibility, guides)
 - [x] Camada Data — todos os repositórios Firebase com dependências **injetadas** (providers de `core/firebase`): `FirebaseTaskRepository`, `FirebasePreferencesRepository`, `FirebaseOnboardingRepository` (fake_cloud_firestore), `FirebaseAuthRepository` (firebase_auth_mocks + fake) e `LocalTutorialStateRepository` (shared_preferences mock)
-- [x] Camada Presentation — `TaskFilterNotifier`, `nextPendingTaskProvider`, `TasksController`, `AuthController`, `TourSignal`/`TourSession` (ProviderContainer, sem widgets)
+- [x] Camada Presentation — `TaskFilterNotifier`, `nextPendingTaskProvider`, `TasksController`, `AuthController`, `TourSignal` (ProviderContainer, sem widgets) — `TourSession` removido em ADR-021
 - [x] Ferramentas: `flutter_test` + `mocktail` + `fake_cloud_firestore`; `test/` espelha `lib/`
 - [x] Feature `notifications` — domain (`NotificationItem`, use cases FCM token + history), data (`FirebaseFcmTokenRepository`, `FirebaseNotificationHistoryRepository`), presentation (`notificationHistoryProvider`, `todayNotificationCountProvider`) — **226 testes passam** (2026-07-06)
 

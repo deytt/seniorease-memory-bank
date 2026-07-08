@@ -596,6 +596,37 @@ O GAP-002 identificou que o projeto não tinha notificações push implementadas
 
 ---
 
+## ADR-021 — Tour automático por tela em Modo Básico — remoção do guard de sessão
+
+**Data:** 2026-07-08
+**Status:** Aceito
+
+**Contexto:**
+O sistema de tour guiado (ADR-013) incluía um `tourSessionProvider` — um guard de sessão em memória que impedia mais de um convite automático por sessão de uso. Essa decisão foi tomada para evitar "bombardear" o utilizador com modais de tour ao navegar por várias telas seguidas. Porém, o objetivo do produto evoluiu: no Modo Básico, queremos que o utilizador receba o convite do tour em CADA tela que abrir pela primeira vez, independentemente de quantas telas já visitou na mesma sessão. A persistência `isOffered` (SharedPreferences por `userId + TourId`) já garante que o convite só aparece uma vez por tela ao longo da vida do dispositivo — o guard de sessão tornara-se redundante e contrário ao objetivo.
+
+Também se verificou que apenas 4 das 16 telas com `TourHost` tinham `_maybeOfferFirstUse()` — as restantes 12 nunca ofereciam tour automaticamente.
+
+**Decisão:**
+1. Remover `TourSession` e `tourSessionProvider` de `core/tour/tour_signal_provider.dart`.
+2. Adoptar o padrão `_maybeOfferFirstUse()` em TODAS as 16 telas com `TourHost`, incluindo as que já tinham (4) e as que não tinham (12). Para a `HomeScreen`, integrar com o `_maybeOfferWelcome` existente (onboarding cross-device via Firestore) para evitar dois modais seguidos.
+3. O único ponto de verificação do Modo Básico continua a ser `AppTourGate.shouldOfferFirstUse`, que retorna `false` quando `interfaceMode != InterfaceMode.basic` — garantindo que em Modo Avançado nenhum modal automático é exibido.
+4. No Modo Avançado, o tour continua acessível manualmente pelo botão `?` no header ou pela Central "Guias do aplicativo".
+
+**Motivo:**
+- A persistência `tour_{userId}_{tourId}_offered` (SharedPreferences) é suficiente para evitar repetições — cada tela controla o seu próprio estado de "já foi oferecido".
+- O utilizador Sénior em Modo Básico beneficia de descobrir as funcionalidades de cada tela de forma contextual, no momento em que a visita pela primeira vez.
+- O utilizador em Modo Avançado é mais experiente e não precisa de interrupções automáticas; o acesso ao tour fica disponível sob demanda.
+- A remoção do guard simplifica o código: menos estado global, menos coordenação entre telas.
+
+**Alternativas consideradas:**
+- Manter o guard de sessão mas aumentar o limite para N por sessão (descartado: arbitrário e não resolve o problema de novas telas em sessões futuras).
+- Usar o guard de sessão com escopo por tela (descartado: equivalente a `isOffered` que já existe).
+
+**Impacto no schema Firebase / SharedPreferences:**
+Nenhuma mudança no schema. As chaves `tour_{userId}_{tourId}_offered` e `tour_{userId}_{tourId}_seen` já existem e são suficientes.
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:
