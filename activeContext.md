@@ -60,7 +60,15 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
-**Status:** Dark Mode corrigido nas telas secundárias (2026-07-08) — fundo escuro, inputs e labels legíveis, containers e badges semânticos adaptados ao tema
+**Status:** Biometric App Lock implementado (2026-07-09) — fluxo de autenticação biométrica como ecrã de bloqueio da app.
+**Implementado agora:**
+- `BiometricLockScreen` (`/biometric-lock`): ecrã de bloqueio com logo, ícone biométrico, botão "Tentar novamente" e botão "Usar senha" (sign-out → login). Auto-dispara o prompt biométrico nativo no `initState` via `SchedulerBinding.addPostFrameCallback`.
+- `biometricLockedProvider` (`StateProvider<bool>`, começa `true` por sessão) — o lock screen define `false` após auth bem-sucedida; o router redirect detecta a mudança e navega para Home.
+- `biometricEnabledProvider` (`Provider<bool>`) — leitura síncrona derivada do `biometricControllerProvider`.
+- Router atualizado: nova rota `/biometric-lock`, redirect `isLoggedIn && biometricEnabled && biometricLocked → /biometric-lock`, `GoRouterRefreshNotifier` escuta `biometricLockedProvider` + `biometricControllerProvider`.
+- `LoginScreen` limpa: credenciais mock (`senior@teste.com` / `123456`) removidas, botão "Entrar com biometria" removido (coberto pelo lock screen).
+- Testes: `biometric_usecases_test.dart` (6 casos) + `biometric_controller_test.dart` (4 casos).
+**Próximo passo:** gravação do vídeo de demo + avaliação interna final antes da entrega.
 - `core/widgets/senior_feedback_overlay.dart` — novo widget genérico reutilizável com `check_animation.json`
 - Tarefas: guided task, task details (conclusão), create task (criação) usam `SeniorFeedbackOverlay`
 - Lembretes: criação, edição e conclusão (mark done) usam `SeniorFeedbackOverlay`; feedback `SeniorFeedback.success()` em todos os fluxos de sucesso

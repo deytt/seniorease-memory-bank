@@ -206,6 +206,7 @@
 - [x] Firebase Auth integrado
 - [x] Login com Google (OAuth) — `google_sign_in` v6, botão no Login, auto-preenche nome/foto no 1.º login, vinculação automática por e-mail (ADR-015)
 - [x] Rota protegida
+- [x] **Biometric App Lock** (2026-07-09) — `BiometricLockScreen` (`/biometric-lock`): auto-dispara prompt nativo no `initState`, botão "Tentar novamente" e botão secundário "Usar senha" (sign-out → `/login`); `biometricLockedProvider` (StateProvider, reset por sessão) + `biometricEnabledProvider` (Provider síncrono derivado); router redirect: `isLoggedIn && biometricEnabled && biometricLocked → /biometric-lock`; `GoRouterRefreshNotifier` escuta `biometricLockedProvider` + `biometricControllerProvider`; credenciais mock e botão biométrico redundante removidos da `LoginScreen`
 
 ### Home
 - [x] Tela Home (Dashboard) — Figma `15:6831`
@@ -304,6 +305,7 @@
 - [x] Camada Presentation — `TaskFilterNotifier`, `nextPendingTaskProvider`, `TasksController`, `AuthController`, `TourSignal` (ProviderContainer, sem widgets) — `TourSession` removido em ADR-021
 - [x] Ferramentas: `flutter_test` + `mocktail` + `fake_cloud_firestore`; `test/` espelha `lib/`
 - [x] Feature `notifications` — domain (`NotificationItem`, use cases FCM token + history), data (`FirebaseFcmTokenRepository`, `FirebaseNotificationHistoryRepository`), presentation (`notificationHistoryProvider`, `todayNotificationCountProvider`) — **226 testes passam** (2026-07-06)
+- [x] Testes biometria — `biometric_usecases_test.dart` (6 casos: `CheckBiometricAvailability`, `AuthenticateWithBiometric`, `EnableBiometric` ×3, `DisableBiometric`) + `biometric_controller_test.dart` (4 casos: `build()`, `enable()` sucesso/erro, `disable()`) — (2026-07-09)
 
 ---
 

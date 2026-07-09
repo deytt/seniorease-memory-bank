@@ -113,7 +113,7 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 > Seguir esta sequência no dispositivo físico. Ter o app instalado via App Distribution com conta de teste pronta.
 
 1. **Abertura da app** — mostrar o ícone "SE" azul no launcher + nome "Senior Ease" no ecrã inicial do dispositivo
-2. **Login** — entrar com a conta de teste; mostrar que o app pede permissão de notificações imediatamente após o login
+2. **Abertura com biometria** — app abre; tela de bloqueio (`/biometric-lock`) surge automaticamente com o logo SeniorEase e o ícone de impressão digital/Face ID; autenticação com biometria nativa; app entra diretamente na Home sem escrever qualquer senha. *(Se biometria não estiver ativada, mostrar o Login normal e ativá-la em Ajustes → Segurança para a próxima abertura.)*
 3. **Home** — destacar:
    - Header gradiente azul **contínuo** com o status bar (sem linha de separação — funcionalidade implementada esta sessão)
    - Sininho com **badge vermelho** (contagem de notificações de hoje)
@@ -141,6 +141,7 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 - *"Acessibilidade foi uma constraint de arquitetura, não um afterthought."*
 - *"O Figma Make gerou o protótipo; o Figma Design criou o sistema; o Figma MCP conectou o design ao código."*
 - *"O tour guiado existe porque os nossos utilizadores não devem precisar de manual."*
+- *"O app desbloqueia com biometria — o idoso não precisa de memorizar password nenhuma para entrar na sua própria app."*
 - *"A notificação não é simulada — é uma Cloud Function real que corre a cada minuto e envia um push FCM para o dispositivo."*
 - *"O sininho substituiu o SOS: em vez de um botão de emergência, o utilizador tem acesso direto ao histórico de tudo o que o app comunicou com ele."*
 - *"O status bar não tem linha de separação — é o mesmo gradiente do header, porque o app deve parecer uma coisa só, não uma janela dentro do sistema operativo."*
