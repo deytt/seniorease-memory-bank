@@ -270,7 +270,7 @@
 - [x] Configurações de conta — editar dados do utilizador (nome, telefone, data de nascimento, CPF, endereço; campos mascarados)
 - [x] Upload de foto de perfil para o Firebase Storage (`image_picker` + `profile_photos/{userId}`)
 - [x] Tela "Segurança" (`/security`) — hub de proteção da conta nas Definições (abaixo de Perfil), com tour guiado
-- [ ] Segurança — Habilitar biometria (Android/iOS) — a implementar
+- [x] Segurança — Habilitar biometria (Android/iOS)
 - [x] Segurança — Verificar conta por e-mail (Firebase Auth `emailVerified`; alerta na linha "Segurança" das Definições; painel enviar/confirmar) (ADR-016)
 - [x] Segurança — Alterar palavra-passe — implementado (reauthenticate + updatePassword; painel inline com 3 campos; aviso para contas Google; log no Histórico)
 
