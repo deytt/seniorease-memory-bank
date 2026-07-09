@@ -272,7 +272,7 @@
 - [x] Tela "Segurança" (`/security`) — hub de proteção da conta nas Definições (abaixo de Perfil), com tour guiado
 - [ ] Segurança — Habilitar biometria (Android/iOS) — a implementar
 - [x] Segurança — Verificar conta por e-mail (Firebase Auth `emailVerified`; alerta na linha "Segurança" das Definições; painel enviar/confirmar) (ADR-016)
-- [ ] Segurança — Alterar palavra-passe — a implementar
+- [x] Segurança — Alterar palavra-passe — implementado (reauthenticate + updatePassword; painel inline com 3 campos; aviso para contas Google; log no Histórico)
 
 ### Módulo 4 — Tour Guiado (ADR-013 + ADR-021)
 - [x] Dependências `showcaseview ^5.1.0` e `shared_preferences` adicionadas
