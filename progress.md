@@ -125,6 +125,10 @@
 - [ ] Card "Próxima Atividade" isolado no Dashboard (pendente — atualmente mostra lista de tarefas)
 - [x] Tela Reminder Center (`/reminders`) — lista, marcar concluído, ordenação por scheduledAt
 - [x] Tela Create Reminder (`/reminders/create`)
+- [x] Reminder alinhado ao schema/mobile (`category`, `notified`, `createdAt`; 5 categorias) — branch `feat/web-reminders-figma` (2026-07-10)
+- [x] Filtros combináveis Hoje + categoria; Modo Básico simplifica pills; `ReminderCard` reutilizável — Figma `15:5163`
+- [x] Edição (`/reminders/[id]/edit`) e exclusão com modal de confirmação — paridade com mobile (2026-07-10)
+- [x] Responsividade Lembretes + shell: sidebar `lg` + auto-colapso &lt;1280px; card com ações empilhadas até `xl`; filtros com wrap; header empilhável (2026-07-10)
 - [ ] FCM Web + Service Worker para push notifications (pendente — infra existe mas não integrada)
 - [x] Tela History (`/history`) — stats (semana/streak/total/mês), banner de conquista, timeline de eventos
 
