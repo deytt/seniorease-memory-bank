@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-08 (David — branch feat/adding-github-copilot-support: suporte GitHub Copilot no memory-bank + sync no web)
+> Última atualização: 2026-07-10 (Henrique — branch feat/web-reminders-figma: Central de Lembretes alinhada ao Figma + schema)
 
 ---
 
@@ -34,21 +34,11 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Pendente (não bloqueante):** Configuração APNs para push notifications no iOS.
 
 ### Web (seniorease-web)
-**Status:** Em paralelo — branch `feat/adding-github-copilot-support` (sincronização Copilot); base ainda na fase pós-correção da `develop` (2026-07-07)
-**Implementado:** Next.js 16 App Router com TypeScript, Clean Architecture (domain/infrastructure/presentation), Firebase Auth + Firestore, Zustand, todas as 13 telas obrigatórias (Login, Register, ForgotPassword, Success, Dashboard, Accessibility Center, Task List, Task Details, Create Task, Guided Task, Reminder Center, History, Profile). ESLint 0 erros, TypeScript 0 erros.
-**Correções aplicadas e commitadas em 2026-07-07:**
-- Labels de prioridade/categoria/status em português (tasks, reminders)
-- Modal de confirmação no Logout (Navigation.tsx)
-- Dashboard lendo preferências reais do Zustand store (não hardcoded)
-- Toggle de Espaçamento (Compacto/Confortável/Espaçoso) na Accessibility Center
-- Celebração Lottie ao concluir tarefa guiada (via `lottie-react` + `public/celebration.json`)
-- Aria-labels WCAG nos botões de navegação mobile (Navigation.tsx)
-- Guided Task Mode corrigido: "Passo X de Y", barra de progresso, botão "Passo Anterior" sempre visível
-- Task Details com badges em PT, modal de confirmação na exclusão
-- FCM Service: correção de tipagem e imports (fcmService.ts)
-- History: GetStatsUseCase limpeza de importação desnecessária
-- ESLint: 31 → 0 problemas; TypeScript: 16 → 0 erros
-**Próximos passos prioritários (segunda fase):**
+**Responsável:** Henrique
+**Status:** Em andamento — branch `feat/web-reminders-figma` (a partir de `develop`)
+**Concluído nesta frente:** Central de Lembretes alinhada ao Figma `15:5163` + schema/mobile; shell responsivo (sidebar `lg`, auto-colapso &lt;1280px); card com truncamento de título/descrição por breakpoint.
+**Próximo nesta frente (ordem acordada):** Modo Guiado → Perfil → Histórico → Dashboard.
+**Próximos passos prioritários (segunda fase / time):**
 1. Storybook — instalar e criar stories de todos os componentes DS (obrigatório para avaliação)
 2. Testes unitários — vitest/jest para Domain, Data e Presentation
 3. Upload de foto de perfil (Firebase Storage)
@@ -57,6 +47,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 6. Tour Guiado (instalar `driver.js`, criar infra port/adapter)
 7. Ordenação por dueDate no Firestore
 8. FCM Web + Service Worker
+9. Alinhar `UserPreferences` e `HistoryEvent` ao schema ADR-020 / ADR-017 (ainda desatualizados na web)
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
