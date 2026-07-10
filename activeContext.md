@@ -35,9 +35,9 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Web (seniorease-web)
 **Responsável:** Henrique
-**Status:** Em andamento — branch `feat/web-reminders-figma` (a partir de `develop`)
-**Concluído nesta frente:** Central de Lembretes alinhada ao Figma `15:5163` + schema/mobile; shell responsivo (sidebar `lg`, auto-colapso &lt;1280px); card com truncamento de título/descrição por breakpoint.
-**Próximo nesta frente (ordem acordada):** Modo Guiado → Perfil → Histórico → Dashboard.
+**Status:** Em andamento — branch `feat/web-guided-task-figma` (a partir de `develop` com PR #12 mergeado)
+**Concluído nesta frente:** Central de Lembretes (PR #12); Modo Guiado Figma `15:4931` — sidebar, hub `/tasks/guided`, lógica sequencial (passos confirmados persistidos), título da tarefa no topo, fundo `#f8fafc`, fix `dueDate` opcional no Firestore.
+**Próximo nesta frente (ordem acordada):** Perfil → Histórico → Dashboard.
 **Próximos passos prioritários (segunda fase / time):**
 1. Storybook — instalar e criar stories de todos os componentes DS (obrigatório para avaliação)
 2. Testes unitários — vitest/jest para Domain, Data e Presentation
