@@ -117,7 +117,7 @@
 - [x] Tela Task List (`/tasks`) com filtros por categoria/data e busca por texto
 - [x] Tela Task Details (`/tasks/[id]`) com badges em PT, deleção com modal de confirmação
 - [x] Tela Create Task (`/tasks/create`)
-- [x] Tela Guided Task Mode (`/tasks/[id]/guided`) — "Passo X de Y" correto, barra de progresso, botão Passo Anterior
+- [x] Tela Guided Task Mode (`/tasks/[id]/guided`) alinhada ao Figma `15:4931` — "Passo X de Y", % concluído, barra + stepper, card central, Passo Anterior sempre visível, SOS Emergência, saída do modo guiado; botão na lista/dashboard só quando há passos (branch `feat/web-guided-task-figma`, 2026-07-10)
 - [x] Animação Lottie de celebração ao concluir tarefa (via lottie-react + `public/celebration.json`)
 - [x] Filtros na Task List (categoria + "hoje" + busca por título) — processamento em memória
 - [x] Labels de prioridade/categoria/status em português (corrigido 2026-07-07)
