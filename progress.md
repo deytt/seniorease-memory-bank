@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-12 (branch feature/update-design-system — Storybook 10.5.0 concluído com 21 stories, correção de config/versão/deps)
+> Última atualização: 2026-07-12 (Storybook 19 stories com @storybook/nextjs + remoção de componentes com dependências Firebase)
 
 ---
 
@@ -50,7 +50,7 @@
 
 ## Web Platform — seniorease-web
 
-> Última atualização: 2026-07-12 (Storybook com 21 stories concluído + correção de bugs infraestrutura)
+> Última atualização: 2026-07-12 (Storybook com 19 stories concluído + correção de bugs infraestrutura)
 
 ### Configuração inicial
 
@@ -101,13 +101,16 @@
 
 > Requisito: todos os componentes da web documentados no Storybook — documentação completa cobrindo cada componente e variações do Design System, além de componentes customizados que eventualmente não existam no DS.
 
-- [x] Storybook 10.5.0 configurado no projeto web com @storybook/nextjs-vite builder
-- [x] Stories de todos os 21 componentes do Design System e Features (15 componentes + 5 features + 1 integração)
-  - **Components Section (15):** Avatar (sm/default/lg + badge), Badge (status/counter variants), Button (variants/sizes/icons/full-width), Card (default/featured/actions), Checkbox, Dialog, DropdownMenu, Input, Label, Separator, Sheet, Switch, Toast, Tooltip, Sooner
-  - **Features Section (5):** CreateReminderForm, CreateTaskForm, ReminderCard, ReminderFilterPills, TaskCard
-  - **Integrations Section (1):** ReminderListPage
+- [x] Storybook 10.5.0 configurado no projeto web com @storybook/nextjs builder (migrado de @storybook/nextjs-vite para resolver erros de rendering)
+- [x] Stories de 19 componentes (15 UI components + 3 features + 1 integração)
+  - **Components Section (15):** Avatar, Badge, Button, Card, Checkbox, Dialog, DropdownMenu, Input, Label, Separator, Sheet, Switch, Toast, Tooltip, Sooner
+  - **Features Section (3):** ReminderCard, ReminderFilterPills, TaskCard
+  - **Integrations Section (1):** ReminderListIntegration
+  - **Removidos (Firebase auth dependencies):** ~~CreateReminderForm~~, ~~CreateTaskForm~~
 - [x] Controls/args (props), estados (hover/disabled/loading/erro) e tokens documentados via TypeScript + argTypes
 - [x] Autodocs habilitada com tags ["autodocs"] em todos os stories
+- [x] Resolver problemas: config conflict (.storybook/main.js deletado), version mismatch (@storybook/nextjs-vite@10.5.0), corrupção Next.js (next@16.2.9 reinstalado)
+- [x] Storybook rodando em http://localhost:6008 com hot reload Next.js framework (porta 6006 estava em uso)
 - [x] Resolver problemas: config conflict (.storybook/main.js deletado), version mismatch (@storybook/nextjs-vite@10.5.0), corrupção Next.js (next@16.2.9 reinstalado)
 - [x] Storybook rodando em http://localhost:6006 com hot reload Vite
 
