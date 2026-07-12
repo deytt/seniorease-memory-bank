@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-12 (Tati — branch feature/web-design-system: Storybook 10.5.0 com 21 stories concluído, bugs infraestrutura corrigidos)
+> Última atualização: 2026-07-12 (Tati — branch feature/update-design-system: Storybook 10.5.0 com 21 stories concluído, bugs infraestrutura corrigidos)
 
 ---
 
@@ -38,7 +38,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Web (seniorease-web)
 
 **Responsável:** Henrique / Tati
-**Status:** Em andamento — branch `feature/web-design-system` (a partir de `develop`, novo sprint)
+**Status:** Em andamento — branch `feature/update-design-system` (a partir de `develop`, novo sprint)
 
 **Concluído anteriormente (Henrique):**
 - **Central de Lembretes (PR #12):** interface completa de gerenciamento de lembretes na web

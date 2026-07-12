@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-12 (branch feature/web-design-system — Storybook 10.5.0 concluído com 21 stories, correção de config/versão/deps)
+> Última atualização: 2026-07-12 (branch feature/update-design-system — Storybook 10.5.0 concluído com 21 stories, correção de config/versão/deps)
 
 ---
 
@@ -53,6 +53,7 @@
 > Última atualização: 2026-07-12 (Storybook com 21 stories concluído + correção de bugs infraestrutura)
 
 ### Configuração inicial
+
 - [x] Projeto Next.js 16 inicializado com TypeScript
 - [x] Estrutura de pastas Clean Architecture criada (`domain/`, `infrastructure/`, `presentation/`)
 - [x] memory-bank adicionado como submódulo
@@ -65,6 +66,7 @@
 - [x] Zustand configurado
 
 ### Design System (componentes base)
+
 - [x] Button (Primary, Secondary, Destructive, Ghost) — via shadcn/ui
 - [x] Input (Text, Password, Email) — via shadcn/ui
 - [x] Card — via shadcn/ui
@@ -75,6 +77,7 @@
 - [ ] Storybook — **pendente** (ver secção Documentação abaixo)
 
 ### Autenticação
+
 - [x] Tela Login (email/password + Google OAuth)
 - [x] Tela Register
 - [x] Tela Forgot Password
@@ -84,7 +87,9 @@
 - [x] Rota protegida (redirect se não autenticado) — guard no `(app)/layout.tsx`
 
 ### Dashboard
+
 > Espelha a Home do mobile: saudação dinâmica, botão de emergência, quick actions (Nova Tarefa, Acessibilidade, Emergência, Histórico), lembretes próximos, tarefas do dia e card de status de acessibilidade. Ver Figma `node 134-851`.
+
 - [x] Tela Dashboard com saudação dinâmica (bom dia/tarde/noite)
 - [x] Botão Emergência (SOS) no header
 - [x] Grid de Ações Rápidas (2×2: Nova Tarefa, Acessibilidade, Emergência, Histórico)
@@ -93,7 +98,9 @@
 - [x] Card "Status de Acessibilidade" lendo preferências reais do store (corrigido 2026-07-07)
 
 ### Documentação de componentes (Storybook)
+
 > Requisito: todos os componentes da web documentados no Storybook — documentação completa cobrindo cada componente e variações do Design System, além de componentes customizados que eventualmente não existam no DS.
+
 - [x] Storybook 10.5.0 configurado no projeto web com @storybook/nextjs-vite builder
 - [x] Stories de todos os 21 componentes do Design System e Features (15 componentes + 5 features + 1 integração)
   - **Components Section (15):** Avatar (sm/default/lg + badge), Badge (status/counter variants), Button (variants/sizes/icons/full-width), Card (default/featured/actions), Checkbox, Dialog, DropdownMenu, Input, Label, Separator, Sheet, Switch, Toast, Tooltip, Sooner
@@ -105,7 +112,9 @@
 - [x] Storybook rodando em http://localhost:6006 com hot reload Vite
 
 ### Módulo 1 — Acessibilidade
+
 > Mesma funcionalidade e mesma collection `preferences/{userId}` do mobile; lógica idêntica (incl. `maximum` derivado pelo `SavePreferencesUseCase`). Adaptação web: tema dinâmico via CSS custom properties.
+
 - [x] Tela Accessibility Center (`/acessibility`)
 - [x] Toggle de tamanho de fonte — slider com 4 níveis (Pequena/Média/Grande/Extra Grande)
 - [x] Toggle de Dark Mode — mapeia `preferences.darkMode`; classe `.dark` no `<html>`
@@ -118,7 +127,9 @@
 - [x] Redefinir para padrões com modal de confirmação
 
 ### Módulo 2 — Tarefas
+
 > Mesma collection `tasks/{taskId}` do mobile; adaptação web com filtros em memória.
+
 - [x] Tela Task List (`/tasks`) com filtros por categoria/data e busca por texto
 - [x] Tela Task Details (`/tasks/[id]`) com badges em PT, deleção com modal de confirmação
 - [x] Tela Create Task (`/tasks/create`)
@@ -138,7 +149,9 @@
 - [x] Tela History (`/history`) — stats (semana/streak/total/mês), banner de conquista, timeline de eventos
 
 ### Módulo 3 — Perfil / Definições
+
 > Mesma collection `users/{userId}` do mobile; lógica análoga.
+
 - [x] Tela Perfil (`/profile`) — avatar com iniciais, informações pessoais, preferências de notificação, links para segurança
 - [x] Tela Edit Profile (`/profile/edit`) — formulário de edição de dados
 - [x] Tela Segurança (`/profile/security`) — formulário de alteração de senha (UI completa)
@@ -154,11 +167,14 @@
 > Nota: a **biometria** é exclusiva do mobile. Não se aplica à Web.
 
 ### Módulo 4 — Tour Guiado
+
 > Mesmo comportamento do mobile (ADR-013), com biblioteca React equivalente.
+
 - [ ] Biblioteca de tour/onboarding escolhida e adicionada (ex.: `react-joyride` / `driver.js`)
 - [ ] Infra genérica de tour e todas as telas — **pendente** (nenhum item iniciado)
 
 ### Qualidade de código
+
 - [x] ESLint: 0 erros, 0 warnings (verificado 2026-07-07)
 - [x] TypeScript strict: 0 erros (verificado 2026-07-07)
 - [x] CI/CD configurado (GitHub Actions: lint + type-check + build em PR; deploy Vercel em master)
@@ -168,25 +184,26 @@
 
 ### Features parcialmente implementadas (para segunda fase)
 
-| Feature | Status atual | O que falta |
-|---------|-------------|-------------|
-| Upload de foto | UI pronta (botão + file input) | Integrar `getStorage`, `uploadBytes`, `getDownloadURL` do Firebase Storage |
-| Alterar senha | Formulário de UI completo | Chamar `reauthenticateWithCredential` + `updatePassword` do Firebase Auth |
-| Verificar e-mail | Sem UI | Adicionar botão em `/profile/security` que chama `sendEmailVerification` |
-| Storybook | Não iniciado | Instalar `@storybook/nextjs`, criar stories para Button, Input, Card, Badge, Dialog, Toast |
-| Testes unitários | 0 testes | Implementar com `vitest` ou `jest` para domain entities, use cases e hooks |
-| Tela "Sobre" | Ausente | Criar rota `/about` com identidade do app, versão e link para o repositório |
-| Tour Guiado | Ausente | Instalar `driver.js` ou `react-joyride`, criar abstração port/adapter análoga ao mobile |
-| Ordenação por dueDate | Sem ordenação no repo | Adicionar `.orderBy('dueDate', 'asc')` nas queries Firestore + `nulls last` em memória |
-| FCM Web | Config existe (`fcmService.ts`) | Registrar Service Worker, solicitar permissão, integrar no `FCMProvider` |
-| Máscaras de input | Sem lib | Instalar `imask` ou `react-input-mask`, aplicar em telefone/CPF/CEP |
-| CPF em Modo Básico | Campo existe no form | Ler `preferences.interfaceMode` e ocultar campo CPF quando `basic` |
+| Feature               | Status atual                    | O que falta                                                                                |
+| --------------------- | ------------------------------- | ------------------------------------------------------------------------------------------ |
+| Upload de foto        | UI pronta (botão + file input)  | Integrar `getStorage`, `uploadBytes`, `getDownloadURL` do Firebase Storage                 |
+| Alterar senha         | Formulário de UI completo       | Chamar `reauthenticateWithCredential` + `updatePassword` do Firebase Auth                  |
+| Verificar e-mail      | Sem UI                          | Adicionar botão em `/profile/security` que chama `sendEmailVerification`                   |
+| Storybook             | Não iniciado                    | Instalar `@storybook/nextjs`, criar stories para Button, Input, Card, Badge, Dialog, Toast |
+| Testes unitários      | 0 testes                        | Implementar com `vitest` ou `jest` para domain entities, use cases e hooks                 |
+| Tela "Sobre"          | Ausente                         | Criar rota `/about` com identidade do app, versão e link para o repositório                |
+| Tour Guiado           | Ausente                         | Instalar `driver.js` ou `react-joyride`, criar abstração port/adapter análoga ao mobile    |
+| Ordenação por dueDate | Sem ordenação no repo           | Adicionar `.orderBy('dueDate', 'asc')` nas queries Firestore + `nulls last` em memória     |
+| FCM Web               | Config existe (`fcmService.ts`) | Registrar Service Worker, solicitar permissão, integrar no `FCMProvider`                   |
+| Máscaras de input     | Sem lib                         | Instalar `imask` ou `react-input-mask`, aplicar em telefone/CPF/CEP                        |
+| CPF em Modo Básico    | Campo existe no form            | Ler `preferences.interfaceMode` e ocultar campo CPF quando `basic`                         |
 
 ---
 
 ## Mobile App — seniorease-mobile
 
 ### Configuração inicial
+
 - [x] Projeto Flutter inicializado
 - [x] Estrutura de pastas Feature-First + Clean Architecture criada (ADR-008)
 - [x] memory-bank adicionado como submódulo
@@ -196,6 +213,7 @@
 - [x] GoRouter configurado
 
 ### Design System (widgets base)
+
 - [x] SeniorButton (Primary, Secondary, Outline, Ghost, Destructive)
 - [x] SeniorInput (label compacto para campos lado a lado)
 - [x] SeniorCard
@@ -209,6 +227,7 @@
 - [x] ThemeData dinâmico (fonte, contraste via MaterialApp)
 
 ### Autenticação
+
 - [x] Tela Login (Figma `15:6210`)
 - [x] Tela Register (Figma `15:6415` — nome/sobrenome lado a lado, scroll unificado)
 - [x] Tela Forgot Password (Figma `15:6638` — conteúdo centralizado, botão outline)
@@ -218,6 +237,7 @@
 - [x] **Biometric App Lock** (2026-07-09) — `BiometricLockScreen` (`/biometric-lock`): auto-dispara prompt nativo no `initState`, botão "Tentar novamente" e botão secundário "Usar senha" (sign-out → `/login`); `biometricLockedProvider` (StateProvider, reset por sessão) + `biometricEnabledProvider` (Provider síncrono derivado); router redirect: `isLoggedIn && biometricEnabled && biometricLocked → /biometric-lock`; `GoRouterRefreshNotifier` escuta `biometricLockedProvider` + `biometricControllerProvider`; credenciais mock e botão biométrico redundante removidos da `LoginScreen`
 
 ### Home
+
 - [x] Tela Home (Dashboard) — Figma `15:6831`
 - [x] Header gradiente com saudação dinâmica + botão SOS
 - [x] Grid 2×2 Quick Actions (Nova Tarefa, Acessibilidade, Lembretes, Ajuda Rápida)
@@ -226,6 +246,7 @@
 - [x] Bottom Navigation Bar com 5 tabs (StatefulShellRoute)
 
 ### Módulo 1 — Acessibilidade
+
 - [x] Tela Accessibility (Figma `15:9085`)
 - [x] Toggle de tamanho de fonte (ThemeData dinâmico — 4 passos 87%/100%/120%/150%)
 - [x] Toggle de Dark Mode (ThemeMode.dark via buildDynamic)
@@ -237,6 +258,7 @@
 - [x] Persistência das preferências no Firestore
 
 ### Módulo 2 — Tarefas
+
 - [x] Tela Task List (Figma `15:7134` — header, contador, TaskCard, promo Modo Guiado)
 - [x] Tela Task Details (Figma `15:7401` — badges, passos, ações, apagar com confirmação)
 - [x] Tela Create Task (Figma `15:7612` — passos dinâmicos com "+" e "X")
@@ -269,6 +291,7 @@
 - [x] Testes das 3 camadas (domínio streak/mapa, data com `fake_cloud_firestore`, presentation stats + adaptador)
 
 ### Módulo 3 — Perfil / Definições
+
 - [x] Tela Settings / Definições (`features/profile`)
 - [x] Profile banner com gradiente + avatar com iniciais (nome + email do utilizador)
 - [x] Card de navegação com rows (Informação Pessoal, Notificações, Acessibilidade, Guias do aplicativo, Sobre)
@@ -285,6 +308,7 @@
 - [x] Segurança — Alterar palavra-passe — implementado (reauthenticate + updatePassword; painel inline com 3 campos; aviso para contas Google; log no Histórico)
 
 ### Módulo 4 — Tour Guiado (ADR-013 + ADR-021)
+
 - [x] Dependências `showcaseview ^5.1.0` e `shared_preferences` adicionadas
 - [x] Infra genérica `core/tour/` (port `TourGate`, `SeniorShowcase`, mixin `TourHost`, `TourHelpButton`, `TourId`, sinais de coordenação)
 - [x] Feature `guides/` (use cases + `TutorialStateRepository` local + `OnboardingRepository` Firestore + providers + catálogo)
@@ -308,7 +332,9 @@
 - [x] Pop-up "Conheça as funções" — exibido apenas na 1ª visita em Modo Básico (via `TourGate.shouldOfferFirstUse` dentro de `TourAttentionWrapper`); modal de convite de tour (`_maybeOfferFirstUse`) substituído pelo pop-up em todas as 16 telas
 
 ### Testes (unitários)
+
 > Requisito: todas as camadas da Clean Architecture (Presentation, Domain, Data) devem conter testes unitários (testes de lógica). Não usar testes instrumentados nem testes de view/widget.
+
 - [x] Camada Domain — entidades (Task, TaskStep, TaskFilter, UserPreferences) + use cases (tasks, auth, accessibility, guides)
 - [x] Camada Data — todos os repositórios Firebase com dependências **injetadas** (providers de `core/firebase`): `FirebaseTaskRepository`, `FirebasePreferencesRepository`, `FirebaseOnboardingRepository` (fake_cloud_firestore), `FirebaseAuthRepository` (firebase_auth_mocks + fake) e `LocalTutorialStateRepository` (shared_preferences mock)
 - [x] Camada Presentation — `TaskFilterNotifier`, `nextPendingTaskProvider`, `TasksController`, `AuthController`, `TourSignal` (ProviderContainer, sem widgets) — `TourSession` removido em ADR-021
