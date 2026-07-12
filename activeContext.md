@@ -1,13 +1,13 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-12 (Tati — branch feature/update-design-system: Storybook 10.5.0 com 21 stories concluído, bugs infraestrutura corrigidos)
+> Última atualização: 2026-07-12 (Tati — branch feature/update-design-system: Storybook 10.5.0 com 19 stories concluído, framework @storybook/nextjs, Firebase deps removidas)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Web — Storybook concluído (21 stories, autodocs), próxima: testes unitários + features pendentes. Mobile — todos os 5 gaps corrigidos. Ambos os projetos commitados na branch `develop` em 2026-07-07.
+**Fase atual:** Web — Storybook concluído (19 stories, autodocs, @storybook/nextjs), próxima: testes unitários + features pendentes. Mobile — todos os 5 gaps corrigidos. Ambos os projetos commitados na branch `develop` em 2026-07-07.
 
 O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma.
 
@@ -46,7 +46,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 **Concluído nesta frente (2026-07-12, Tati):**
 
-- **Storybook 10.5.0** — instalado, configurado com @storybook/nextjs-vite, 21 stories (15 componentes + 5 features + 1 integração) documentados com autodocs, controls/args e tipo TypeScript
+- **Storybook 10.5.0** — instalado, configurado com @storybook/nextjs framework (migrado de @storybook/nextjs-vite), 19 stories (15 UI componentes + 3 features + 1 integração) documentados com autodocs, controls/args e tipo TypeScript. Removidos CreateReminderForm e CreateTaskForm (dependências Firebase)
 - **Bug fixes infraestrutura:**
   - Config conflict: `.storybook/main.js` (glob pattern incorreto) deletado, apenas `.storybook/main.ts` (correto)
   - Version mismatch: `@storybook/nextjs-vite` atualizado de 10.4.6 para 10.5.0
