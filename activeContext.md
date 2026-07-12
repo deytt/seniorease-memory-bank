@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-12 (Tati — branch feature/update-design-system: Storybook 10.5.0 com 19 stories concluído, Firebase deps removidas, @storybook/nextjs ativo)
+> Última atualização: 2026-07-12 (Tati — branch feature/update-design-system: Storybook 10.5.0 com 21 stories concluído, bugs infraestrutura corrigidos)
 
 ---
 
@@ -41,17 +41,12 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Status:** Em andamento — branch `feature/update-design-system` (a partir de `develop`, novo sprint)
 
 **Concluído anteriormente (Henrique):**
-
 - **Central de Lembretes (PR #12):** interface completa de gerenciamento de lembretes na web
 - **Modo Guiado Figma `15:4931`:** sidebar, hub `/tasks/guided`, lógica sequencial (passos confirmados persistidos), título da tarefa no topo, fundo `#f8fafc`, fix `dueDate` opcional no Firestore
 
 **Concluído nesta frente (2026-07-12, Tati):**
 
-- **Storybook 10.5.0** — instalado, configurado com @storybook/nextjs, 19 stories (15 UI components + 3 features + 1 integração) documentados com autodocs, controls/args e tipo TypeScript
-  - ✅ **19 Stories renderizando:** Avatar, Badge, Button, Card, Checkbox, Dialog, DropdownMenu, Input, Label, Separator, Sheet, Sooner, Switch, Toast, Tooltip, ReminderCard, ReminderFilterPills, TaskCard, ReminderListIntegration
-  - ❌ **Removidos (Firebase auth deps):** CreateReminderForm, CreateTaskForm (causavam erros de inicialização Firebase em sandbox Storybook)
-  - 🔧 **Fix:** Trocado framework de @storybook/nextjs-vite → @storybook/nextjs (resolver `importers is not a function` error)
-  - 🌐 Rodando em localhost:6008 com hot reload (Next.js dev server em 3000)
+- **Storybook 10.5.0** — instalado, configurado com @storybook/nextjs-vite, 21 stories (15 componentes + 5 features + 1 integração) documentados com autodocs, controls/args e tipo TypeScript
 - **Bug fixes infraestrutura:**
   - Config conflict: `.storybook/main.js` (glob pattern incorreto) deletado, apenas `.storybook/main.ts` (correto)
   - Version mismatch: `@storybook/nextjs-vite` atualizado de 10.4.6 para 10.5.0
