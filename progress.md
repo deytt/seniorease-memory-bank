@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-08 (branch feat/adding-github-copilot-support — suporte a instruções/skills do GitHub Copilot + sync no update-memory-bank.sh)
+> Última atualização: 2026-07-12 (branch feature/web-design-system — Storybook 10.5.0 concluído com 21 stories, correção de config/versão/deps)
 
 ---
 
@@ -50,7 +50,7 @@
 
 ## Web Platform — seniorease-web
 
-> Última atualização: 2026-07-07 (Revisão e correção de aderência — análise de código + lint/type-check zerados)
+> Última atualização: 2026-07-12 (Storybook com 21 stories concluído + correção de bugs infraestrutura)
 
 ### Configuração inicial
 - [x] Projeto Next.js 16 inicializado com TypeScript
@@ -94,10 +94,15 @@
 
 ### Documentação de componentes (Storybook)
 > Requisito: todos os componentes da web documentados no Storybook — documentação completa cobrindo cada componente e variações do Design System, além de componentes customizados que eventualmente não existam no DS.
-- [ ] Storybook configurado no projeto web
-- [ ] Stories de todos os componentes do Design System (com todas as variações/estados)
-- [ ] Stories dos componentes customizados fora do Design System
-- [ ] Controls/args (props), estados (hover/disabled/loading/erro) e tokens documentados
+- [x] Storybook 10.5.0 configurado no projeto web com @storybook/nextjs-vite builder
+- [x] Stories de todos os 21 componentes do Design System e Features (15 componentes + 5 features + 1 integração)
+  - **Components Section (15):** Avatar (sm/default/lg + badge), Badge (status/counter variants), Button (variants/sizes/icons/full-width), Card (default/featured/actions), Checkbox, Dialog, DropdownMenu, Input, Label, Separator, Sheet, Switch, Toast, Tooltip, Sooner
+  - **Features Section (5):** CreateReminderForm, CreateTaskForm, ReminderCard, ReminderFilterPills, TaskCard
+  - **Integrations Section (1):** ReminderListPage
+- [x] Controls/args (props), estados (hover/disabled/loading/erro) e tokens documentados via TypeScript + argTypes
+- [x] Autodocs habilitada com tags ["autodocs"] em todos os stories
+- [x] Resolver problemas: config conflict (.storybook/main.js deletado), version mismatch (@storybook/nextjs-vite@10.5.0), corrupção Next.js (next@16.2.9 reinstalado)
+- [x] Storybook rodando em http://localhost:6006 com hot reload Vite
 
 ### Módulo 1 — Acessibilidade
 > Mesma funcionalidade e mesma collection `preferences/{userId}` do mobile; lógica idêntica (incl. `maximum` derivado pelo `SavePreferencesUseCase`). Adaptação web: tema dinâmico via CSS custom properties.
