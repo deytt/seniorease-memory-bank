@@ -1,13 +1,13 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-10 (Henrique — branch feat/web-reminders-figma: Central de Lembretes alinhada ao Figma + schema)
+> Última atualização: 2026-07-12 (Tati — branch feature/web-design-system: Storybook 10.5.0 com 21 stories concluído, bugs infraestrutura corrigidos)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Web — segunda fase (Storybook, testes unitários, features pendentes). Mobile — todos os 5 gaps corrigidos. Ambos os projetos commitados na branch `develop` em 2026-07-07.
+**Fase atual:** Web — Storybook concluído (21 stories, autodocs), próxima: testes unitários + features pendentes. Mobile — todos os 5 gaps corrigidos. Ambos os projetos commitados na branch `develop` em 2026-07-07.
 
 O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma.
 
@@ -34,20 +34,30 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Pendente (não bloqueante):** Configuração APNs para push notifications no iOS.
 
 ### Web (seniorease-web)
-**Responsável:** Henrique
-**Status:** Em andamento — branch `feat/web-guided-task-figma` (a partir de `develop` com PR #12 mergeado)
-**Concluído nesta frente:** Central de Lembretes (PR #12); Modo Guiado Figma `15:4931` — sidebar, hub `/tasks/guided`, lógica sequencial (passos confirmados persistidos), título da tarefa no topo, fundo `#f8fafc`, fix `dueDate` opcional no Firestore.
+**Responsável:** Henrique / Tati
+**Status:** Em andamento — branch `feature/web-design-system` (a partir de `develop`, novo sprint)
+
+**Concluído nesta frente (2026-07-12):** 
+- **Storybook 10.5.0** — instalado, configurado com @storybook/nextjs-vite, 21 stories (15 componentes + 5 features + 1 integração) documentados com autodocs, controls/args e tipo TypeScript
+- **Bug fixes infraestrutura:** 
+  - Config conflict: `.storybook/main.js` (glob pattern incorreto) deletado, apenas `.storybook/main.ts` (correto)
+  - Version mismatch: `@storybook/nextjs-vite` atualizado de 10.4.6 para 10.5.0
+  - Next.js corruption: `next@16.2.9` reinstalado (faltava `font-data.json`)
+  - npm install limpo (reinstalado 1266 packages, todas as dependências resolvidas)
+- **Projeto Next.js rodando** em http://localhost:3000 (dev server com Turbopack)
+- **Storybook rodando** em http://localhost:6006 (todos 21 componentes renderizando, sem erros de import)
+
 **Próximo nesta frente (ordem acordada):** Perfil → Histórico → Dashboard.
+
 **Próximos passos prioritários (segunda fase / time):**
-1. Storybook — instalar e criar stories de todos os componentes DS (obrigatório para avaliação)
-2. Testes unitários — vitest/jest para Domain, Data e Presentation
-3. Upload de foto de perfil (Firebase Storage)
-4. Alterar senha real (Firebase Auth `updatePassword`)
-5. Tela "Sobre" (`/about`)
-6. Tour Guiado (instalar `driver.js`, criar infra port/adapter)
-7. Ordenação por dueDate no Firestore
-8. FCM Web + Service Worker
-9. Alinhar `UserPreferences` e `HistoryEvent` ao schema ADR-020 / ADR-017 (ainda desatualizados na web)
+1. Testes unitários — vitest/jest para Domain, Data e Presentation
+2. Upload de foto de perfil (Firebase Storage)
+3. Alterar senha real (Firebase Auth `updatePassword`)
+4. Tela "Sobre" (`/about`)
+5. Tour Guiado (instalar `driver.js`, criar infra port/adapter)
+6. Ordenação por dueDate no Firestore
+7. FCM Web + Service Worker
+8. Alinhar `UserPreferences` e `HistoryEvent` ao schema ADR-020 / ADR-017 (ainda desatualizados na web)
 
 ### Mobile (seniorease-mobile)
 **Responsável:** David
