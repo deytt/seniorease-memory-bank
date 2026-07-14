@@ -41,6 +41,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Status:** Em andamento — branch `feature/update-design-system` (a partir de `develop`, novo sprint)
 
 **Concluído anteriormente (Henrique):**
+
 - **Central de Lembretes (PR #12):** interface completa de gerenciamento de lembretes na web
 - **Modo Guiado Figma `15:4931`:** sidebar, hub `/tasks/guided`, lógica sequencial (passos confirmados persistidos), título da tarefa no topo, fundo `#f8fafc`, fix `dueDate` opcional no Firestore
 
