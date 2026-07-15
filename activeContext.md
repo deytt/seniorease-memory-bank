@@ -1,13 +1,13 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-12 (Tati — branch feature/update-design-system: Storybook 10.5.0 com 19 stories concluído, framework @storybook/nextjs, Firebase deps removidas)
+> Última atualização: 2026-07-15 (David — APNs iOS validado; Google Sign-In iOS via GoogleService-Info no target; TestFlight; bug Face ID + Google em aberto)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Web — Storybook concluído (19 stories, autodocs, @storybook/nextjs), próxima: testes unitários + features pendentes. Mobile — todos os 5 gaps corrigidos. Ambos os projetos commitados na branch `develop` em 2026-07-07.
+**Fase atual:** Mobile em preparação de entrega — TestFlight a funcionar; push iOS (APNs) validado; Google Sign-In no iPhone corrigido. Web — Storybook concluído; backlog de testes e features pendentes. Entrega: vídeo de demo + avaliação interna + repos públicos.
 
 O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma.
 
@@ -31,9 +31,9 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Firebase / Infra
 
 **Responsável:** David (Tech Lead)
-**Status:** Concluído
+**Status:** Concluído (incl. APNs iOS)
 **Entregue:** Projeto `seniorease-backend`, Auth Email/Password, Firestore com regras publicadas, FCM V1, apps Web/Android/iOS (`com.seniorease.mobile`), `.env.local` partilhado com o time.
-**Pendente (não bloqueante):** Configuração APNs para push notifications no iOS.
+**2026-07-15:** APNs Auth Key gerada na Apple Developer, carregada no Firebase Cloud Messaging; push notifications no iPhone físico validadas.
 
 ### Web (seniorease-web)
 
@@ -72,8 +72,16 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Mobile (seniorease-mobile)
 
 **Responsável:** David
-**Status:** Biometric App Lock implementado (2026-07-09) — fluxo de autenticação biométrica como ecrã de bloqueio da app.
-**Implementado agora:**
+**Status:** Entrega iOS em curso (2026-07-15) — TestFlight + correções nativas iOS.
+**Feito nesta sessão (2026-07-15):**
+
+- **APNs / Push iOS:** chave APNs no Firebase; notificações a funcionar no dispositivo físico.
+- **TestFlight:** app criada no App Store Connect (`com.seniorease.mobile`); Archive/upload OK após corrigir ícone 1024 sem alpha (erro 90717). Avisos dSYM Firebase no upload são não bloqueantes.
+- **Google Sign-In iOS:** crash ao tocar no botão — causa: `GoogleService-Info.plist` existia em disco mas **não** estava no target Runner (Copy Bundle Resources). Corrigido no Xcode. Evitar adicionar `Info.plist` aos Resources (`Multiple commands produce … Info.plist`).
+- **Bug em aberto — Face ID + “Continuar com Google”:** com conta Google lembrada e biometria ativa, após Face ID o sheet OAuth/modal pode fechar sozinho (race de UI iOS). Tentativa de `Future.delayed(400ms)` aplicada e **revertida** (não resolveu). Solução sugerida a implementar: `GoogleSignIn.signInSilently()` após biometria e/ou não chamar `_googleSignIn.signOut()` no logout (manter sessão Google no device para reauth silenciosa).
+
+**Status anterior:** Biometric App Lock implementado (2026-07-09) — fluxo de autenticação biométrica como ecrã de bloqueio da app.
+**Implementado (histórico recente):**
 
 - `BiometricLockScreen` (`/biometric-lock`): ecrã de bloqueio com logo, ícone biométrico, botão "Tentar novamente" e botão "Usar senha" (sign-out → login). Auto-dispara o prompt biométrico nativo no `initState` via `SchedulerBinding.addPostFrameCallback`.
 - `biometricLockedProvider` (`StateProvider<bool>`, começa `true` por sessão) — o lock screen define `false` após auth bem-sucedida; o router redirect detecta a mudança e navega para Home.
@@ -81,7 +89,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - Router atualizado: nova rota `/biometric-lock`, redirect `isLoggedIn && biometricEnabled && biometricLocked → /biometric-lock`, `GoRouterRefreshNotifier` escuta `biometricLockedProvider` + `biometricControllerProvider`.
 - `LoginScreen` limpa: credenciais mock (`senior@teste.com` / `123456`) removidas, botão "Entrar com biometria" removido (coberto pelo lock screen).
 - Testes: `biometric_usecases_test.dart` (6 casos) + `biometric_controller_test.dart` (4 casos).
-  **Próximo passo:** gravação do vídeo de demo + avaliação interna final antes da entrega.
+  **Próximo passo:** corrigir race Face ID + Google (signInSilently); gravação do vídeo de demo + avaliação interna final antes da entrega.
 - `core/widgets/senior_feedback_overlay.dart` — novo widget genérico reutilizável com `check_animation.json`
 - Tarefas: guided task, task details (conclusão), create task (criação) usam `SeniorFeedbackOverlay`
 - Lembretes: criação, edição e conclusão (mark done) usam `SeniorFeedbackOverlay`; feedback `SeniorFeedback.success()` em todos os fluxos de sucesso
@@ -114,7 +122,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ## Decisões em aberto
 
-Nenhuma decisão pendente no momento. Todas as decisões arquiteturais estão documentadas em `decisions.md`.
+- **Login Google + biometria (iOS):** após Face ID no fluxo “Continuar com Google” (conta lembrada), o sheet OAuth pode ser dismissado pelo sistema. Delay pós-Face ID não resolveu. Decidir entre `signInSilently` + manter sessão Google no logout vs. só `FirebaseAuth.signOut()`, ou outra abordagem de reauth.
 
 ---
 

@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-12 (Storybook 19 stories com @storybook/nextjs + remoção de componentes com dependências Firebase)
+> Última atualização: 2026-07-15 (David — APNs iOS, Google Sign-In iOS via GoogleService-Info no target, TestFlight)
 
 ---
 
@@ -34,9 +34,9 @@
 - [x] Firebase Cloud Messaging habilitado (push notifications)
 - [x] Variáveis de ambiente compartilhadas com o time
 - [x] Firebase Storage — `storage.rules` criado (`profile_photos/{userId}`) e referenciado em `firebase.json` (ADR-014); **pendente ativar o bucket no console + publicar regras**
-- [ ] APNs configurado (iOS) — necessário para push notifications no iOS
+- [x] APNs configurado (iOS) — Auth Key na Apple Developer + upload no Firebase Cloud Messaging; push FCM em dispositivo físico validado (2026-07-15)
 
-> Coleções Firestore serão populadas automaticamente pela app na primeira gravação. Apps registadas: Web (`seniorease-web`), Android e iOS (`com.seniorease.mobile`). APNs iOS pendente para fase de push notifications.
+> Coleções Firestore serão populadas automaticamente pela app na primeira gravação. Apps registadas: Web (`seniorease-web`), Android e iOS (`com.seniorease.mobile`).
 
 ---
 
@@ -236,8 +236,10 @@
 - [x] Tela Forgot Password (Figma `15:6638` — conteúdo centralizado, botão outline)
 - [x] Firebase Auth integrado
 - [x] Login com Google (OAuth) — `google_sign_in` v6, botão no Login, auto-preenche nome/foto no 1.º login, vinculação automática por e-mail (ADR-015)
+- [x] Google Sign-In no iOS — `GoogleService-Info.plist` adicionado ao target **Runner** (Copy Bundle Resources) + URL scheme `REVERSED_CLIENT_ID` no `Info.plist`; crash ao tocar em "Entrar com Google" resolvido (2026-07-15). **Nota:** não incluir `Info.plist` em Copy Bundle Resources (causa `Multiple commands produce … Info.plist`)
 - [x] Rota protegida
 - [x] **Biometric App Lock** (2026-07-09) — `BiometricLockScreen` (`/biometric-lock`): auto-dispara prompt nativo no `initState`, botão "Tentar novamente" e botão secundário "Usar senha" (sign-out → `/login`); `biometricLockedProvider` (StateProvider, reset por sessão) + `biometricEnabledProvider` (Provider síncrono derivado); router redirect: `isLoggedIn && biometricEnabled && biometricLocked → /biometric-lock`; `GoRouterRefreshNotifier` escuta `biometricLockedProvider` + `biometricControllerProvider`; credenciais mock e botão biométrico redundante removidos da `LoginScreen`
+- [ ] **Bug conhecido (2026-07-15):** conta Google lembrada + biometria — após Face ID em "Continuar com Google", o sheet OAuth/modal de permissão pode ser dismissado automaticamente (race de UI no iOS). Tentativa de delay 400 ms revertida (não resolveu). Próximo caminho sugerido: `signInSilently` após biometria e/ou não chamar `GoogleSignIn.signOut()` no logout da app
 
 ### Home
 
@@ -439,6 +441,14 @@
 - [x] `font_size_slider_card.dart` — `inactiveTrackColor`: `AppColors.slate200` → `onSurface.withValues(alpha: 0.2)`
 
 ---
+
+## Distribuição iOS (TestFlight) — 2026-07-15
+
+- [x] App criada no App Store Connect (Bundle ID `com.seniorease.mobile`)
+- [x] Archive + upload via Xcode (TestFlight)
+- [x] Ícone App Store 1024×1024 sem canal alpha (`Icon-App-1024x1024@1x.png`) — Apple rejeita RGBA com transparência (erro 90717)
+- [x] Avisos dSYM de frameworks Firebase (`FirebaseFirestoreInternal`, `grpc`, `absl`, etc.) durante upload — **não bloqueantes**; ignoráveis para distribuição beta
+- [ ] Convidar testers externos / partilhar link TestFlight com a turma (conforme necessidade)
 
 ## Vídeo e entrega final
 

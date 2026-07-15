@@ -451,5 +451,5 @@ interface NotificationRecord {
 Ver secção **Fase 7** do plano de implementação (GAP-002) para instruções detalhadas de:
 - Geração da chave VAPID no Firebase Console (web)
 - `POST_NOTIFICATIONS` no `AndroidManifest.xml` (Android 13+)
-- APNs Auth Key para iOS
+- ~~APNs Auth Key para iOS~~ — **concluído 2026-07-15:** Auth Key na Apple Developer + upload no Firebase Cloud Messaging; push validado em iPhone físico
 - Deploy: `firebase deploy --config memory-bank/firebase.json --only functions,firestore:rules,firestore:indexes`
