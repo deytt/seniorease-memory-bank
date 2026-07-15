@@ -38,12 +38,26 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Web (seniorease-web)
 
 **Responsável:** Henrique / Tati
-**Status:** Em andamento — branch `feature/update-design-system` (a partir de `develop`, novo sprint)
+**Status:** Em andamento — Henrique: branch `feat/web-profile` (Perfil Figma `15:5798`); Tati: branch `feature/update-design-system`
 
 **Concluído anteriormente (Henrique):**
 
 - **Central de Lembretes (PR #12):** interface completa de gerenciamento de lembretes na web
-- **Modo Guiado Figma `15:4931`:** sidebar, hub `/tasks/guided`, lógica sequencial (passos confirmados persistidos), título da tarefa no topo, fundo `#f8fafc`, fix `dueDate` opcional no Firestore
+- **Modo Guiado Figma `15:4931` (PR #14):** sidebar, hub `/tasks/guided`, lógica sequencial, responsividade, saída para `/tasks`
+
+**Em curso (Henrique — `feat/web-profile`):** Tela Perfil `/profile` alinhada ao Figma `15:5798` — layout 2 colunas, cards, campos `#f8fafc`, botões de segurança, stats do histórico. **Estrutura de dados espelhada ao mobile (2026-07-13):** `Address` + `IProfileRepository` (merge/`updatedAt`), `UserPreferences` ADR-020 (4 campos de notificação), formulário de edição com endereço e CPF oculto em Modo Básico.
+
+**Concluído nesta frente (2026-07-13, Henrique):**
+- Upload de foto de perfil — `UploadProfilePhotoUseCase` + Firebase Storage integrado em `/profile`
+- Alterar senha — `ChangePasswordUseCase` com reautenticação Firebase Auth
+- Verificar e-mail — tela unificada `/profile/security` (ADR-016, paridade mobile)
+- Alterar senha — integrado na mesma tela de Segurança
+- Máscaras de input — `MaskedInput` em telefone, CPF, data de nascimento e CEP no formulário de edição
+- Data de nascimento exibida em formato amigável na view do perfil (`formatBirthDateDisplay`)
+- Removido 2FA (TOTP) da web — paridade com mobile (verificação por e-mail apenas)
+- Card "Precisa de Ajuda?" (1-800-SENIOR) no perfil
+- Tela Sobre (`/about`)
+- Tour guiado do Perfil (`driver.js`, Modo Básico + botão `?`)
 
 **Concluído nesta frente (2026-07-12, Tati):**
 
@@ -61,13 +75,10 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Próximos passos prioritários (segunda fase / time):**
 
 1. Testes unitários — vitest/jest para Domain, Data e Presentation
-2. Upload de foto de perfil (Firebase Storage)
-3. Alterar senha real (Firebase Auth `updatePassword`)
-4. Tela "Sobre" (`/about`)
-5. Tour Guiado (instalar `driver.js`, criar infra port/adapter)
-6. Ordenação por dueDate no Firestore
-7. FCM Web + Service Worker
-8. Alinhar `UserPreferences` e `HistoryEvent` ao schema ADR-020 / ADR-017 (ainda desatualizados na web)
+2. Tour Guiado nas demais telas (infra genérica port/adapter)
+3. Ordenação por dueDate no Firestore
+4. FCM Web + Service Worker
+5. Ativar bucket Firebase Storage + publicar `storage.rules` (David)
 
 ### Mobile (seniorease-mobile)
 

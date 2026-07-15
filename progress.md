@@ -50,7 +50,7 @@
 
 ## Web Platform — seniorease-web
 
-> Última atualização: 2026-07-12 (Storybook com 19 stories concluído + correção de bugs infraestrutura)
+> Última atualização: 2026-07-15 (Perfil: tour 7 passos, validação nome 3–30, testes vitest iniciais)
 
 ### Configuração inicial
 
@@ -155,17 +155,23 @@
 
 > Mesma collection `users/{userId}` do mobile; lógica análoga.
 
-- [x] Tela Perfil (`/profile`) — avatar com iniciais, informações pessoais, preferências de notificação, links para segurança
-- [x] Tela Edit Profile (`/profile/edit`) — formulário de edição de dados
+- [x] Tela Perfil (`/profile`) — avatar com iniciais, informações pessoais, endereço, preferências de notificação (ADR-020), links para segurança
+- [x] Tela Edit Profile (`/profile/edit`) — formulário com nome (3–30 caracteres, paridade mobile), data de nascimento, telefone, CPF e endereço (7 campos, ADR-014)
+- [x] Estrutura de dados alinhada ao mobile — `Address`, `IProfileRepository`, `SaveUserProfileUseCase` (merge + `updatedAt`), `UserPreferences` ADR-020
+- [x] Tela Preferências de Notificação (`/profile/notifications/edit`) — toggles + offsets para tarefas e lembretes (ADR-020)
+- [x] CPF oculto em Modo Básico — **concluído** (2026-07-13)
 - [x] Tela Segurança (`/profile/security`) — formulário de alteração de senha (UI completa)
 - [x] Modal de confirmação no Logout (corrigido 2026-07-07 — estava sem confirmação)
-- [ ] Tela "Sobre" (About) — **pendente** (sem rota `/about`)
-- [ ] Upload de foto de perfil para Firebase Storage — **pendente** (TODO no código)
-- [ ] Máscaras de input (telefone, CPF, data, CEP) — **pendente** (lib não instalada)
-- [ ] CPF oculto em Modo Básico — **pendente**
-- [ ] Verificar conta por e-mail (Firebase email verification UI) — **pendente**
-- [ ] Alterar senha — implementação real Firebase (`updatePassword`) — **pendente** (UI existe, lógica não)
-- [ ] Card "Precisa de Ajuda?" (1-800-SENIOR) — **pendente**
+- [x] Tela "Sobre" (`/about`) — identidade do app, versão e link para a aplicação web (2026-07-15)
+- [x] Upload de foto de perfil para Firebase Storage — `UploadProfilePhotoUseCase` + integração na página `/profile` (2026-07-13)
+- [x] Máscaras de input (telefone, CPF, data, CEP) — `inputMasks.ts` + `MaskedInput` no formulário de edição (2026-07-13)
+- [x] Verificar conta por e-mail — tela unificada `/profile/security` (ADR-016, paridade mobile) (2026-07-15)
+- [x] Alterar senha — integrado na tela `/profile/security` (2026-07-15)
+- [x] Removido 2FA (TOTP) — web espelha mobile (verificação por e-mail, sem MFA) (2026-07-15)
+- [x] Card "Precisa de Ajuda?" (1-800-SENIOR) — no perfil (2026-07-15)
+- [x] Validação do nome (3–30 caracteres) — `profileNameValidation` no domain + formulário de edição (2026-07-15)
+- [x] Tour guiado do Perfil — `driver.js`, 7 passos (foto, status, ajuda, dados pessoais, endereço, notificações, conta e suporte), estilização SeniorEase, oferta em Modo Básico + botão `?` (2026-07-15)
+- [x] Testes unitários do módulo Perfil — `validateProfileName`, `SaveUserProfileUseCase`, `profileTourSteps`, `tourStorage` (vitest, 2026-07-15)
 
 > Nota: a **biometria** é exclusiva do mobile. Não se aplica à Web.
 
@@ -173,15 +179,17 @@
 
 > Mesmo comportamento do mobile (ADR-013), com biblioteca React equivalente.
 
-- [ ] Biblioteca de tour/onboarding escolhida e adicionada (ex.: `react-joyride` / `driver.js`)
-- [ ] Infra genérica de tour e todas as telas — **pendente** (nenhum item iniciado)
+- [x] Biblioteca de tour/onboarding — `driver.js` (2026-07-15)
+- [x] Tour do Perfil — 7 passos, oferta em Modo Básico, botão `?` manual, overlay com destaque branco (2026-07-15)
+- [ ] Infra genérica de tour para as demais telas — **pendente**
 
 ### Qualidade de código
 
 - [x] ESLint: 0 erros, 0 warnings (verificado 2026-07-07)
 - [x] TypeScript strict: 0 erros (verificado 2026-07-07)
 - [x] CI/CD configurado (GitHub Actions: lint + type-check + build em PR; deploy Vercel em master)
-- [ ] Testes unitários (Domain, Data, Presentation) — **pendente** (0 testes existem)
+- [x] Vitest configurado (`npm test`) — cobertura inicial do módulo Perfil e tour (14 testes, 2026-07-15)
+- [ ] Testes unitários (Domain, Data, Presentation) — **em andamento** (demais módulos ainda sem cobertura)
 
 ---
 
@@ -189,17 +197,20 @@
 
 | Feature               | Status atual                    | O que falta                                                                                |
 | --------------------- | ------------------------------- | ------------------------------------------------------------------------------------------ |
-| Upload de foto        | UI pronta (botão + file input)  | Integrar `getStorage`, `uploadBytes`, `getDownloadURL` do Firebase Storage                 |
-| Alterar senha         | Formulário de UI completo       | Chamar `reauthenticateWithCredential` + `updatePassword` do Firebase Auth                  |
-| Verificar e-mail      | Sem UI                          | Adicionar botão em `/profile/security` que chama `sendEmailVerification`                   |
+| Upload de foto        | Integrado (`UploadProfilePhotoUseCase`) | Ativar bucket Storage + publicar `storage.rules` no Firebase Console                         |
+| Alterar senha         | Integrado (`ChangePasswordUseCase`)     | —                                                                                          |
+| Verificar e-mail      | Tela `/profile/security` (unificada)    | —                                                                                          |
+| Alterar senha         | Integrado em `/profile/security`        | —                                                                                          |
 | Storybook             | Não iniciado                    | Instalar `@storybook/nextjs`, criar stories para Button, Input, Card, Badge, Dialog, Toast |
 | Testes unitários      | 0 testes                        | Implementar com `vitest` ou `jest` para domain entities, use cases e hooks                 |
 | Tela "Sobre"          | Ausente                         | Criar rota `/about` com identidade do app, versão e link para o repositório                |
 | Tour Guiado           | Ausente                         | Instalar `driver.js` ou `react-joyride`, criar abstração port/adapter análoga ao mobile    |
 | Ordenação por dueDate | Sem ordenação no repo           | Adicionar `.orderBy('dueDate', 'asc')` nas queries Firestore + `nulls last` em memória     |
 | FCM Web               | Config existe (`fcmService.ts`) | Registrar Service Worker, solicitar permissão, integrar no `FCMProvider`                   |
-| Máscaras de input     | Sem lib                         | Instalar `imask` ou `react-input-mask`, aplicar em telefone/CPF/CEP                        |
-| CPF em Modo Básico    | Campo existe no form            | Ler `preferences.interfaceMode` e ocultar campo CPF quando `basic`                         |
+| Máscaras de input     | `MaskedInput` no edit profile    | —                                                                                          |
+| CPF em Modo Básico    | Campo oculto em Modo Básico     | —                                                                                          |
+| Tour guiado (Perfil)  | 7 passos com `driver.js`        | Infra genérica para demais telas                                                           |
+| Nome do perfil        | Validação 3–30 caracteres       | —                                                                                          |
 
 ---
 
