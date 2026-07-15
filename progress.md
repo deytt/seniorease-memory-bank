@@ -239,7 +239,7 @@
 - [x] Google Sign-In no iOS — `GoogleService-Info.plist` adicionado ao target **Runner** (Copy Bundle Resources) + URL scheme `REVERSED_CLIENT_ID` no `Info.plist`; crash ao tocar em "Entrar com Google" resolvido (2026-07-15). **Nota:** não incluir `Info.plist` em Copy Bundle Resources (causa `Multiple commands produce … Info.plist`)
 - [x] Rota protegida
 - [x] **Biometric App Lock** (2026-07-09) — `BiometricLockScreen` (`/biometric-lock`): auto-dispara prompt nativo no `initState`, botão "Tentar novamente" e botão secundário "Usar senha" (sign-out → `/login`); `biometricLockedProvider` (StateProvider, reset por sessão) + `biometricEnabledProvider` (Provider síncrono derivado); router redirect: `isLoggedIn && biometricEnabled && biometricLocked → /biometric-lock`; `GoRouterRefreshNotifier` escuta `biometricLockedProvider` + `biometricControllerProvider`; credenciais mock e botão biométrico redundante removidos da `LoginScreen`
-- [ ] **Bug conhecido (2026-07-15):** conta Google lembrada + biometria — após Face ID em "Continuar com Google", o sheet OAuth/modal de permissão pode ser dismissado automaticamente (race de UI no iOS). Tentativa de delay 400 ms revertida (não resolveu). Próximo caminho sugerido: `signInSilently` após biometria e/ou não chamar `GoogleSignIn.signOut()` no logout da app
+- [x] **ADR-022 (2026-07-15):** reauth Google silenciosa após biometria — logout só Firebase Auth; `signInWithGoogle(preferSilent:)` + `clearGoogleSession`; corrige race Face ID ↔ sheet OAuth no iOS
 
 ### Home
 

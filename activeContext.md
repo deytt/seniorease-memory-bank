@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-15 (David — APNs iOS validado; Google Sign-In iOS via GoogleService-Info no target; TestFlight; bug Face ID + Google em aberto)
+> Última atualização: 2026-07-15 (David — ADR-022 reauth Google silenciosa; APNs iOS; TestFlight)
 
 ---
 
@@ -78,7 +78,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - **APNs / Push iOS:** chave APNs no Firebase; notificações a funcionar no dispositivo físico.
 - **TestFlight:** app criada no App Store Connect (`com.seniorease.mobile`); Archive/upload OK após corrigir ícone 1024 sem alpha (erro 90717). Avisos dSYM Firebase no upload são não bloqueantes.
 - **Google Sign-In iOS:** crash ao tocar no botão — causa: `GoogleService-Info.plist` existia em disco mas **não** estava no target Runner (Copy Bundle Resources). Corrigido no Xcode. Evitar adicionar `Info.plist` aos Resources (`Multiple commands produce … Info.plist`).
-- **Bug em aberto — Face ID + “Continuar com Google”:** com conta Google lembrada e biometria ativa, após Face ID o sheet OAuth/modal pode fechar sozinho (race de UI iOS). Tentativa de `Future.delayed(400ms)` aplicada e **revertida** (não resolveu). Solução sugerida a implementar: `GoogleSignIn.signInSilently()` após biometria e/ou não chamar `_googleSignIn.signOut()` no logout (manter sessão Google no device para reauth silenciosa).
+- **ADR-022 — Face ID + “Continuar com Google”:** corrigido. Logout só limpa Firebase Auth (preserva sessão Google); re-login com conta Google lembrada usa `preferSilent: true` → `signInSilently()` (sem sheet OAuth); "Usar outra conta" chama `clearGoogleSession()`. Happy path: Face ID → silent Google → Home (iOS e Android).
 
 **Status anterior:** Biometric App Lock implementado (2026-07-09) — fluxo de autenticação biométrica como ecrã de bloqueio da app.
 **Implementado (histórico recente):**
@@ -89,7 +89,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - Router atualizado: nova rota `/biometric-lock`, redirect `isLoggedIn && biometricEnabled && biometricLocked → /biometric-lock`, `GoRouterRefreshNotifier` escuta `biometricLockedProvider` + `biometricControllerProvider`.
 - `LoginScreen` limpa: credenciais mock (`senior@teste.com` / `123456`) removidas, botão "Entrar com biometria" removido (coberto pelo lock screen).
 - Testes: `biometric_usecases_test.dart` (6 casos) + `biometric_controller_test.dart` (4 casos).
-  **Próximo passo:** corrigir race Face ID + Google (signInSilently); gravação do vídeo de demo + avaliação interna final antes da entrega.
+  **Próximo passo:** gravação do vídeo de demo + avaliação interna final antes da entrega.
 - `core/widgets/senior_feedback_overlay.dart` — novo widget genérico reutilizável com `check_animation.json`
 - Tarefas: guided task, task details (conclusão), create task (criação) usam `SeniorFeedbackOverlay`
 - Lembretes: criação, edição e conclusão (mark done) usam `SeniorFeedbackOverlay`; feedback `SeniorFeedback.success()` em todos os fluxos de sucesso
@@ -122,7 +122,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ## Decisões em aberto
 
-- **Login Google + biometria (iOS):** após Face ID no fluxo “Continuar com Google” (conta lembrada), o sheet OAuth pode ser dismissado pelo sistema. Delay pós-Face ID não resolveu. Decidir entre `signInSilently` + manter sessão Google no logout vs. só `FirebaseAuth.signOut()`, ou outra abordagem de reauth.
+- (nenhuma em aberto nesta frente)
 
 ---
 
