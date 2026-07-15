@@ -627,6 +627,31 @@ Nenhuma mudança no schema. As chaves `tour_{userId}_{tourId}_offered` e `tour_{
 
 ---
 
+## ADR-022 — Reauth Google silenciosa após biometria (preservar sessão Google no logout)
+
+**Data:** 2026-07-15
+**Status:** Aceito
+
+**Contexto:**
+Com conta Google lembrada e biometria activa, o fluxo "Continuar com Google" fazia Face ID e de seguida `GoogleSignIn.signIn()` interactivo. No iOS, o dismiss do Face ID podia fechar o sheet OAuth (race de UI), deixando o utilizador na tela de login apesar do Face ID ter sucesso. No logout, `_googleSignIn.signOut()` limpava a sessão Google e forçava sempre o fluxo interactivo.
+
+**Decisão:**
+1. No `signOut` da app, terminar **apenas** a sessão Firebase Auth — preservar a sessão Google no dispositivo.
+2. Em re-login com Google lembrado, usar `signInWithGoogle(preferSilent: true)` → `signInSilently()` primeiro; fallback para `signIn()` só se não houver sessão em cache (com pequeno delay pós-biometria no edge case).
+3. Em "Usar outra conta", chamar `clearGoogleSession()` para forçar o seletor no próximo login Google.
+4. O botão "Entrar com Google" do formulário completo continua interactivo (`preferSilent: false`).
+
+**Motivo:**
+- Happy path sem empilhar dois prompts nativos (biometria + OAuth) — sólido em iOS e Android.
+- Delay 400 ms global pós-Face ID já tinha sido tentado e não resolvia; o silent reauth elimina o sheet na maioria dos casos.
+- Troca de conta continua possível via `clearGoogleSession`.
+
+**Alternativas consideradas:**
+- Invertir ordem (OAuth → Face ID → Firebase) — mais complexo (separar obtenção de credencial do `signInWithCredential`) e ainda apresenta UI OAuth desnecessária no re-login.
+- Delay fixo sempre antes de `signIn()` — já falhou em produção.
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:
