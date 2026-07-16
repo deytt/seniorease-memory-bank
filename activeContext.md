@@ -38,16 +38,17 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Web (seniorease-web)
 
 **Responsável:** Henrique / Tati
-**Status:** Em andamento — Henrique: branch `feat/web-profile` (Perfil Figma `15:5798`); Tati: branch `feature/update-design-system`
+**Status:** Em andamento — Henrique: branch `feat/web-history-figma` (Histórico Figma `15:5492`); Tati: branch `feature/update-design-system`
 
 **Concluído anteriormente (Henrique):**
 
+- **Módulo Perfil (PR #19):** tela `/profile` alinhada ao Figma `15:5798`, tour guiado, segurança unificada, upload de foto
 - **Central de Lembretes (PR #12):** interface completa de gerenciamento de lembretes na web
 - **Modo Guiado Figma `15:4931` (PR #14):** sidebar, hub `/tasks/guided`, lógica sequencial, responsividade, saída para `/tasks`
 
-**Em curso (Henrique — `feat/web-profile`):** Tela Perfil `/profile` alinhada ao Figma `15:5798` — layout 2 colunas, cards, campos `#f8fafc`, botões de segurança, stats do histórico. **Estrutura de dados espelhada ao mobile (2026-07-13):** `Address` + `IProfileRepository` (merge/`updatedAt`), `UserPreferences` ADR-020 (4 campos de notificação), formulário de edição com endereço e CPF oculto em Modo Básico.
+**Em curso (Henrique — `feat/web-history-figma`):** Tela Histórico `/history` — UI Figma `15:5492` + paridade de dados com mobile: schema unificado, tracks completos, stats on-read, conquista de 7 dias persistida, tour guiado 3 passos (concluído).
 
-**Concluído nesta frente (2026-07-13, Henrique):**
+**Concluído nesta frente (2026-07-13, Henrique — Perfil):**
 - Upload de foto de perfil — `UploadProfilePhotoUseCase` + Firebase Storage integrado em `/profile`
 - Alterar senha — `ChangePasswordUseCase` com reautenticação Firebase Auth
 - Verificar e-mail — tela unificada `/profile/security` (ADR-016, paridade mobile)
@@ -70,7 +71,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - **Projeto Next.js rodando** em http://localhost:3000 (dev server com Turbopack)
 - **Storybook rodando** em http://localhost:6006 (todos 21 componentes renderizando, sem erros de import)
 
-**Próximo nesta frente (ordem acordada):** Perfil → Histórico → Dashboard.
+**Próximo nesta frente (ordem acordada):** Histórico → Dashboard.
 
 **Próximos passos prioritários (segunda fase / time):**
 
