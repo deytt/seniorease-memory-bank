@@ -88,14 +88,16 @@
 
 ### Dashboard
 
-> Espelha a Home do mobile: saudação dinâmica, botão de emergência, quick actions (Nova Tarefa, Acessibilidade, Emergência, Histórico), lembretes próximos, tarefas do dia e card de status de acessibilidade. Ver Figma `node 134-851`.
+> Espelha a Home do mobile: saudação dinâmica, sininho de notificações, quick actions (Nova Tarefa, Acessibilidade, Lembretes, Histórico), lembretes próximos, tarefas do dia e card de status de acessibilidade. Ver Figma `134-851`.
 
 - [x] Tela Dashboard com saudação dinâmica (bom dia/tarde/noite)
-- [x] Botão Emergência (SOS) no header
-- [x] Grid de Ações Rápidas (2×2: Nova Tarefa, Acessibilidade, Emergência, Histórico)
-- [x] Seção "Tarefas de Hoje" ligada ao Firestore (até 4 tarefas)
+- [x] Sininho de notificações no header (badge vermelho + `/notifications`) — paridade mobile (2026-07-16)
+- [x] Grid de Ações Rápidas (2×2: Nova Tarefa, Acessibilidade, Lembretes, Histórico) — ícones Figma `134-851` (2026-07-16)
+- [x] Banner de encorajamento diário com stats reais (ontem/hoje/restantes)
+- [x] Seção "Tarefas de Hoje" com badges categoria/prioridade alinhados à Task List (Alta/Média/Baixa + cores por categoria) — (2026-07-16)
 - [x] Seção "Lembretes Próximos" ligada ao Firestore (até 3 lembretes)
-- [x] Card "Status de Acessibilidade" lendo preferências reais do store (corrigido 2026-07-07)
+- [x] Card "Status de Acessibilidade" com fundo Figma `#eff6ff`, ícone `Accessibility` e campos da tela `/acessibility` (2026-07-16)
+- [x] `DashboardScreen` + `dashboardUtils` + testes vitest (2026-07-16)
 
 ### Documentação de componentes (Storybook)
 
@@ -148,7 +150,8 @@
 - [x] Filtros combináveis Hoje + categoria; Modo Básico simplifica pills; `ReminderCard` reutilizável — Figma `15:5163`
 - [x] Edição (`/reminders/[id]/edit`) e exclusão com modal de confirmação — paridade com mobile (2026-07-10)
 - [x] Responsividade Lembretes + shell: sidebar `lg` + auto-colapso &lt;1280px; card com ações empilhadas até `xl`; filtros com wrap; header empilhável (2026-07-10)
-- [ ] FCM Web + Service Worker para push notifications (pendente — infra existe mas não integrada)
+- [ ] FCM Web — registo de token + SW + foreground handler integrados; falta configurar chave VAPID no `.env.local` e credenciais reais no `firebase-messaging-sw.js` para push em produção (2026-07-16)
+- [x] Tela Notificações (`/notifications`) — histórico Firestore `notifications/{id}`, sininho com badge de hoje, navegação à entidade (2026-07-16)
 - [x] Tela History (`/history`) — alinhada ao Figma `15:5492` + paridade mobile (ADR-017): schema `type`/`occurredAt`/`entityId`, `HistoryRecorder` best-effort, tracks em tarefas/lembretes/perfil/acessibilidade/verificação de e-mail, `computeHistoryStats` (semana desde segunda, streak com tarefas+lembretes), conquista `streakAchievement` persistida aos 7 dias; tour guiado 3 passos (Modo Básico + botão `?`); 26 testes vitest (2026-07-16)
 
 ### Módulo 3 — Perfil / Definições

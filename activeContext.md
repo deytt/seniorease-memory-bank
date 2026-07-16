@@ -46,7 +46,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - **Central de Lembretes (PR #12):** interface completa de gerenciamento de lembretes na web
 - **Modo Guiado Figma `15:4931` (PR #14):** sidebar, hub `/tasks/guided`, lógica sequencial, responsividade, saída para `/tasks`
 
-**Em curso (Henrique — `feat/web-history-figma`):** Tela Histórico `/history` — UI Figma `15:5492` + paridade de dados com mobile: schema unificado, tracks completos, stats on-read, conquista de 7 dias persistida, tour guiado 3 passos (concluído).
+**Concluído (Henrique — `feat/web-dashboard-figma`, 2026-07-16):** Dashboard `/dashboard` alinhado ao Figma `134-851` — sininho de notificações, badges de tarefas, quick actions com ícones Figma, card de acessibilidade, tela `/notifications`, seed de dados demo e FCM web parcialmente integrado.
 
 **Concluído nesta frente (2026-07-13, Henrique — Perfil):**
 - Upload de foto de perfil — `UploadProfilePhotoUseCase` + Firebase Storage integrado em `/profile`
@@ -71,7 +71,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - **Projeto Next.js rodando** em http://localhost:3000 (dev server com Turbopack)
 - **Storybook rodando** em http://localhost:6006 (todos 21 componentes renderizando, sem erros de import)
 
-**Próximo nesta frente (ordem acordada):** Histórico → Dashboard.
+**Próximo nesta frente (ordem acordada):** entrega hackathon (vídeo, repos públicos) após validação final do Dashboard.
 
 **Próximos passos prioritários (segunda fase / time):**
 
