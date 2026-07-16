@@ -50,7 +50,7 @@
 
 ## Web Platform — seniorease-web
 
-> Última atualização: 2026-07-15 (Perfil: tour 7 passos, validação nome 3–30, testes vitest iniciais)
+> Última atualização: 2026-07-16 (Perfil: tour 8 passos, Histórico: tour 3 passos)
 
 ### Configuração inicial
 
@@ -149,7 +149,7 @@
 - [x] Edição (`/reminders/[id]/edit`) e exclusão com modal de confirmação — paridade com mobile (2026-07-10)
 - [x] Responsividade Lembretes + shell: sidebar `lg` + auto-colapso &lt;1280px; card com ações empilhadas até `xl`; filtros com wrap; header empilhável (2026-07-10)
 - [ ] FCM Web + Service Worker para push notifications (pendente — infra existe mas não integrada)
-- [x] Tela History (`/history`) — stats (semana/streak/total/mês), banner de conquista, timeline de eventos
+- [x] Tela History (`/history`) — alinhada ao Figma `15:5492` + paridade mobile (ADR-017): schema `type`/`occurredAt`/`entityId`, `HistoryRecorder` best-effort, tracks em tarefas/lembretes/perfil/acessibilidade/verificação de e-mail, `computeHistoryStats` (semana desde segunda, streak com tarefas+lembretes), conquista `streakAchievement` persistida aos 7 dias; tour guiado 3 passos (Modo Básico + botão `?`); 26 testes vitest (2026-07-16)
 
 ### Módulo 3 — Perfil / Definições
 
@@ -170,7 +170,7 @@
 - [x] Removido 2FA (TOTP) — web espelha mobile (verificação por e-mail, sem MFA) (2026-07-15)
 - [x] Card "Precisa de Ajuda?" (1-800-SENIOR) — no perfil (2026-07-15)
 - [x] Validação do nome (3–30 caracteres) — `profileNameValidation` no domain + formulário de edição (2026-07-15)
-- [x] Tour guiado do Perfil — `driver.js`, 7 passos (foto, status, ajuda, dados pessoais, endereço, notificações, conta e suporte), estilização SeniorEase, oferta em Modo Básico + botão `?` (2026-07-15)
+- [x] Tour guiado do Perfil — `driver.js`, 8 passos (visão geral, foto, status, ajuda, dados pessoais, endereço, notificações, conta e suporte), estilização SeniorEase, oferta em Modo Básico + botão `?` (2026-07-16)
 - [x] Testes unitários do módulo Perfil — `validateProfileName`, `SaveUserProfileUseCase`, `profileTourSteps`, `tourStorage` (vitest, 2026-07-15)
 
 > Nota: a **biometria** é exclusiva do mobile. Não se aplica à Web.
@@ -180,7 +180,8 @@
 > Mesmo comportamento do mobile (ADR-013), com biblioteca React equivalente.
 
 - [x] Biblioteca de tour/onboarding — `driver.js` (2026-07-15)
-- [x] Tour do Perfil — 7 passos, oferta em Modo Básico, botão `?` manual, overlay com destaque branco (2026-07-15)
+- [x] Tour do Perfil — 8 passos, oferta em Modo Básico, botão `?` manual, overlay com destaque branco (2026-07-16)
+- [x] Tour do Histórico — 3 passos (header, estatísticas, atividade recente), mesma estilização `profileTour.css`, oferta em Modo Básico + botão `?` (2026-07-16)
 - [ ] Infra genérica de tour para as demais telas — **pendente**
 
 ### Qualidade de código
@@ -209,7 +210,7 @@
 | FCM Web               | Config existe (`fcmService.ts`) | Registrar Service Worker, solicitar permissão, integrar no `FCMProvider`                   |
 | Máscaras de input     | `MaskedInput` no edit profile    | —                                                                                          |
 | CPF em Modo Básico    | Campo oculto em Modo Básico     | —                                                                                          |
-| Tour guiado (Perfil)  | 7 passos com `driver.js`        | Infra genérica para demais telas                                                           |
+| Tour guiado (Perfil)  | 8 passos com `driver.js`        | Infra genérica para demais telas                                                           |
 | Nome do perfil        | Validação 3–30 caracteres       | —                                                                                          |
 
 ---

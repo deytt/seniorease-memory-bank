@@ -168,7 +168,7 @@
 |-------|---------------|-----------|
 | `id` | `string` | ID gerado pelo Firestore |
 | `userId` | `string` | UID do dono |
-| `type` | `string` | `HistoryActionType`: `taskCreated` \| `taskCompleted` \| `taskStepCompleted` \| `taskDeleted` \| `reminderCreated` \| `reminderCompleted` \| `reminderEdited` \| `reminderDeleted` \| `accessibilityChanged` \| `profileUpdated` \| `accountVerified`. Só `taskCompleted` e `reminderCompleted` contam para streak/semana |
+| `type` | `string` | `HistoryActionType`: `taskCreated` \| `taskCompleted` \| `taskStepCompleted` \| `taskDeleted` \| `reminderCreated` \| `reminderCompleted` \| `reminderEdited` \| `reminderDeleted` \| `accessibilityChanged` \| `profileUpdated` \| `accountVerified` \| `streakAchievement`. Só `taskCompleted` e `reminderCompleted` contam para streak/semana |
 | `title` | `string` | Snapshot do texto pronto para exibir (ex.: `"Concluiu: Tomar remédio"`) — preserva o histórico mesmo após apagar o item de origem |
 | `entityId` | `string \| null` | ID da tarefa/lembrete de origem (navegação futura) |
 | `category` | `string \| null` | Categoria do item de origem (ícone/cor do card) |
@@ -309,7 +309,7 @@ Ver `firestore.rules` para o código completo.
 
 | Data | Mudança | ADR |
 |------|---------|-----|
-| 2026-07-06 | GAP-002: campo `reminderTime` removido de `tasks`; campo `notified` adicionado a `tasks` e `reminders`; campos `remindersEnabled`/`notificationTime` removidos de `preferences` e substituídos por `tasksNotificationsEnabled`, `taskNotificationOffset`, `remindersNotificationsEnabled`, `reminderNotificationOffset`; novas collections `notifications/{id}` e `users/{uid}/fcmTokens/{tokenId}`; 3 novos composite indexes; novas Firestore Rules para `notifications` e `fcmTokens` | ADR-020 |
+| 2026-07-16 | Web: alinhamento do schema `history` ao mobile (`type`, `occurredAt`, `entityId`); novo tipo `streakAchievement` para conquista de 7 dias; leitura compatível com campos legados da web | ADR-017 | campo `reminderTime` removido de `tasks`; campo `notified` adicionado a `tasks` e `reminders`; campos `remindersEnabled`/`notificationTime` removidos de `preferences` e substituídos por `tasksNotificationsEnabled`, `taskNotificationOffset`, `remindersNotificationsEnabled`, `reminderNotificationOffset`; novas collections `notifications/{id}` e `users/{uid}/fcmTokens/{tokenId}`; 3 novos composite indexes; novas Firestore Rules para `notifications` e `fcmTokens` | ADR-020 |
 | 2026-07-03 | Adicionada collection `history/{historyId}` (eventos de atividade) + 2 composite indexes (`userId,occurredAt` e `userId,type,occurredAt`) + rule (dono apenas). Contadores de semana/streak computados on-read | ADR-017 |
 | 2026-06-30 | Login com Google (OAuth): `users/{uid}` criado no 1.º login com `name`/`email`/`photoUrl` do provedor (sem sobrescrever perfil existente). Verificação de e-mail via Firebase Auth (`emailVerified`, fora do Firestore) | ADR-015 / ADR-016 |
 | 2026-06-30 | Estendido `users` com `phone`, `birthDate`, `cpf`, `photoUrl`, `address` e `updatedAt`; adicionado Firebase Storage (`profile_photos/{userId}`) + `storage.rules` para o Módulo Perfil | ADR-014 |
