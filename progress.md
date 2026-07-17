@@ -121,15 +121,20 @@
 > Mesma funcionalidade e mesma collection `preferences/{userId}` do mobile; lógica idêntica (incl. `maximum` derivado pelo `SavePreferencesUseCase`). Adaptação web: tema dinâmico via CSS custom properties.
 
 - [x] Tela Accessibility Center (`/acessibility`)
-- [x] Toggle de tamanho de fonte — slider com 4 níveis (Pequena/Média/Grande/Extra Grande)
+- [x] Toggle de tamanho de fonte — slider com 4 níveis (Pequena/Média/Grande/Extra Grande); `aria-valuetext` + `aria-describedby`
 - [x] Toggle de Dark Mode — mapeia `preferences.darkMode`; classe `.dark` no `<html>`
 - [x] Toggle de contraste (Alto Contraste) — `[data-contrast="high"]` e `.dark[data-contrast="maximum"]` no CSS
-- [x] Toggle de Espaçamento (Compacto / Confortável / Espaçoso) — adicionado 2026-07-07
-- [x] Toggle de Modo Básico / Avançado — `data-interface-mode` no `<html>`
+- [x] Toggle de Espaçamento (Compacto / Confortável / Espaçoso) — `data-spacing` em `<html>` + seletores CSS `.a11y-space-card`, `.a11y-space-section`, `.a11y-space-form`, `.a11y-space-list`
+- [x] Toggle de Modo Básico / Avançado — `data-interface-mode` no `<html>` + CSS `.advanced-only { display: none }` em modo básico
 - [x] Toggle de Feedback de Áudio e Tátil — `audioFeedbackEnabled`
-- [x] Toggle de Botões Maiores / áreas de toque — `.a11y-large-touch` com `min-height: 64px`
+- [x] Toggle de Botões Maiores / áreas de toque — `.a11y-large-touch` com `min-height: 64px` (cobre `button`, `input`, `select`, `textarea`, `a[role="button"]`)
 - [x] Persistência das preferências no Firestore
 - [x] Redefinir para padrões com modal de confirmação
+- [x] Tour Guiado (4 passos) com spotlight na seção ativa, barra de progresso e botão "Passo Anterior" — equivalente ao `SeniorShowcase` do mobile
+- [x] Skip navigation link (`#main-content`) no layout do app — WCAG 2.4.1
+- [x] `role="status"` + `aria-live="polite"` nos estados de loading de todas as telas principais
+- [x] `aria-label` em botões de ícone (editar, excluir, marcar como concluído) nos cards de tarefa e lembrete
+- [x] `.advanced-only` aplicado no dashboard (stats do encorajamento, card de status de acessibilidade, link de histórico)
 
 ### Módulo 2 — Tarefas
 
@@ -150,8 +155,8 @@
 - [x] Filtros combináveis Hoje + categoria; Modo Básico simplifica pills; `ReminderCard` reutilizável — Figma `15:5163`
 - [x] Edição (`/reminders/[id]/edit`) e exclusão com modal de confirmação — paridade com mobile (2026-07-10)
 - [x] Responsividade Lembretes + shell: sidebar `lg` + auto-colapso &lt;1280px; card com ações empilhadas até `xl`; filtros com wrap; header empilhável (2026-07-10)
-- [ ] FCM Web — registo de token + SW + foreground handler integrados; falta configurar chave VAPID no `.env.local` e credenciais reais no `firebase-messaging-sw.js` para push em produção (2026-07-16)
-- [x] Tela Notificações (`/notifications`) — histórico Firestore `notifications/{id}`, sininho com badge de hoje, navegação à entidade (2026-07-16)
+- [x] FCM Web + Service Worker — VAPID, SW configurável via env, token em `users/{uid}/fcmTokens/{token}`, histórico `notifications/{id}` via Cloud Function (2026-07-16)
+- [x] Tela Notificações (`/notifications`) — histórico Firestore, sininho com badge de hoje, navegação à entidade (2026-07-16)
 - [x] Tela History (`/history`) — alinhada ao Figma `15:5492` + paridade mobile (ADR-017): schema `type`/`occurredAt`/`entityId`, `HistoryRecorder` best-effort, tracks em tarefas/lembretes/perfil/acessibilidade/verificação de e-mail, `computeHistoryStats` (semana desde segunda, streak com tarefas+lembretes), conquista `streakAchievement` persistida aos 7 dias; tour guiado 3 passos (Modo Básico + botão `?`); 26 testes vitest (2026-07-16)
 
 ### Módulo 3 — Perfil / Definições
@@ -164,6 +169,7 @@
 - [x] Tela Preferências de Notificação (`/profile/notifications/edit`) — toggles + offsets para tarefas e lembretes (ADR-020)
 - [x] CPF oculto em Modo Básico — **concluído** (2026-07-13)
 - [x] Tela Segurança (`/profile/security`) — formulário de alteração de senha (UI completa)
+- [x] Tela Preferências de Notificação (`/profile/notifications`) — toggles e antecedência para tarefas/lembretes (`15m`, `30m`, `1h`, `6h`, `1d`) persistidos em `preferences/{userId}` para a Cloud Function
 - [x] Modal de confirmação no Logout (corrigido 2026-07-07 — estava sem confirmação)
 - [x] Tela "Sobre" (`/about`) — identidade do app, versão e link para a aplicação web (2026-07-15)
 - [x] Upload de foto de perfil para Firebase Storage — `UploadProfilePhotoUseCase` + integração na página `/profile` (2026-07-13)
