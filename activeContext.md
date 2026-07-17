@@ -45,8 +45,10 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - **Módulo Perfil (PR #19):** tela `/profile` alinhada ao Figma `15:5798`, tour guiado, segurança unificada, upload de foto
 - **Central de Lembretes (PR #12):** interface completa de gerenciamento de lembretes na web
 - **Modo Guiado Figma `15:4931` (PR #14):** sidebar, hub `/tasks/guided`, lógica sequencial, responsividade, saída para `/tasks`
+- **FCM Web + Sino de Notificações:** Service Worker configurável via env pública, VAPID, token em `users/{uid}/fcmTokens/{token}`, `/notifications` com histórico Firestore e badge do dia
+- **Preferências de Notificação Web:** `/profile/notifications/edit` com toggles e antecedência (`15m`, `30m`, `1h`, `6h`, `1d`) — campos ADR-020
 
-**Concluído (Henrique — `feat/web-dashboard-figma`, 2026-07-16):** Dashboard `/dashboard` alinhado ao Figma `134-851` — sininho de notificações, badges de tarefas, quick actions com ícones Figma, card de acessibilidade, tela `/notifications`, seed de dados demo e FCM web parcialmente integrado.
+**Concluído (Henrique — `feat/web-dashboard-figma`, 2026-07-16):** Dashboard `/dashboard` alinhado ao Figma `134-851` — sininho de notificações, badges de tarefas, quick actions com ícones Figma, card de acessibilidade, tela `/notifications`, seed de dados demo e FCM web integrado.
 
 **Concluído nesta frente (2026-07-13, Henrique — Perfil):**
 - Upload de foto de perfil — `UploadProfilePhotoUseCase` + Firebase Storage integrado em `/profile`
@@ -71,7 +73,15 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - **Projeto Next.js rodando** em http://localhost:3000 (dev server com Turbopack)
 - **Storybook rodando** em http://localhost:6006 (todos 21 componentes renderizando, sem erros de import)
 
-**Próximo nesta frente (ordem acordada):** entrega hackathon (vídeo, repos públicos) após validação final do Dashboard.
+**Concluído (2026-07-15, Vinicius — Acessibilidade Web + FCM):**
+
+- **Spacing scale efetivo:** `data-spacing` em `<html>` + seletores CSS `.a11y-space-*` com multiplicadores 0.85×/1.5×
+- **Interface mode básico real:** `[data-interface-mode="basic"] .advanced-only { display: none }`
+- **Contraste máximo derivado:** dark + high → `maximum` em runtime (ADR-009), tokens alinhados ao mobile
+- **Large touch targets / skip nav / tour / ARIA** na tela `/acessibility` e telas principais
+- **FCM Web completo:** SW com env pública, VAPID, `RegisterFcmTokenUseCase` / `RemoveFcmTokenUseCase`
+
+**Próximo nesta frente (ordem acordada):** entrega hackathon (vídeo, repos públicos) após validação final do merge develop + acessibilidade.
 
 **Próximos passos prioritários (segunda fase / time):**
 
