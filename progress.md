@@ -151,6 +151,8 @@
 - [ ] Ordenação por dueDate ascendente no repositório (pendente)
 - [ ] Card "Próxima Atividade" isolado no Dashboard (pendente — atualmente mostra lista de tarefas)
 - [x] Tela Reminder Center (`/reminders`) — lista, marcar concluído, ordenação por `scheduledAt` **desc** (PR #38, 2026-07-21)
+- [x] Composite index `idx-reminders-list-desc` documentado; web mitiga com ASC + reverse no cliente (`fix/web-tours-dashboard-polish`)
+- [x] Polish tours/dashboard/botões/toasts: fetch isolado no dashboard, `TourHelpButton` padronizado, Voltar/Sair hover-only, toasts sem Close, tour Acessibilidade no stack partilhado, Guia “Dashboard” (`fix/web-tours-dashboard-polish`)
 - [x] Tela Create Reminder (`/reminders/create`)
 - [x] Reminder alinhado ao schema/mobile (`category`, `notified`, `createdAt`; 5 categorias) — branch `feat/web-reminders-figma` (2026-07-10)
 - [x] Filtro modal combinável Hoje + categoria (espelho Tarefas/mobile) + chips ativos; Modo Básico com categorias reduzidas (PR #38, 2026-07-21)
