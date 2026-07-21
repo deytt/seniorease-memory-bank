@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-21 (Henrique — paridade web: lembretes, dashboard, guia, tours, UX shell)
+> Última atualização: 2026-07-21 (Henrique — paridade web lembretes/dashboard + polish tours)
 
 ---
 
@@ -38,17 +38,14 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Web (seniorease-web)
 
 **Responsável:** Henrique / Tati
-**Status:** Em andamento — lote de paridade web (lembretes, dashboard, guia, tours, UX) **mergeado em `develop`** (PRs #38–#44, 2026-07-21)
+**Status:** Em andamento — paridade web com mobile (lembretes, dashboard, tours, UX) mergeada em `develop`/`master` (PRs web #38–#50, 2026-07-21)
 
-**Concluído nesta frente (2026-07-21, Henrique — paridade mobile + UX):**
+**Concluído nesta frente (2026-07-21, Henrique):**
 
-- **Lembretes (PR #38):** ordenação `scheduledAt` desc; filtro modal combinável Hoje + categoria (chips + Modo Básico)
-- **Dashboard previews (PR #39):** tarefas e lembretes por data desc; preview de lembretes só incompletos futuros
-- **Guia do aplicativo (PR #40):** Ajuda rápida no Dashboard → `/guides`; link no Perfil; Histórico só no menu
-- **Infra de tour (PR #41):** `startSeniorEaseTour` + `usePageTour` + `TourChrome`
-- **Tours telas principais (PR #42):** Dashboard, Tarefas, Lembretes, Modo Guiado, Notificações; Acessibilidade via Guia
-- **Tours perfil/definições (PR #43):** Segurança, Sobre, Info Pessoais, Endereço, Pref. Notificação
-- **UX shell (PR #44):** fechar menu ao clicar fora / Escape; Sair do modo guiado sem fundo idle; lembretes `max-w-6xl`
+- **Lembretes lista (PR #50):** chips exclusivos Hoje / Medicação / Consultas (paridade mobile); default Hoje; `scheduledAt` ASC; remove modal combinável
+- **Dashboard previews:** “Próxima atividade” (1 pendente ASC) + “Lembretes de hoje” (dia civil ASC, inclui concluídos); hora 24h
+- **Polish tours/UX (PR #48/#49):** `TourHelpButton` padronizado; Voltar/Sair hover-only; toasts sem Close; tour Acessibilidade no stack partilhado; Guia “Dashboard”; favicon SE; tour Endereço removido do catálogo
+- **Lote anterior (PRs #38–#44):** Guia `/guides`, infra de tour, tours nas telas, shell UX
 
 **Concluído anteriormente (Henrique):**
 
@@ -59,7 +56,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - **Preferências de Notificação Web:** `/profile/notifications/edit` com toggles e antecedência (`15m`, `30m`, `1h`, `6h`, `1d`) — campos ADR-020
 - **Dashboard Figma `134-851`:** sininho, badges, quick actions, card de acessibilidade, seed demo
 
-**Próximo nesta frente:** polish tours/dashboard/botões/toasts na branch `fix/web-tours-dashboard-polish` (Henrique); entrega hackathon + validação final.
+**Próximo nesta frente:** entrega hackathon (vídeo, repos públicos) + validação final; opcional: `orderBy(dueDate)` na lista `/tasks` e ampliar testes unitários.
 
 **Próximos passos prioritários (segunda fase / time):**
 

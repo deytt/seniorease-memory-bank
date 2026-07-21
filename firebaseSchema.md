@@ -275,11 +275,13 @@ Ver `firestore.rules` para o código completo.
 
 | Index | Campos | Tipo | Quando usar |
 |-------|--------|------|-------------|
-| idx-reminders-today | `userId ASC, scheduledAt ASC` | Collection | Filtro "Hoje" (range + orderBy `scheduledAt` ASC) — mobile |
-| idx-reminders-list-desc | `userId ASC, scheduledAt DESC` | Collection | Lista web de lembretes (`orderBy scheduledAt desc`) |
-| idx-reminders-category-today | `userId ASC, category ASC, scheduledAt ASC` | Collection | Filtro por Categoria (com ou sem "Hoje") + orderBy `scheduledAt` |
+| idx-reminders-today | `userId ASC, scheduledAt ASC` | Collection | Filtro "Hoje" (range + orderBy `scheduledAt` ASC) — mobile; lista web também usa ASC |
+| idx-reminders-category-today | `userId ASC, category ASC, scheduledAt ASC` | Collection | Filtro por categoria + orderBy `scheduledAt` (mobile); web filtra categoria em memória |
+| idx-reminders-list-desc | `userId ASC, scheduledAt DESC` | Collection | **Opcional/legado** — usado brevemente pela web (PR #38); lista web voltou a ASC (PR #50) |
 
-> **Nota:** Os filtros de lembrete são **combináveis** (Categoria + "Hoje"). Qualquer query que filtre por `category` e ordene por `scheduledAt` usa `idx-reminders-category-today` (o mesmo index cobre Categoria isolada e Categoria + "Hoje"). O índice ASC **não** cobre `orderBy(..., "desc")` — a web precisa de `idx-reminders-list-desc`.
+> **Nota (mobile):** filtro da lista é **exclusivo** (chips Hoje \| Medicação \| Consultas). "Hoje" usa range server-side; categoria usa `where` + orderBy.
+>
+> **Nota (web, 2026-07-21):** filtro da lista alinhado ao mobile — chips exclusivos Hoje / Medicação / Consultas (default Hoje), filtragem em memória após fetch `userId` + `orderBy(scheduledAt asc)`. O índice DESC não é mais necessário para a lista web.
 
 ---
 
@@ -310,7 +312,9 @@ Ver `firestore.rules` para o código completo.
 
 | Data | Mudança | ADR |
 |------|---------|-----|
-| 2026-07-21 | Web: lista de lembretes ordena por `scheduledAt DESC` — novo composite index `idx-reminders-list-desc` (`userId ASC, scheduledAt DESC`) | — |
+| 2026-07-21 | Web: filtro de lembretes volta a chips exclusivos (Hoje / Medicação / Consultas) + `scheduledAt` ASC (paridade mobile, PR #50); `idx-reminders-list-desc` marcado como opcional/legado | — |
+| 2026-07-21 | Web: dashboard alinhado à Home mobile — “Próxima atividade” + “Lembretes de hoje”; polish tours/UX/favicon (PRs #48/#49) | — |
+| 2026-07-21 | Documentado composite index `idx-reminders-list-desc` (`userId ASC, scheduledAt DESC`) — uso web DESC revertido no mesmo dia | — |
 | 2026-07-16 | Web: alinhamento do schema `history` ao mobile (`type`, `occurredAt`, `entityId`); novo tipo `streakAchievement` para conquista de 7 dias; leitura compatível com campos legados da web | ADR-017 | campo `reminderTime` removido de `tasks`; campo `notified` adicionado a `tasks` e `reminders`; campos `remindersEnabled`/`notificationTime` removidos de `preferences` e substituídos por `tasksNotificationsEnabled`, `taskNotificationOffset`, `remindersNotificationsEnabled`, `reminderNotificationOffset`; novas collections `notifications/{id}` e `users/{uid}/fcmTokens/{tokenId}`; 3 novos composite indexes; novas Firestore Rules para `notifications` e `fcmTokens` | ADR-020 |
 | 2026-07-03 | Adicionada collection `history/{historyId}` (eventos de atividade) + 2 composite indexes (`userId,occurredAt` e `userId,type,occurredAt`) + rule (dono apenas). Contadores de semana/streak computados on-read | ADR-017 |
 | 2026-06-30 | Login com Google (OAuth): `users/{uid}` criado no 1.º login com `name`/`email`/`photoUrl` do provedor (sem sobrescrever perfil existente). Verificação de e-mail via Firebase Auth (`emailVerified`, fora do Firestore) | ADR-015 / ADR-016 |

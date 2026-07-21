@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-21 (Henrique — paridade web: lembretes, dashboard, guia, tours, UX)
+> Última atualização: 2026-07-21 (Henrique — paridade web lembretes/dashboard + polish tours)
 
 ---
 
@@ -50,7 +50,7 @@
 
 ## Web Platform — seniorease-web
 
-> Última atualização: 2026-07-21 (Henrique — paridade web: lembretes, dashboard, guia, tours, UX)
+> Última atualização: 2026-07-21 (Henrique — paridade web lembretes/dashboard + polish tours)
 
 ### Configuração inicial
 
@@ -88,7 +88,7 @@
 
 ### Dashboard
 
-> Espelha a Home do mobile: saudação dinâmica, sininho de notificações, quick actions (Nova Tarefa, Acessibilidade, Lembretes, Ajuda rápida), lembretes próximos, tarefas do dia e card de status de acessibilidade. Ver Figma `134-851`.
+> Espelha a Home do mobile: saudação dinâmica, sininho de notificações, quick actions (Nova Tarefa, Acessibilidade, Lembretes, Ajuda rápida), **Próxima atividade**, **Lembretes de hoje** e card de status de acessibilidade. Ver Figma `134-851`.
 
 - [x] Tela Dashboard com saudação dinâmica (bom dia/tarde/noite)
 - [x] Sininho de notificações no header (badge vermelho + `/notifications`) — paridade mobile (2026-07-16)
@@ -149,13 +149,14 @@
 - [x] Filtros na Task List (categoria + "hoje" + busca por título) — processamento em memória
 - [x] Labels de prioridade/categoria/status em português (corrigido 2026-07-07)
 - [ ] Ordenação por dueDate ascendente no repositório (pendente)
-- [ ] Card "Próxima Atividade" isolado no Dashboard (pendente — atualmente mostra lista de tarefas)
-- [x] Tela Reminder Center (`/reminders`) — lista, marcar concluído, ordenação por `scheduledAt` **desc** (PR #38, 2026-07-21)
-- [x] Composite index `idx-reminders-list-desc` documentado; web mitiga com ASC + reverse no cliente (`fix/web-tours-dashboard-polish`)
-- [x] Polish tours/dashboard/botões/toasts: fetch isolado no dashboard, `TourHelpButton` padronizado, Voltar/Sair hover-only, toasts sem Close, tour Acessibilidade no stack partilhado, Guia “Dashboard” (`fix/web-tours-dashboard-polish`)
+- [x] Card "Próxima Atividade" no Dashboard — paridade mobile (`getNextPendingTask`, 1 pendente ASC) (2026-07-21)
+- [x] Tela Reminder Center (`/reminders`) — lista, marcar concluído, ordenação por `scheduledAt` **ASC** (paridade mobile; PR #50, 2026-07-21)
+- [x] Filtro exclusivo por chips Hoje / Medicação / Consultas (default Hoje) — paridade mobile; remove modal combinável (PR #50, 2026-07-21)
+- [x] Dashboard: “Lembretes de hoje” (dia civil ASC, inclui concluídos, limite 3) + hora 24h (2026-07-21)
+- [x] Polish tours/dashboard/botões/toasts/favicon; tour Endereço removido do Guia (PRs #48/#49, 2026-07-21)
+- [x] Índice `idx-reminders-list-desc` permanece no `firestore.indexes.json` como opcional/legado (lista web voltou a ASC)
 - [x] Tela Create Reminder (`/reminders/create`)
 - [x] Reminder alinhado ao schema/mobile (`category`, `notified`, `createdAt`; 5 categorias) — branch `feat/web-reminders-figma` (2026-07-10)
-- [x] Filtro modal combinável Hoje + categoria (espelho Tarefas/mobile) + chips ativos; Modo Básico com categorias reduzidas (PR #38, 2026-07-21)
 - [x] Edição (`/reminders/[id]/edit`) e exclusão com modal de confirmação — paridade com mobile (2026-07-10)
 - [x] Responsividade Lembretes + shell: sidebar `lg` + auto-colapso &lt;1280px; container `max-w-6xl` alinhado ao shell (PR #44, 2026-07-21)
 - [x] FCM Web + Service Worker — VAPID, SW configurável via env, token em `users/{uid}/fcmTokens/{token}`, histórico `notifications/{id}` via Cloud Function (2026-07-16)
