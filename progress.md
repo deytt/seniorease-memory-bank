@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-15 (David — APNs iOS, Google Sign-In iOS via GoogleService-Info no target, TestFlight)
+> Última atualização: 2026-07-21 (Henrique — paridade web: lembretes, dashboard, guia, tours, UX)
 
 ---
 
@@ -50,7 +50,7 @@
 
 ## Web Platform — seniorease-web
 
-> Última atualização: 2026-07-16 (Perfil: tour 8 passos, Histórico: tour 3 passos)
+> Última atualização: 2026-07-21 (Henrique — paridade web: lembretes, dashboard, guia, tours, UX)
 
 ### Configuração inicial
 
@@ -88,14 +88,15 @@
 
 ### Dashboard
 
-> Espelha a Home do mobile: saudação dinâmica, sininho de notificações, quick actions (Nova Tarefa, Acessibilidade, Lembretes, Histórico), lembretes próximos, tarefas do dia e card de status de acessibilidade. Ver Figma `134-851`.
+> Espelha a Home do mobile: saudação dinâmica, sininho de notificações, quick actions (Nova Tarefa, Acessibilidade, Lembretes, Ajuda rápida), lembretes próximos, tarefas do dia e card de status de acessibilidade. Ver Figma `134-851`.
 
 - [x] Tela Dashboard com saudação dinâmica (bom dia/tarde/noite)
 - [x] Sininho de notificações no header (badge vermelho + `/notifications`) — paridade mobile (2026-07-16)
-- [x] Grid de Ações Rápidas (2×2: Nova Tarefa, Acessibilidade, Lembretes, Histórico) — ícones Figma `134-851` (2026-07-16)
+- [x] Grid de Ações Rápidas (2×2: Nova Tarefa, Acessibilidade, Lembretes, **Ajuda rápida** → `/guides`) — Histórico só no menu lateral (PRs #40, 2026-07-21)
 - [x] Banner de encorajamento diário com stats reais (ontem/hoje/restantes)
 - [x] Seção "Tarefas de Hoje" com badges categoria/prioridade alinhados à Task List (Alta/Média/Baixa + cores por categoria) — (2026-07-16)
-- [x] Seção "Lembretes Próximos" ligada ao Firestore (até 3 lembretes)
+- [x] Preview de tarefas ordenado por `dueDate` **descendente** (mais antigo embaixo) (PR #39, 2026-07-21)
+- [x] Seção "Lembretes Próximos" — só não concluídos e futuros; ordenação `scheduledAt` **desc** (PR #39, 2026-07-21)
 - [x] Card "Status de Acessibilidade" com fundo Figma `#eff6ff`, ícone `Accessibility` e campos da tela `/acessibility` (2026-07-16)
 - [x] `DashboardScreen` + `dashboardUtils` + testes vitest (2026-07-16)
 
@@ -149,12 +150,12 @@
 - [x] Labels de prioridade/categoria/status em português (corrigido 2026-07-07)
 - [ ] Ordenação por dueDate ascendente no repositório (pendente)
 - [ ] Card "Próxima Atividade" isolado no Dashboard (pendente — atualmente mostra lista de tarefas)
-- [x] Tela Reminder Center (`/reminders`) — lista, marcar concluído, ordenação por scheduledAt
+- [x] Tela Reminder Center (`/reminders`) — lista, marcar concluído, ordenação por `scheduledAt` **desc** (PR #38, 2026-07-21)
 - [x] Tela Create Reminder (`/reminders/create`)
 - [x] Reminder alinhado ao schema/mobile (`category`, `notified`, `createdAt`; 5 categorias) — branch `feat/web-reminders-figma` (2026-07-10)
-- [x] Filtros combináveis Hoje + categoria; Modo Básico simplifica pills; `ReminderCard` reutilizável — Figma `15:5163`
+- [x] Filtro modal combinável Hoje + categoria (espelho Tarefas/mobile) + chips ativos; Modo Básico com categorias reduzidas (PR #38, 2026-07-21)
 - [x] Edição (`/reminders/[id]/edit`) e exclusão com modal de confirmação — paridade com mobile (2026-07-10)
-- [x] Responsividade Lembretes + shell: sidebar `lg` + auto-colapso &lt;1280px; card com ações empilhadas até `xl`; filtros com wrap; header empilhável (2026-07-10)
+- [x] Responsividade Lembretes + shell: sidebar `lg` + auto-colapso &lt;1280px; container `max-w-6xl` alinhado ao shell (PR #44, 2026-07-21)
 - [x] FCM Web + Service Worker — VAPID, SW configurável via env, token em `users/{uid}/fcmTokens/{token}`, histórico `notifications/{id}` via Cloud Function (2026-07-16)
 - [x] Tela Notificações (`/notifications`) — histórico Firestore, sininho com badge de hoje, navegação à entidade (2026-07-16)
 - [x] Tela History (`/history`) — alinhada ao Figma `15:5492` + paridade mobile (ADR-017): schema `type`/`occurredAt`/`entityId`, `HistoryRecorder` best-effort, tracks em tarefas/lembretes/perfil/acessibilidade/verificação de e-mail, `computeHistoryStats` (semana desde segunda, streak com tarefas+lembretes), conquista `streakAchievement` persistida aos 7 dias; tour guiado 3 passos (Modo Básico + botão `?`); 26 testes vitest (2026-07-16)
@@ -189,17 +190,22 @@
 > Mesmo comportamento do mobile (ADR-013), com biblioteca React equivalente.
 
 - [x] Biblioteca de tour/onboarding — `driver.js` (2026-07-15)
-- [x] Tour do Perfil — 8 passos, oferta em Modo Básico, botão `?` manual, overlay com destaque branco (2026-07-16)
-- [x] Tour do Histórico — 3 passos (header, estatísticas, atividade recente), mesma estilização `profileTour.css`, oferta em Modo Básico + botão `?` (2026-07-16)
-- [ ] Infra genérica de tour para as demais telas — **pendente**
+- [x] Infra genérica — `startSeniorEaseTour` + `usePageTour` + `TourChrome` (botão `?` + diálogo de oferta) (PR #41, 2026-07-21)
+- [x] Central **Guia do aplicativo** (`/guides`) + catálogo `TOUR_CATALOG` + `pendingTour` (sessionStorage); entrada no Dashboard (Ajuda rápida) e no Perfil (PR #40, 2026-07-21)
+- [x] Tour do Perfil — 8 passos, oferta em Modo Básico, botão `?` (2026-07-16)
+- [x] Tour do Histórico — 3 passos (2026-07-16)
+- [x] Tours nas telas principais — Dashboard, Lista/Criar/Detalhe Tarefas, Lista/Criar Lembretes, Modo Guiado, Notificações; Acessibilidade ligado ao Guia (PR #42, 2026-07-21)
+- [x] Tours em Perfil/Definições — Segurança, Sobre, Informações Pessoais, Endereço, Preferências de Notificação (PR #43, 2026-07-21)
 
-### Qualidade de código
+### Qualidade de código / UX shell
 
 - [x] ESLint: 0 erros, 0 warnings (verificado 2026-07-07)
 - [x] TypeScript strict: 0 erros (verificado 2026-07-07)
 - [x] CI/CD configurado (GitHub Actions: lint + type-check + build em PR; deploy Vercel em master)
-- [x] Vitest configurado (`npm test`) — cobertura inicial do módulo Perfil e tour (14 testes, 2026-07-15)
-- [ ] Testes unitários (Domain, Data, Presentation) — **em andamento** (demais módulos ainda sem cobertura)
+- [x] Vitest configurado (`npm test`) — cobertura inicial do módulo Perfil e tour (14 testes, 2026-07-15); expandido com helpers de filtro/dashboard/tours (2026-07-21)
+- [x] Menu hamburger: fecha ao clicar fora (overlay) e com Escape (PR #44, 2026-07-21)
+- [x] Botão “Sair do Modo Guiado” sem fundo idle (só hover) (PR #44, 2026-07-21)
+- [ ] Testes unitários (Domain, Data, Presentation) — **em andamento** (demais módulos ainda sem cobertura plena)
 
 ---
 
@@ -210,16 +216,14 @@
 | Upload de foto        | Integrado (`UploadProfilePhotoUseCase`) | Ativar bucket Storage + publicar `storage.rules` no Firebase Console                         |
 | Alterar senha         | Integrado (`ChangePasswordUseCase`)     | —                                                                                          |
 | Verificar e-mail      | Tela `/profile/security` (unificada)    | —                                                                                          |
-| Alterar senha         | Integrado em `/profile/security`        | —                                                                                          |
-| Storybook             | Não iniciado                    | Instalar `@storybook/nextjs`, criar stories para Button, Input, Card, Badge, Dialog, Toast |
-| Testes unitários      | 0 testes                        | Implementar com `vitest` ou `jest` para domain entities, use cases e hooks                 |
-| Tela "Sobre"          | Ausente                         | Criar rota `/about` com identidade do app, versão e link para o repositório                |
-| Tour Guiado           | Ausente                         | Instalar `driver.js` ou `react-joyride`, criar abstração port/adapter análoga ao mobile    |
-| Ordenação por dueDate | Sem ordenação no repo           | Adicionar `.orderBy('dueDate', 'asc')` nas queries Firestore + `nulls last` em memória     |
-| FCM Web               | Config existe (`fcmService.ts`) | Registrar Service Worker, solicitar permissão, integrar no `FCMProvider`                   |
+| Storybook             | Concluído (19+ stories)         | Manter sincronizado com novos componentes                                                  |
+| Testes unitários      | Em andamento                    | Ampliar cobertura Domain/Data/Presentation nos módulos restantes                           |
+| Tela "Sobre"          | `/about` + tour                 | —                                                                                          |
+| Tour Guiado           | Infra + Guia + tours nas telas listadas | Manter catálogo ao adicionar telas novas                                          |
+| Ordenação por dueDate | Preview Dashboard desc; lista tarefas ainda sem orderBy repo | Opcional: `orderBy('dueDate')` na lista `/tasks` |
+| FCM Web               | Integrado (SW + VAPID + token)  | Credenciais de produção no `.env` / SW conforme ambiente                                   |
 | Máscaras de input     | `MaskedInput` no edit profile    | —                                                                                          |
 | CPF em Modo Básico    | Campo oculto em Modo Básico     | —                                                                                          |
-| Tour guiado (Perfil)  | 8 passos com `driver.js`        | Infra genérica para demais telas                                                           |
 | Nome do perfil        | Validação 3–30 caracteres       | —                                                                                          |
 
 ---

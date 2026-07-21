@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-15 (David — ADR-022 reauth Google silenciosa; APNs iOS; TestFlight)
+> Última atualização: 2026-07-21 (Henrique — paridade web: lembretes, dashboard, guia, tours, UX shell)
 
 ---
 
@@ -38,7 +38,17 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Web (seniorease-web)
 
 **Responsável:** Henrique / Tati
-**Status:** Em andamento — Henrique: branch `feat/web-history-figma` (Histórico Figma `15:5492`); Tati: branch `feature/update-design-system`
+**Status:** Em andamento — lote de paridade web (lembretes, dashboard, guia, tours, UX) **mergeado em `develop`** (PRs #38–#44, 2026-07-21)
+
+**Concluído nesta frente (2026-07-21, Henrique — paridade mobile + UX):**
+
+- **Lembretes (PR #38):** ordenação `scheduledAt` desc; filtro modal combinável Hoje + categoria (chips + Modo Básico)
+- **Dashboard previews (PR #39):** tarefas e lembretes por data desc; preview de lembretes só incompletos futuros
+- **Guia do aplicativo (PR #40):** Ajuda rápida no Dashboard → `/guides`; link no Perfil; Histórico só no menu
+- **Infra de tour (PR #41):** `startSeniorEaseTour` + `usePageTour` + `TourChrome`
+- **Tours telas principais (PR #42):** Dashboard, Tarefas, Lembretes, Modo Guiado, Notificações; Acessibilidade via Guia
+- **Tours perfil/definições (PR #43):** Segurança, Sobre, Info Pessoais, Endereço, Pref. Notificação
+- **UX shell (PR #44):** fechar menu ao clicar fora / Escape; Sair do modo guiado sem fundo idle; lembretes `max-w-6xl`
 
 **Concluído anteriormente (Henrique):**
 
@@ -47,49 +57,16 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - **Modo Guiado Figma `15:4931` (PR #14):** sidebar, hub `/tasks/guided`, lógica sequencial, responsividade, saída para `/tasks`
 - **FCM Web + Sino de Notificações:** Service Worker configurável via env pública, VAPID, token em `users/{uid}/fcmTokens/{token}`, `/notifications` com histórico Firestore e badge do dia
 - **Preferências de Notificação Web:** `/profile/notifications/edit` com toggles e antecedência (`15m`, `30m`, `1h`, `6h`, `1d`) — campos ADR-020
+- **Dashboard Figma `134-851`:** sininho, badges, quick actions, card de acessibilidade, seed demo
 
-**Concluído (Henrique — `feat/web-dashboard-figma`, 2026-07-16):** Dashboard `/dashboard` alinhado ao Figma `134-851` — sininho de notificações, badges de tarefas, quick actions com ícones Figma, card de acessibilidade, tela `/notifications`, seed de dados demo e FCM web integrado.
-
-**Concluído nesta frente (2026-07-13, Henrique — Perfil):**
-- Upload de foto de perfil — `UploadProfilePhotoUseCase` + Firebase Storage integrado em `/profile`
-- Alterar senha — `ChangePasswordUseCase` com reautenticação Firebase Auth
-- Verificar e-mail — tela unificada `/profile/security` (ADR-016, paridade mobile)
-- Alterar senha — integrado na mesma tela de Segurança
-- Máscaras de input — `MaskedInput` em telefone, CPF, data de nascimento e CEP no formulário de edição
-- Data de nascimento exibida em formato amigável na view do perfil (`formatBirthDateDisplay`)
-- Removido 2FA (TOTP) da web — paridade com mobile (verificação por e-mail apenas)
-- Card "Precisa de Ajuda?" (1-800-SENIOR) no perfil
-- Tela Sobre (`/about`)
-- Tour guiado do Perfil (`driver.js`, Modo Básico + botão `?`)
-
-**Concluído nesta frente (2026-07-12, Tati):**
-
-- **Storybook 10.5.0** — instalado, configurado com @storybook/nextjs framework (migrado de @storybook/nextjs-vite), 19 stories (15 UI componentes + 3 features + 1 integração) documentados com autodocs, controls/args e tipo TypeScript. Removidos CreateReminderForm e CreateTaskForm (dependências Firebase)
-- **Bug fixes infraestrutura:**
-  - Config conflict: `.storybook/main.js` (glob pattern incorreto) deletado, apenas `.storybook/main.ts` (correto)
-  - Version mismatch: `@storybook/nextjs-vite` atualizado de 10.4.6 para 10.5.0
-  - Next.js corruption: `next@16.2.9` reinstalado (faltava `font-data.json`)
-  - npm install limpo (reinstalado 1266 packages, todas as dependências resolvidas)
-- **Projeto Next.js rodando** em http://localhost:3000 (dev server com Turbopack)
-- **Storybook rodando** em http://localhost:6006 (todos 21 componentes renderizando, sem erros de import)
-
-**Concluído (2026-07-15, Vinicius — Acessibilidade Web + FCM):**
-
-- **Spacing scale efetivo:** `data-spacing` em `<html>` + seletores CSS `.a11y-space-*` com multiplicadores 0.85×/1.5×
-- **Interface mode básico real:** `[data-interface-mode="basic"] .advanced-only { display: none }`
-- **Contraste máximo derivado:** dark + high → `maximum` em runtime (ADR-009), tokens alinhados ao mobile
-- **Large touch targets / skip nav / tour / ARIA** na tela `/acessibility` e telas principais
-- **FCM Web completo:** SW com env pública, VAPID, `RegisterFcmTokenUseCase` / `RemoveFcmTokenUseCase`
-
-**Próximo nesta frente (ordem acordada):** entrega hackathon (vídeo, repos públicos) após validação final do merge develop + acessibilidade.
+**Próximo nesta frente:** entrega hackathon (vídeo, repos públicos) + validação final; opcional: `orderBy(dueDate)` na lista `/tasks` e ampliar testes unitários.
 
 **Próximos passos prioritários (segunda fase / time):**
 
-1. Testes unitários — vitest/jest para Domain, Data e Presentation
-2. Tour Guiado nas demais telas (infra genérica port/adapter)
-3. Ordenação por dueDate no Firestore
-4. FCM Web + Service Worker
-5. Ativar bucket Firebase Storage + publicar `storage.rules` (David)
+1. Testes unitários — ampliar vitest para Domain, Data e Presentation
+2. Ativar bucket Firebase Storage + publicar `storage.rules` (David)
+3. Credenciais FCM/VAPID de produção no ambiente web
+4. Avaliação interna + vídeo de demo + repos públicos
 
 ### Mobile (seniorease-mobile)
 
