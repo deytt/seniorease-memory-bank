@@ -59,7 +59,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - **Preferências de Notificação Web:** `/profile/notifications/edit` com toggles e antecedência (`15m`, `30m`, `1h`, `6h`, `1d`) — campos ADR-020
 - **Dashboard Figma `134-851`:** sininho, badges, quick actions, card de acessibilidade, seed demo
 
-**Próximo nesta frente:** entrega hackathon (vídeo, repos públicos) + validação final; opcional: `orderBy(dueDate)` na lista `/tasks` e ampliar testes unitários.
+**Próximo nesta frente:** polish tours/dashboard/botões/toasts na branch `fix/web-tours-dashboard-polish` (Henrique); entrega hackathon + validação final.
 
 **Próximos passos prioritários (segunda fase / time):**
 
