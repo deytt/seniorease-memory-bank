@@ -271,17 +271,18 @@ Ver `firestore.rules` para o código completo.
 
 ## Composite Indexes — `reminders`
 
-> Indexes **necessários e já publicados**. O app mobile filtra "Hoje" **server-side** (range em `scheduledAt`) e ordena por `scheduledAt` na própria query.
+> Indexes **necessários e já publicados**. O app mobile filtra "Hoje" **server-side** (range em `scheduledAt`) e ordena por `scheduledAt` **DESC** (data/hora maior primeiro) na própria query.
 
 | Index | Campos | Tipo | Quando usar |
 |-------|--------|------|-------------|
-| idx-reminders-today | `userId ASC, scheduledAt ASC` | Collection | Filtro "Hoje" (range + orderBy `scheduledAt` ASC) — mobile; lista web também usa ASC |
-| idx-reminders-category-today | `userId ASC, category ASC, scheduledAt ASC` | Collection | Filtro por categoria + orderBy `scheduledAt` (mobile); web filtra categoria em memória |
-| idx-reminders-list-desc | `userId ASC, scheduledAt DESC` | Collection | **Opcional/legado** — usado brevemente pela web (PR #38); lista web voltou a ASC (PR #50) |
+| idx-reminders-today | `userId ASC, scheduledAt ASC` | Collection | Legado / web se voltar a ASC; Cloud Functions não usam este |
+| idx-reminders-list-desc | `userId ASC, scheduledAt DESC` | Collection | Lista e filtro "Hoje" no mobile (`orderBy scheduledAt DESC`) |
+| idx-reminders-category-today | `userId ASC, category ASC, scheduledAt ASC` | Collection | Legado ASC por categoria |
+| idx-reminders-category-desc | `userId ASC, category ASC, scheduledAt DESC` | Collection | Filtro por categoria + `orderBy scheduledAt DESC` (mobile) |
 
-> **Nota (mobile):** filtro da lista é **exclusivo** (chips Hoje \| Medicação \| Consultas). "Hoje" usa range server-side; categoria usa `where` + orderBy.
+> **Nota (mobile):** filtro da lista é **combinável** (Categoria + "Hoje"). Ordenação `scheduledAt` **DESC** (mais antigos por último). "Hoje" usa range server-side; categoria usa `where` + orderBy.
 >
-> **Nota (web, 2026-07-21):** filtro da lista alinhado ao mobile — chips exclusivos Hoje / Medicação / Consultas (default Hoje), filtragem em memória após fetch `userId` + `orderBy(scheduledAt asc)`. O índice DESC não é mais necessário para a lista web.
+> **Nota (web, 2026-07-21):** filtro da lista alinhado ao mobile — chips exclusivos Hoje / Medicação / Consultas (default Hoje), filtragem em memória após fetch `userId` + `orderBy(scheduledAt asc)`. Mobile passou a DESC em 2026-07-22.
 
 ---
 
@@ -312,6 +313,7 @@ Ver `firestore.rules` para o código completo.
 
 | Data | Mudança | ADR |
 |------|---------|-----|
+| 2026-07-22 | Mobile: ordenação de `reminders` passa a `scheduledAt` **DESC** (lista + preview Home); índice `idx-reminders-list-desc` volta a ser necessário; novo `idx-reminders-category-desc` (`userId ASC, category ASC, scheduledAt DESC`) | — |
 | 2026-07-21 | Web passa a ler e gravar steps em `tasks/{taskId}/steps/{stepId}`, igual ao mobile; mantém fallback de leitura do array legado e migra esse formato ao atualizar/concluir a tarefa | ADR-004 |
 | 2026-07-21 | Web: filtro de lembretes volta a chips exclusivos (Hoje / Medicação / Consultas) + `scheduledAt` ASC (paridade mobile, PR #50); `idx-reminders-list-desc` marcado como opcional/legado | — |
 | 2026-07-21 | Web: dashboard alinhado à Home mobile — “Próxima atividade” + “Lembretes de hoje”; polish tours/UX/favicon (PRs #48/#49) | — |

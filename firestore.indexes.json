@@ -62,6 +62,15 @@
       ]
     },
     {
+      "collectionGroup": "reminders",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "category", "order": "ASCENDING" },
+        { "fieldPath": "scheduledAt", "order": "DESCENDING" }
+      ]
+    },
+    {
       "collectionGroup": "history",
       "queryScope": "COLLECTION",
       "fields": [
