@@ -50,7 +50,7 @@
 
 ## Web Platform — seniorease-web
 
-> Última atualização: 2026-07-21 (Henrique — paridade web lembretes/dashboard + polish tours)
+> Última atualização: 2026-07-22 (Tati — auditoria documental da issue web #63)
 
 ### Configuração inicial
 
@@ -74,7 +74,7 @@
 - [x] Toast / Notificação — via sonner
 - [x] Badge — via shadcn/ui
 - [x] Tema dinâmico (CSS custom properties para fonte, contraste, espaçamento) — `PreferencesProvider` aplica no `<html>`
-- [ ] Storybook — **pendente** (ver secção Documentação abaixo)
+- [x] Storybook — **concluído** (19 stories; ver secção Documentação abaixo)
 
 ### Autenticação
 
@@ -94,9 +94,8 @@
 - [x] Sininho de notificações no header (badge vermelho + `/notifications`) — paridade mobile (2026-07-16)
 - [x] Grid de Ações Rápidas (2×2: Nova Tarefa, Acessibilidade, Lembretes, **Ajuda rápida** → `/guides`) — Histórico só no menu lateral (PRs #40, 2026-07-21)
 - [x] Banner de encorajamento diário com stats reais (ontem/hoje/restantes)
-- [x] Seção "Tarefas de Hoje" com badges categoria/prioridade alinhados à Task List (Alta/Média/Baixa + cores por categoria) — (2026-07-16)
-- [x] Preview de tarefas ordenado por `dueDate` **descendente** (mais antigo embaixo) (PR #39, 2026-07-21)
-- [x] Seção "Lembretes Próximos" — só não concluídos e futuros; ordenação `scheduledAt` **desc** (PR #39, 2026-07-21)
+- [x] Card “Próxima atividade” — exibe uma tarefa incompleta: prioriza a próxima com `dueDate >= agora` em ordem ASC e, na ausência, usa a primeira incompleta da lista (2026-07-21)
+- [x] Seção “Lembretes de hoje” — dia civil atual, inclui concluídos, ordenação `scheduledAt` ASC e limite de 3 itens (2026-07-21)
 - [x] Card "Status de Acessibilidade" com fundo Figma `#eff6ff`, ícone `Accessibility` e campos da tela `/acessibility` (2026-07-16)
 - [x] `DashboardScreen` + `dashboardUtils` + testes vitest (2026-07-16)
 
@@ -107,15 +106,13 @@
 - [x] Storybook 10.5.0 configurado no projeto web com @storybook/nextjs builder (migrado de @storybook/nextjs-vite para resolver erros de rendering)
 - [x] Stories de 19 componentes (15 UI components + 3 features + 1 integração)
   - **Components Section (15):** Avatar, Badge, Button, Card, Checkbox, Dialog, DropdownMenu, Input, Label, Separator, Sheet, Switch, Toast, Tooltip, Sooner
-  - **Features Section (3):** ReminderCard, ReminderFilterPills, TaskCard
+  - **Features Section (3):** ReminderCard, ReminderFilterChips, TaskCard
   - **Integrations Section (1):** ReminderListIntegration
   - **Removidos (Firebase auth dependencies):** ~~CreateReminderForm~~, ~~CreateTaskForm~~
 - [x] Controls/args (props), estados (hover/disabled/loading/erro) e tokens documentados via TypeScript + argTypes
 - [x] Autodocs habilitada com tags ["autodocs"] em todos os stories
 - [x] Resolver problemas: config conflict (.storybook/main.js deletado), version mismatch (@storybook/nextjs-vite@10.5.0), corrupção Next.js (next@16.2.9 reinstalado)
-- [x] Storybook rodando em http://localhost:6008 com hot reload Next.js framework (porta 6006 estava em uso)
-- [x] Resolver problemas: config conflict (.storybook/main.js deletado), version mismatch (@storybook/nextjs-vite@10.5.0), corrupção Next.js (next@16.2.9 reinstalado)
-- [x] Storybook rodando em http://localhost:6006 com hot reload Vite
+- [x] Storybook validado com framework `@storybook/nextjs`; porta padrão local `6006` (usar outra porta se estiver ocupada)
 
 ### Módulo 1 — Acessibilidade
 
@@ -135,7 +132,7 @@
 - [x] Skip navigation link (`#main-content`) no layout do app — WCAG 2.4.1
 - [x] `role="status"` + `aria-live="polite"` nos estados de loading de todas as telas principais
 - [x] `aria-label` em botões de ícone (editar, excluir, marcar como concluído) nos cards de tarefa e lembrete
-- [x] `.advanced-only` aplicado no dashboard (stats do encorajamento, card de status de acessibilidade, link de histórico)
+- [x] `.advanced-only` aplicado no dashboard somente aos três números do banner de encorajamento (ontem, concluídas hoje e restantes); cards e navegação permanecem disponíveis no Modo Básico
 
 ### Módulo 2 — Tarefas
 
@@ -229,7 +226,7 @@
 | Testes unitários      | Em andamento                    | Ampliar cobertura Domain/Data/Presentation nos módulos restantes                           |
 | Tela "Sobre"          | `/about` + tour                 | —                                                                                          |
 | Tour Guiado           | Infra + Guia + tours nas telas listadas | Manter catálogo ao adicionar telas novas                                          |
-| Ordenação por dueDate | Preview Dashboard desc; lista tarefas ainda sem orderBy repo | Opcional: `orderBy('dueDate')` na lista `/tasks` |
+| Ordenação por dueDate | Dashboard seleciona a próxima pendente em ASC; lista `/tasks` ordena em memória por `dueDate` DESC | Opcional: mover a ordenação da lista para `orderBy('dueDate')` no repositório |
 | FCM Web               | Integrado (SW + VAPID + token)  | Credenciais de produção no `.env` / SW conforme ambiente                                   |
 | Máscaras de input     | `MaskedInput` no edit profile    | —                                                                                          |
 | CPF em Modo Básico    | Campo oculto em Modo Básico     | —                                                                                          |
