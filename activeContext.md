@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-22 (David — steps como array em tasks / ADR-023)
+> Última atualização: 2026-07-22 (David — tasks dueDate DESC server-side)
 
 ---
 
@@ -76,7 +76,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - **Preferências de Notificação Web:** `/profile/notifications/edit` com toggles e antecedência (`15m`, `30m`, `1h`, `6h`, `1d`) — campos ADR-020
 - **Dashboard Figma `134-851`:** sininho, badges, quick actions, card de acessibilidade, seed demo
 
-**Próximo nesta frente:** entrega hackathon (vídeo, repos públicos) + validação final; opcional: `orderBy(dueDate)` na lista `/tasks` e ampliar testes unitários.
+**Próximo nesta frente:** entrega hackathon (vídeo, repos públicos) + validação final; lista `/tasks` deve usar `orderBy(dueDate, 'desc')` (contrato ADR-011 atualizado) + ampliar testes unitários.
 
 **Próximos passos prioritários (segunda fase / time):**
 
@@ -91,6 +91,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Status:** Entrega iOS em curso (2026-07-15) — TestFlight + correções nativas iOS.
 **Feito nesta sessão (2026-07-22):**
 
+- **Lista de tarefas — `dueDate` DESC server-side:** `watchTasksFiltered` usa `orderBy('dueDate', descending: true)` (sem sort em memória); índices compostos DESC em `firestore.indexes.json` — **publicar**; ADR-011 + `firebaseSchema` atualizados para paridade Web.
 - **ADR-023 — `steps` como array:** mobile deixa de usar a sub-collection `tasks/{taskId}/steps` e passa a ler/gravar o campo `steps` no documento da tarefa (paridade com a web). Create/update/complete/delete no novo modelo; `TaskStep` com `taskId`; `order` 0-indexed; schema + ADR + rules (legado) atualizados.
 - **Ordenação de lembretes:** lista e preview Home passam a `scheduledAt` **DESC** (data/hora maior primeiro; mais antigos por último). Preview "Próximos Lembretes" mostra até 3 ativos (exclui concluídos), mesma ordenação da lista. Novo índice `idx-reminders-category-desc`; `idx-reminders-list-desc` volta a ser necessário — **publicar** `firestore.indexes.json`.
 - **Excluir concluídos:** lembretes concluídos voltam a permitir swipe de **Excluir** (Editar continua bloqueado).

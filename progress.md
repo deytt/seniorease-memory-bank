@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-22 (David — ordenação lembretes DESC)
+> Última atualização: 2026-07-22 (David — tasks dueDate DESC server-side)
 
 ---
 
@@ -227,7 +227,7 @@
 | Testes unitários      | Em andamento                    | Ampliar cobertura Domain/Data/Presentation nos módulos restantes                           |
 | Tela "Sobre"          | `/about` + tour                 | —                                                                                          |
 | Tour Guiado           | Infra + Guia + tours nas telas listadas | Manter catálogo ao adicionar telas novas                                          |
-| Ordenação por dueDate | Dashboard seleciona a próxima pendente em ASC; lista `/tasks` ordena em memória por `dueDate` DESC | Opcional: mover a ordenação da lista para `orderBy('dueDate')` no repositório |
+| Ordenação por dueDate | Lista + preview: **DESC** (contrato Web/Mobile ADR-011) | Web: confirmar `orderBy('dueDate','desc')` na lista `/tasks`; publicar índices DESC |
 | FCM Web               | Integrado (SW + VAPID + token)  | Credenciais de produção no `.env` / SW conforme ambiente                                   |
 | Máscaras de input     | `MaskedInput` no edit profile    | —                                                                                          |
 | CPF em Modo Básico    | Campo oculto em Modo Básico     | —                                                                                          |
@@ -307,7 +307,7 @@
 - [x] TaskDetails com header genérico (título + badges de prioridade/categoria) e data na card
 - [x] Cores de botões alinhadas ao Figma (Guided=teal, Complete=verde)
 - [x] TaskCard com badges de prioridade+categoria e data formatada na lista
-- [x] Ordenação da lista por dueDate ascendente (mais próxima primeiro, nulls no fim)
+- [x] Ordenação da lista por dueDate **descendente** server-side (`orderBy dueDate DESC`; índices `idx-tasks-*-desc`) — paridade Web (2026-07-22)
 - [x] Card "Próxima Atividade" na Home ligado ao Firestore via nextPendingTaskProvider
 - [x] Filtros na Task List — filtro por categoria, prioridade e "hoje" aplicados na query Firestore (ADR-012)
 - [x] Pull-to-refresh na Task List — reset de filtros + refetch completo com toast informativo

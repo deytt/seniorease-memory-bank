@@ -258,18 +258,24 @@ Ver `firestore.rules` para o código completo.
 
 ## Composite Indexes — `tasks`
 
-> Indexes necessários para as queries de filtro implementadas no Módulo Tarefas (ADR-012).
+> Indexes necessários para as queries de filtro e ordenação da lista de tarefas.
 > O ficheiro `firestore.indexes.json` neste diretório contém o JSON pronto para deploy.
 > Ver secção **Deploy Firebase** acima para o comando de publicação.
+>
+> **Contrato de ordenação (Web + Mobile, 2026-07-22):** a lista de tarefas ordena
+> por `dueDate` **DESC** na query Firestore (`orderBy('dueDate', 'desc')`) —
+> data/hora maior primeiro (futuras e mais recentes acima; mais antigas abaixo).
+> Documentos **sem** `dueDate` não entram no resultado do `orderBy` (o formulário
+> de criação exige data/hora). A Web deve usar a mesma query / critério.
 
 | Index | Campos | Tipo | Quando usar |
 |-------|--------|------|-------------|
-| idx-tasks-today | `userId ASC, dueDate ASC` | Collection | Filtro "Hoje" (sem category/priority) |
-| idx-tasks-category-today | `userId ASC, category ASC, dueDate ASC` | Collection | Filtro "Hoje" + Categoria |
-| idx-tasks-priority-today | `userId ASC, priority ASC, dueDate ASC` | Collection | Filtro "Hoje" + Prioridade |
-| idx-tasks-all-filters | `userId ASC, category ASC, priority ASC, dueDate ASC` | Collection | Todos os filtros combinados |
+| idx-tasks-list-desc | `userId ASC, dueDate DESC` | Collection | Lista sem filtros + filtro "Hoje" (`orderBy dueDate DESC`) |
+| idx-tasks-category-desc | `userId ASC, category ASC, dueDate DESC` | Collection | Filtro Categoria (± "Hoje") + `orderBy dueDate DESC` |
+| idx-tasks-priority-desc | `userId ASC, priority ASC, dueDate DESC` | Collection | Filtro Prioridade (± "Hoje") + `orderBy dueDate DESC` |
+| idx-tasks-all-filters-desc | `userId ASC, category ASC, priority ASC, dueDate DESC` | Collection | Categoria + Prioridade (± "Hoje") + `orderBy dueDate DESC` |
 
-> **Nota:** Filtros apenas por `category` e/ou `priority` (sem "Hoje") usam exclusivamente equality filters e **não precisam de composite index**.
+> **Nota:** Filtros apenas por `category` e/ou `priority` (sem "Hoje") usam equality + `orderBy dueDate DESC` e **precisam** dos índices DESC acima.
 
 ---
 
@@ -317,6 +323,7 @@ Ver `firestore.rules` para o código completo.
 
 | Data | Mudança | ADR |
 |------|---------|-----|
+| 2026-07-22 | Lista de `tasks`: ordenação server-side por `dueDate` **DESC** (Web + Mobile); índices ASC de filtro/hoje substituídos por variantes DESC (`idx-tasks-*-desc`); documentos sem `dueDate` fora do resultado do `orderBy` | ADR-011 (atualizado) / ADR-012 |
 | 2026-07-22 | `steps` passa a ser campo `array` em `tasks/{taskId}` (contrato único Web/Mobile); sub-collection `tasks/{taskId}/steps` marcada como legado; `order` 0-indexed; campos do passo: `id`, `taskId`, `order`, `title`, `instruction`, `isCompleted` | ADR-023 |
 | 2026-07-22 | Mobile: ordenação de `reminders` passa a `scheduledAt` **DESC** (lista + preview Home); índice `idx-reminders-list-desc` volta a ser necessário; novo `idx-reminders-category-desc` (`userId ASC, category ASC, scheduledAt DESC`) | — |
 | 2026-07-21 | ~~Web passa a ler e gravar steps em `tasks/{taskId}/steps/{stepId}`~~ — **substituído por ADR-023** (campo array no documento) | ADR-004 / ADR-023 |
