@@ -312,6 +312,7 @@ Ver `firestore.rules` para o código completo.
 
 | Data | Mudança | ADR |
 |------|---------|-----|
+| 2026-07-21 | Web passa a ler e gravar steps em `tasks/{taskId}/steps/{stepId}`, igual ao mobile; mantém fallback de leitura do array legado e migra esse formato ao atualizar/concluir a tarefa | ADR-004 |
 | 2026-07-21 | Web: filtro de lembretes volta a chips exclusivos (Hoje / Medicação / Consultas) + `scheduledAt` ASC (paridade mobile, PR #50); `idx-reminders-list-desc` marcado como opcional/legado | — |
 | 2026-07-21 | Web: dashboard alinhado à Home mobile — “Próxima atividade” + “Lembretes de hoje”; polish tours/UX/favicon (PRs #48/#49) | — |
 | 2026-07-21 | Documentado composite index `idx-reminders-list-desc` (`userId ASC, scheduledAt DESC`) — uso web DESC revertido no mesmo dia | — |
