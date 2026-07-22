@@ -38,7 +38,12 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Web (seniorease-web)
 
 **Responsável:** Henrique / Tati
-**Status:** Em andamento — ajustes de tarefas da issue web #34 na branch `fix/task-adjustments-34` (Tati, 2026-07-21)
+**Status:** Concluído — correção do contador “Concluídas hoje” da issue web #56 na branch `fix/tasks-completed-today-56` (Tati, 2026-07-22)
+
+**Concluído nesta frente (2026-07-22, Tati):**
+
+- Contador “Concluídas hoje” passa a usar `status === completed` e `completedAt` no dia civil atual, sem depender de `dueDate`
+- Regra isolada em helper testável, cobrindo tarefas concluídas em dia diferente do agendamento
 
 **Em validação nesta frente (2026-07-21, Tati):**
 
