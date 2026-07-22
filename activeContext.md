@@ -38,7 +38,16 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Web (seniorease-web)
 
 **Responsável:** Henrique / Tati
-**Status:** Em andamento — paridade web com mobile (lembretes, dashboard, tours, UX) mergeada em `develop`/`master` (PRs web #38–#50, 2026-07-21)
+**Status:** Em andamento — ajustes de tarefas da issue web #34 na branch `fix/task-adjustments-34` (Tati, 2026-07-21)
+
+**Em validação nesta frente (2026-07-21, Tati):**
+
+- Lista de tarefas ordenada por `dueDate` descendente (tarefas sem data no fim)
+- Cards da listagem exibem hora + dia (`Hoje`, `Amanhã` ou `dd/mm`), seguindo o Dashboard; modal de filtros com padding simétrico
+- Detalhes sem horário no card de notificação e sem card redundante de notas
+- Web alinhada ao contrato mobile `tasks/{taskId}/steps/{stepId}`, com leitura temporariamente compatível com o array legado
+- Conclusão disponível após a data da tarefa e também quando não houver passos; modal informativo fora do modo guiado
+- Item Acessibilidade na navegação global e toasts nos fluxos de tarefas sem modal
 
 **Concluído nesta frente (2026-07-21, Henrique):**
 
