@@ -265,10 +265,14 @@ Estender a collection partilhada `tasks/{taskId}` com três campos:
 
 A subcollection `steps/{stepId}` mantém-se inalterada. No formulário de criação (mobile), cada passo é um campo de texto único que mapeia para `step.title`; `step.instruction` fica opcional (vazio por agora) e pode ser usado futuramente para enriquecer o Modo Guiado.
 
+> **Atualização (ADR-023, 2026-07-22):** `steps` passou a ser campo array no documento `tasks/{taskId}`. A sub-collection ficou legado.
+
 **Motivo:**
 - Os três campos são requisitos diretos do design — não há como implementar as telas sem eles.
 - `reminderTime` fica na própria tarefa (não na collection `reminders`) porque representa a hora preferida da tarefa; a criação de lembretes propriamente ditos fica para o módulo de Lembretes.
 - Manter a subcollection `steps` intacta evita migração e preserva compatibilidade com o que já está documentado.
+>
+> > **Nota:** esta justificação foi supersedida pelo ADR-023 (campo array).
 
 **Alternativas consideradas:**
 - Adicionar apenas `priority` + `category` e deixar o horário para o módulo de Lembretes (descartado: a lista e os detalhes exibem a hora da própria tarefa).
@@ -282,30 +286,31 @@ A collection `tasks` é partilhada com `seniorease-web`. Os campos novos são ad
 ## ADR-011 — Ordenação de tarefas por dueDate e provider de próxima atividade
 
 **Data:** 2026-06-25
-**Status:** Aceito
+**Status:** Aceito (atualizado 2026-07-22)
 
 **Contexto:**
-O Módulo Tarefas passou a registar `dueDate` (DateTime completo) em vez de apenas `reminderTime` (string "HH:mm"). Com data e hora disponíveis, surgem dois requisitos: (1) a lista de tarefas deve ser ordenada da mais próxima para a mais distante no tempo; (2) o card "Próxima Atividade" na Home deve exibir a tarefa pendente mais urgente e dirigir o utilizador directamente para o modo guiado.
+O Módulo Tarefas passou a registar `dueDate` (DateTime completo) em vez de apenas `reminderTime` (string "HH:mm"). Com data e hora disponíveis, surgem dois requisitos: (1) a lista de tarefas deve ser ordenada de forma previsível e partilhada entre Web e Mobile; (2) o card "Próxima Atividade" na Home deve exibir a tarefa pendente mais urgente e dirigir o utilizador directamente para o modo guiado.
 
-**Decisão:**
-1. **Ordenação em memória no repositório** (`FirebaseTaskRepository.watchTasks`): sort multi-nível — pendentes/em progresso antes de concluídas; dentro das pendentes, `dueDate` ascendente (nulls no fim, com fallback por `createdAt`); concluídas por `completedAt` descendente. Não é adicionado nenhum índice composto no Firestore.
-2. **`nextPendingTaskProvider`** (Riverpod `Provider<Task?>`): provider derivado de `tasksStreamProvider` que devolve a tarefa pendente mais próxima no tempo. Preferência para `dueDate >= agora`; fallback para qualquer tarefa não concluída; `null` se não existir nenhuma. Liga o `_NextActivityCard` da Home sem nova leitura ao Firestore.
+**Decisão (atualizada 2026-07-22):**
+1. **Ordenação server-side na lista** (`FirebaseTaskRepository.watchTasksFiltered`): `orderBy('dueDate', descending: true)` — data/hora **maior primeiro** (futuras e mais recentes acima; mais antigas abaixo). Aplica-se com ou sem filtros (categoria, prioridade, "Hoje"). Removida a ordenação multi-nível em memória (pendentes antes de concluídas / ASC).
+2. **Índices compostos DESC** em `firestore.indexes.json` / `firebaseSchema.md` (`userId` ± `category`/`priority` + `dueDate DESC`). **Publicar** após merge.
+3. **`nextPendingTaskProvider`** (Riverpod `Provider<Task?>`): mantém-se — derivado de `tasksStreamProvider`, preferência para `dueDate >= agora` entre pendentes; fallback para qualquer não concluída. Independente da ordem da lista.
 
 **Motivo:**
-- Ordenação em memória evita exigir índice composto no Firestore (simplifica infra e regras de segurança).
-- `nextPendingTaskProvider` reutiliza o stream já aberto — custo zero de leituras adicionais.
-- Separar a lógica de "próxima tarefa" num provider mantém a Home desacoplada do repositório.
+- A lista vem já ordenada da query (menos trabalho no cliente; paridade Web/Mobile).
+- Alinha ao critério já usado na web (issue #34) e ao padrão de lembretes (`scheduledAt` DESC).
+- `nextPendingTaskProvider` continua a escolher a próxima atividade útil, não o primeiro item da lista.
 
 **Alternativas consideradas:**
-- Ordenar no Firestore via `orderBy('dueDate')` (descartado: exigiria índice composto com `userId`; a ordenação multi-nível não é suportada sem índice separado por status).
-- Criar stream dedicado para "próxima tarefa" no repositório (descartado: overhead de ligação extra ao Firestore; o provider derivado é suficiente).
+- Ordenação multi-nível em memória (ADR-011 original) — descartada na atualização: divergia da web e não aproveitava `orderBy`.
+- Ordenar só por status + dueDate ASC (descartado: pedido de produto é DESC por data).
 
 **Impacto:**
-- `FirebaseTaskRepository` é a única camada que ordena — a UI recebe sempre a lista já ordenada.
-- `nextPendingTaskProvider` pode ser reutilizado em futuras widgets (ex: notificações locais).
+- Documentos **sem** `dueDate` não aparecem em queries com `orderBy('dueDate')` (Firestore). Criação de tarefas no mobile exige data/hora.
+- Web deve usar `orderBy('dueDate', 'desc')` (ou equivalente) na lista `/tasks`, não ASC nem sort ad-hoc diferente.
 
 **Impacto cross-projeto:**
-A Web (`seniorease-web`) deve replicar a mesma ordenação em memória (pendentes/em progresso antes de concluídas; `dueDate` ascendente, nulls no fim) e um equivalente ao `nextPendingTaskProvider` para o card "Próxima Atividade" no Dashboard, usando o estado web (Zustand selectors) em vez de Riverpod. Nenhum índice composto adicional é necessário para esta ordenação.
+A Web (`seniorease-web`) deve garantir a mesma ordenação `dueDate` **DESC** na lista de tarefas (já parcialmente alinhada na issue #34) e publicar/consumir os índices DESC. O equivalente ao `nextPendingTaskProvider` no Dashboard mantém-se (próxima pendente por urgência, não o topo da lista DESC).
 
 ---
 
@@ -326,6 +331,8 @@ A Task List precisava de filtros por prioridade, categoria e data ("hoje"). O re
 6. Bottom sheet `TaskFilterSheet` com seções "Data", "Categoria" e "Prioridade"; chips com touch target ≥44px; estado local até "Aplicar".
 7. Criar 4 composite indexes Firestore (documentados em `firebaseSchema.md`) para as combinações que envolvem `isToday` (range filter em `dueDate`).
 
+> **Atualização (2026-07-22):** os 4 índices de lista/filtro passaram a `dueDate` **DESC** (ver ADR-011 atualizado e tabela em `firebaseSchema.md`). A lista usa sempre `orderBy('dueDate', descending: true)`.
+
 **Motivo:**
 - Filtros no Firestore reduzem o tráfego de rede e o custo de leitura (vs. trazer tudo e filtrar em memória).
 - `TaskFilter.empty` como valor sentinela permite que `filteredTasksStreamProvider` se comporte identicamente ao `tasksStreamProvider` quando não há filtro.
@@ -342,6 +349,8 @@ A Task List precisava de filtros por prioridade, categoria e data ("hoje"). O re
 - `(userId ASC, category ASC, dueDate ASC)` — "Hoje" + Categoria
 - `(userId ASC, priority ASC, dueDate ASC)` — "Hoje" + Prioridade
 - `(userId ASC, category ASC, priority ASC, dueDate ASC)` — todos combinados
+
+> **Atualização (2026-07-22):** substituídos pelos índices `dueDate DESC` equivalentes (`idx-tasks-*-desc`).
 
 > Filtros só por `category` e/ou `priority` (sem "Hoje") são equality filters e não requerem composite index.
 
@@ -649,6 +658,35 @@ Com conta Google lembrada e biometria activa, o fluxo "Continuar com Google" faz
 **Alternativas consideradas:**
 - Invertir ordem (OAuth → Face ID → Firebase) — mais complexo (separar obtenção de credencial do `signInWithCredential`) e ainda apresenta UI OAuth desnecessária no re-login.
 - Delay fixo sempre antes de `signIn()` — já falhou em produção.
+
+---
+
+## ADR-023 — `steps` como campo array em `tasks` (fim da sub-collection)
+
+**Data:** 2026-07-22
+**Status:** Aceito
+
+**Contexto:**
+O mobile lia e gravava passos do modo guiado na sub-collection `tasks/{taskId}/steps/{stepId}`. A web passou a persistir `steps` como **campo array** no documento da tarefa (`id`, `taskId`, `order`, `title`, `instruction`, `isCompleted`). Tarefas criadas na web não apareciam com passos no mobile (e o Modo Guiado ficava indisponível).
+
+**Decisão:**
+1. Contrato único: `steps` é um `array` de maps no documento `tasks/{taskId}`.
+2. Mobile deixa de ler/escrever a sub-collection; create/update/complete/delete operam só no campo array.
+3. `order` é **0-indexed**; IDs estáveis no formato `step_0`, `step_1`, …
+4. Cada passo inclui `taskId` (igual ao document ID da tarefa).
+5. A sub-collection antiga fica **legado** (rules mantidas para dados históricos; clientes novos não a usam).
+
+**Motivo:**
+- Paridade Web/Mobile sem migração dual permanente.
+- Uma única leitura do documento da tarefa basta para o Modo Guiado (menos listeners).
+- Escrita atómica mais simples (sem batch de N docs na sub-collection).
+
+**Alternativas consideradas:**
+- Manter sub-collection e forçar a web a migrar de volta (descartado: a web já escreve no array; divergência já em produção).
+- Dual-read (array + fallback sub-collection) indefinidamente (descartado: complexidade; preferir contrato único + dados novos no array).
+
+**Impacto no schema Firebase:**
+Ver `firebaseSchema.md` — campo `steps` em `tasks`; changelog 2026-07-22.
 
 ---
 
