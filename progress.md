@@ -150,6 +150,7 @@
 - [x] Follow-up issue #34: data adicionada aos cards da lista no padrão do Dashboard e espaçamento direito do modal de filtros corrigido (2026-07-21)
 - [x] Persistência web de passos alinhada ao mobile na subcollection `tasks/{taskId}/steps/{stepId}`; leitura compatível com array legado durante a transição (2026-07-21)
 - [x] Acesso global ao Centro de Acessibilidade adicionado à sidebar e ao menu mobile (2026-07-21)
+- [x] Issue web #56: contador “Concluídas hoje” usa a data real de conclusão (`completedAt`) no dia civil, com testes de regressão (2026-07-22)
 - [x] Filtros na Task List (categoria + "hoje" + busca por título) — processamento em memória
 - [x] Labels de prioridade/categoria/status em português (corrigido 2026-07-07)
 - [x] Ordenação da lista por `dueDate` descendente, com tarefas sem data no fim (issue web #34, 2026-07-21)
