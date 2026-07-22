@@ -146,6 +146,7 @@
 - [x] Issue web #34: lista por `dueDate` DESC; detalhes simplificados; conclusão de tarefas vencidas/sem passos com modal informativo; toasts de erro/sucesso (branch `fix/task-adjustments-34`, 2026-07-21)
 - [x] Follow-up issue #34: data adicionada aos cards da lista no padrão do Dashboard e espaçamento direito do modal de filtros corrigido (2026-07-21)
 - [x] Persistência web de passos alinhada ao mobile na subcollection `tasks/{taskId}/steps/{stepId}`; leitura compatível com array legado durante a transição (2026-07-21)
+- [x] **ADR-023:** contrato único `steps` como campo array em `tasks/{taskId}` (Web + Mobile); sub-collection marcada como legado (2026-07-22)
 - [x] Acesso global ao Centro de Acessibilidade adicionado à sidebar e ao menu mobile (2026-07-21)
 - [x] Issue web #56: contador “Concluídas hoje” usa a data real de conclusão (`completedAt`) no dia civil, com testes de regressão (2026-07-22)
 - [x] Issues web #61/#62: toasts centralizados por tipo e duração; `Button` com loading acessível e proteção contra duplo clique nos principais fluxos assíncronos; Storybook e testes atualizados (2026-07-22)
@@ -299,6 +300,7 @@
 - [x] Tela Task Details (Figma `15:7401` — badges, passos, ações, apagar com confirmação)
 - [x] Tela Create Task (Figma `15:7612` — passos dinâmicos com "+" e "X")
 - [x] Tela Guided Task (Figma `15:7818` — passo a passo sequencial inteligente)
+- [x] **ADR-023:** mobile lê/grava `steps` como campo array no documento da tarefa (paridade web); deixa de usar a sub-collection (2026-07-22)
 - [x] Animação Lottie de celebração ao concluir tarefa
 - [x] Melhorias UX Create Task (categoria como dropdown, dueDate full datetime, 1 passo pré-aberto, validações, sem botão Guardar no header)
 - [x] Limites de caracteres (título 30, descrição 100, passo 30)

@@ -265,10 +265,14 @@ Estender a collection partilhada `tasks/{taskId}` com três campos:
 
 A subcollection `steps/{stepId}` mantém-se inalterada. No formulário de criação (mobile), cada passo é um campo de texto único que mapeia para `step.title`; `step.instruction` fica opcional (vazio por agora) e pode ser usado futuramente para enriquecer o Modo Guiado.
 
+> **Atualização (ADR-023, 2026-07-22):** `steps` passou a ser campo array no documento `tasks/{taskId}`. A sub-collection ficou legado.
+
 **Motivo:**
 - Os três campos são requisitos diretos do design — não há como implementar as telas sem eles.
 - `reminderTime` fica na própria tarefa (não na collection `reminders`) porque representa a hora preferida da tarefa; a criação de lembretes propriamente ditos fica para o módulo de Lembretes.
 - Manter a subcollection `steps` intacta evita migração e preserva compatibilidade com o que já está documentado.
+>
+> > **Nota:** esta justificação foi supersedida pelo ADR-023 (campo array).
 
 **Alternativas consideradas:**
 - Adicionar apenas `priority` + `category` e deixar o horário para o módulo de Lembretes (descartado: a lista e os detalhes exibem a hora da própria tarefa).
@@ -649,6 +653,35 @@ Com conta Google lembrada e biometria activa, o fluxo "Continuar com Google" faz
 **Alternativas consideradas:**
 - Invertir ordem (OAuth → Face ID → Firebase) — mais complexo (separar obtenção de credencial do `signInWithCredential`) e ainda apresenta UI OAuth desnecessária no re-login.
 - Delay fixo sempre antes de `signIn()` — já falhou em produção.
+
+---
+
+## ADR-023 — `steps` como campo array em `tasks` (fim da sub-collection)
+
+**Data:** 2026-07-22
+**Status:** Aceito
+
+**Contexto:**
+O mobile lia e gravava passos do modo guiado na sub-collection `tasks/{taskId}/steps/{stepId}`. A web passou a persistir `steps` como **campo array** no documento da tarefa (`id`, `taskId`, `order`, `title`, `instruction`, `isCompleted`). Tarefas criadas na web não apareciam com passos no mobile (e o Modo Guiado ficava indisponível).
+
+**Decisão:**
+1. Contrato único: `steps` é um `array` de maps no documento `tasks/{taskId}`.
+2. Mobile deixa de ler/escrever a sub-collection; create/update/complete/delete operam só no campo array.
+3. `order` é **0-indexed**; IDs estáveis no formato `step_0`, `step_1`, …
+4. Cada passo inclui `taskId` (igual ao document ID da tarefa).
+5. A sub-collection antiga fica **legado** (rules mantidas para dados históricos; clientes novos não a usam).
+
+**Motivo:**
+- Paridade Web/Mobile sem migração dual permanente.
+- Uma única leitura do documento da tarefa basta para o Modo Guiado (menos listeners).
+- Escrita atómica mais simples (sem batch de N docs na sub-collection).
+
+**Alternativas consideradas:**
+- Manter sub-collection e forçar a web a migrar de volta (descartado: a web já escreve no array; divergência já em produção).
+- Dual-read (array + fallback sub-collection) indefinidamente (descartado: complexidade; preferir contrato único + dados novos no array).
+
+**Impacto no schema Firebase:**
+Ver `firebaseSchema.md` — campo `steps` em `tasks`; changelog 2026-07-22.
 
 ---
 

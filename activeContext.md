@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-22 (Tati — alinhamento documental da issue web #63)
+> Última atualização: 2026-07-22 (David — steps como array em tasks / ADR-023)
 
 ---
 
@@ -56,7 +56,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - Lista de tarefas ordenada por `dueDate` descendente (tarefas sem data no fim)
 - Cards da listagem exibem hora + dia (`Hoje`, `Amanhã` ou `dd/mm`), seguindo o Dashboard; modal de filtros com padding simétrico
 - Detalhes sem horário no card de notificação e sem card redundante de notas
-- Web alinhada ao contrato mobile `tasks/{taskId}/steps/{stepId}`, com leitura temporariamente compatível com o array legado
+- Web alinhada ao contrato mobile: `steps` como **campo array** no documento `tasks/{taskId}` (ADR-023); sub-collection marcada como legado
 - Conclusão disponível após a data da tarefa e também quando não houver passos; modal informativo fora do modo guiado
 - Item Acessibilidade na navegação global e toasts nos fluxos de tarefas sem modal
 
@@ -91,6 +91,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Status:** Entrega iOS em curso (2026-07-15) — TestFlight + correções nativas iOS.
 **Feito nesta sessão (2026-07-22):**
 
+- **ADR-023 — `steps` como array:** mobile deixa de usar a sub-collection `tasks/{taskId}/steps` e passa a ler/gravar o campo `steps` no documento da tarefa (paridade com a web). Create/update/complete/delete no novo modelo; `TaskStep` com `taskId`; `order` 0-indexed; schema + ADR + rules (legado) atualizados.
 - **Ordenação de lembretes:** lista e preview Home passam a `scheduledAt` **DESC** (data/hora maior primeiro; mais antigos por último). Preview "Próximos Lembretes" mostra até 3 ativos (exclui concluídos), mesma ordenação da lista. Novo índice `idx-reminders-category-desc`; `idx-reminders-list-desc` volta a ser necessário — **publicar** `firestore.indexes.json`.
 - **Excluir concluídos:** lembretes concluídos voltam a permitir swipe de **Excluir** (Editar continua bloqueado).
 
