@@ -38,10 +38,16 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Web (seniorease-web)
 
 **Responsável:** Henrique / Tati
-**Status:** Concluído — correção do contador “Concluídas hoje” da issue web #56 na branch `fix/tasks-completed-today-56` (Tati, 2026-07-22)
+**Status:** Em validação — padronização de toasts e estados de loading das issues web #61 e #62 na branch `fix/ux-feedback-loading-61-62` (Tati, 2026-07-22)
 
 **Concluído nesta frente (2026-07-22, Tati):**
 
+- Toasts passam por uma única porta de feedback: sucesso 3s, informação/aviso 4s e erro 5s; posição responsiva e ausência de botão Close mantidas no Toaster global
+- Sucesso visual não é duplicado quando a ação já apresenta modal informativo ou celebração Lottie
+- `Button` suporta `loading`/`loadingText`, desabilita novos cliques, expõe `aria-busy`/`aria-disabled` e preserva os alvos de toque do design system
+- Estados de loading aplicados aos fluxos assíncronos principais de autenticação, tarefas, lembretes, perfil, segurança, preferências e acessibilidade; Storybook documenta o novo estado
+- Feedback de criação/exclusão de tarefas é transportado até `/tasks` e exibido somente após a listagem montar, evitando perda do toast durante o redirecionamento
+- Auditoria validada com lint, type-check, build e 81 testes (incluindo durações fixas e feedback após navegação)
 - Contador “Concluídas hoje” passa a usar `status === completed` e `completedAt` no dia civil atual, sem depender de `dueDate`
 - Regra isolada em helper testável, cobrindo tarefas concluídas em dia diferente do agendamento
 
