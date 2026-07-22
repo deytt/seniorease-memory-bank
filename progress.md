@@ -314,7 +314,7 @@
 - [x] Tela Reminders (lista, marcar concluído, ordenação **descendente** por `scheduledAt` — data/hora maior primeiro)
 - [x] Criar lembrete (Firestore CRUD, sem push no device)
 - [x] Editar lembrete reutilizando a tela de criação (rota `/reminders/:id/edit`, `UpdateReminderUseCase`) — bloqueado para lembretes concluídos
-- [x] Card de lembrete: swipe bidirecional (esquerda apaga / direita edita, bloqueado quando concluído), toque para expandir a descrição completa (acessível), data no card e dica de swipe ("peek") na 1ª abertura da sessão
+- [x] Card de lembrete: swipe bidirecional (esquerda apaga / direita edita; concluídos só permitem excluir), toque para expandir a descrição completa (acessível), data no card e dica de swipe ("peek") na 1ª abertura da sessão
 - [x] Home → lista: toque no lembrete limpa filtros, navega para a aba de Lembretes e destaca o item com `ensureVisible` + pulso; preview "Próximos Lembretes" mostra até 3 ativos (exclui concluídos), ordenados por `scheduledAt` **DESC**; data também exibida no card da Home
 - [x] Header Reminders alinhado ao de Tarefas (botão ajuda "?" + filtro com badge + criar) e header Novo Lembrete estilo Nova Tarefa (botão "?", hints, título 30, validação de data no passado)
 - [x] Categorias de lembrete (Medicação, Consulta, Hidratação, Alimentação, Contas e Pagamentos) em combo box na criação
