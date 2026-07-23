@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-22 (David — tasks dueDate DESC server-side)
+> Última atualização: 2026-07-23 (Vinicius — issue #32 Login web)
 
 ---
 
@@ -85,6 +85,9 @@
 - [x] Firebase Auth integrado
 - [x] Login com Google (OAuth) — `SignInWithGoogleUseCase` + botão na UI com logo Google
 - [x] Rota protegida (redirect se não autenticado) — guard no `(app)/layout.tsx`
+- [x] "Lembrar de mim" — paridade mobile: guarda e-mail + método (`email`|`google`) em localStorage; Modo A (identidade) / Modo B (formulário); sessão Firebase independente (issue #32, 2026-07-23)
+- [x] Google OAuth robusto — `photoUrl` no 1.º login, fallback `signInWithRedirect` se popup bloqueado, `/auth/callback` + conclusão no Login, erros amigáveis (issue #32, 2026-07-23)
+- [x] Seed demo não automático no registo — só via "Carregar exemplos" no dashboard (issue #52/#32); Success Screen sem prometer tarefas/lembretes pré-criados
 
 ### Dashboard
 
