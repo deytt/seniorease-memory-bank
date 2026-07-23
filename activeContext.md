@@ -74,6 +74,50 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - Google OAuth: photoUrl, fallback redirect, callback e mensagens amigáveis
 - Success Screen alinhada (sem seed automático de tarefas/lembretes no registo)
 
+**Concluído nesta frente (2026-07-23, Tati) — etapa 04, hierarquia de títulos:**
+
+- Hierarquia estrutural consolidada em três classes semânticas ligadas aos tokens: `page-title` (30px), `section-title` (22px) e `card-title` (18px).
+- Títulos de páginas, seções, cards, formulários, filtros e estados vazios passam a seguir o mesmo papel visual em todas as áreas.
+- Título do passo ativo no modo guiado mantém escala responsiva própria por ser o conteúdo focal da experiência, não um cabeçalho estrutural.
+- A criação de um componente compartilhado de cabeçalho permanece reservada para a análise de componentes da etapa 05.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 05, componentes compartilhados:**
+
+- `PageHeader` criado para centralizar título, descrição, ação lateral, retorno opcional e identificação dos tours.
+- Primeira migração concluída nas páginas de tarefas, lembretes, perfil, histórico e acessibilidade.
+- `BackNavigationButton` permanece como composição interna única para os retornos contextuais.
+- Cards de Dashboard, Perfil e Histórico foram mantidos separados por terem responsabilidades e composições próprias; cards de tarefas, lembretes e notificações também não foram unificados apenas por semelhança visual.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 06, rota de acessibilidade:**
+
+- Rota canônica corrigida de `/acessibility` para `/accessibility`.
+- Navegação, Dashboard e catálogo de tours passam a apontar para a grafia correta.
+- Rota antiga preservada apenas como redirecionamento, mantendo compatibilidade com favoritos e links existentes.
+- Validação concluída com ESLint, TypeScript, teste do catálogo de tours e build das 29 rotas.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 07, menu móvel acessível:**
+
+- Menu móvel migrado para o `Sheet` acessível do design system, com contenção de foco, fechamento por `Esc`, overlay e restauração do foco ao disparador.
+- Painel recebe título e descrição acessíveis; navegação recebe nome semântico e o item ativo expõe `aria-current="page"`.
+- Ícones decorativos foram ocultados da árvore de acessibilidade e todos os itens mantêm alvos de toque de pelo menos 48px.
+- Botões de abrir, fechar e sair possuem nomes acessíveis e foco visível de alto contraste.
+- Validação concluída com ESLint, TypeScript e build das 29 rotas.
+
+**Adiado nesta frente (2026-07-23, Tati) — etapa 08, bloco de suporte:**
+
+- Identificado que `1-800-SENIOR` não representa um canal real e também está presente na experiência mobile.
+- Alteração adiada para uma implementação coordenada entre web e mobile, evitando divergência de conteúdo e comportamento entre plataformas.
+- Nenhuma mudança de interface foi realizada nesta etapa.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 09, botões:**
+
+- Raio padrão do componente `Button` consolidado em 14px.
+- Ações compactas do Dashboard (`Adicionar tarefa`, `Carregar exemplos` e `Ajustar configurações`) passam a usar explicitamente 44px.
+- Links de ação `Iniciar/Continuar`, `Ver todas as tarefas` e `Gerenciar lembretes` passam a compor o `Button`, removendo estilos paralelos.
+- Ações de edição do Perfil e ícones de editar/excluir lembrete passam a respeitar o alvo mínimo de 44px e o raio compartilhado.
+- Botões principais de formulários e diálogos permanecem em 56px; modo guiado mantém dimensões maiores por ser uma experiência focal.
+- Validação concluída com ESLint, TypeScript, testes do Dashboard e build das 29 rotas.
+
 **Concluído nesta frente (2026-07-22, Tati):**
 
 - Toasts passam por uma única porta de feedback: sucesso 3s, informação/aviso 4s e erro 5s; posição responsiva e ausência de botão Close mantidas no Toaster global
