@@ -19,6 +19,14 @@ Stack completa, tokens do Design System, schema Firebase e configurações de am
 | React Hook Form | última | Formulários com validação |
 | Zod | última | Validação de schemas |
 
+#### Fonte dos design tokens web
+
+`seniorease-web/src/app/globals.css` é a fonte única dos tokens da aplicação
+web. O arquivo reúne as custom properties, os overrides de tema e contraste e
+o mapeamento semântico do Tailwind em `@theme inline`. O layout raiz, o
+Storybook, o shadcn e o Tailwind devem consumir esse mesmo arquivo; não criar
+folhas paralelas de tokens.
+
 ### Mobile — seniorease-mobile
 
 | Tecnologia | Versão | Motivo |
@@ -87,12 +95,13 @@ Stack completa, tokens do Design System, schema Firebase e configurações de am
 | Nome | Tamanho base | Uso |
 |---|---|---|
 | Display | 36px+ | Títulos de página principais |
-| Heading 1 | 28-32px | Títulos de seção |
-| Heading 2 | 22-24px | Subtítulos, títulos de card |
+| Heading 1 | 28-32px | Títulos de página |
+| Heading 2 | 22-24px | Títulos de seção principal |
+| Heading 3 | 18px | Títulos internos de card e grupos de formulário |
 | Body Large | 18-20px | Texto de destaque, labels de formulário |
 | Body | 16px | Texto padrão |
-| Caption | 13-14px | Textos auxiliares, badges |
-| Badge | 12px uppercase | Tags, status badges |
+| Caption | 14px | Textos auxiliares |
+| Badge | 14px | Tags, contadores e status badges |
 
 > A escala de fonte é multiplicada pelo fator de preferência do usuário:
 > - `small`: × 0.875 (mínimo absoluto — nunca abaixo de 14px)
@@ -139,6 +148,11 @@ Quando o usuário seleciona espaçamento "Espaçoso", aplicar multiplicador 1.5�
 | Modals | Confirmation, Info, Form |
 | Toasts | Success, Warning, Error, Info |
 | Avatars | Image, Initials, Placeholder |
+
+Componentes estruturais compartilhados no web:
+
+- `PageHeader`: título, descrição, ação lateral, retorno contextual opcional e marcador de tour.
+- `BackNavigationButton`: navegação de retorno com ícone, alvo de toque e estados visuais padronizados.
 
 ---
 
