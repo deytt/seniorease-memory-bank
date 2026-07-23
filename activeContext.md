@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-22 (David — tasks dueDate DESC server-side)
+> Última atualização: 2026-07-23 (Tati — início da revisão geral de UX/UI web)
 
 ---
 
@@ -38,7 +38,29 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Web (seniorease-web)
 
 **Responsável:** Henrique / Tati
-**Status:** Concluído — issues web #61/#62 integradas à `master`; documentação em alinhamento pela issue #63 (Tati, 2026-07-22)
+**Status:** Em andamento — revisão geral de UX/UI na branch `fix/web-ux-ui-general-adjustments`, documentada em `docs/web-ux-ui-general-adjustments`.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 01, temas acessíveis:**
+
+- Cores claras fixas removidas de estados de carregamento, lembretes, notificações, perfil, segurança, diálogos e componentes compartilhados.
+- Fundos, textos e bordas dessas áreas passam a usar os tokens semânticos `background`, `card`, `foreground`, `muted`, `border`, `primary` e estados de feedback.
+- Conteúdo sobre fundos `primary`, `secondary`, `success` e `destructive` passa a usar o respectivo token `*-foreground`, incluindo o contraste máximo, no qual o botão primário é amarelo com texto preto.
+- Badges e ações de detalhes da tarefa deixam de depender de cores Tailwind/hex fixas e acompanham tema escuro, alto contraste e contraste máximo.
+- Cores oficiais do logotipo do Google e a identidade escura da navegação foram preservadas intencionalmente.
+- Validação da etapa: ESLint e TypeScript sem erros; suíte Vitest com 81 testes aprovada.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 02, fonte de design tokens:**
+
+- `src/app/globals.css` formalizado como fonte única dos tokens da aplicação web, consumida pelo layout raiz, Tailwind, shadcn e Storybook.
+- `src/app/design-tokens.css` removido por estar órfão e conter valores antigos conflitantes de tipografia, raios, cores e espaçamento.
+- Wrapper global do Storybook passa a usar `bg-background` e `text-foreground`, permitindo validar componentes com os mesmos temas da aplicação; padding reduzido de 32px para 16px e removida a altura mínima de viewport para o Canvas/Docs crescer conforme o conteúdo.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 03, tipografia legível:**
+
+- Textos operacionais e auxiliares abaixo de 14px removidos das telas e componentes de produção.
+- Datas, descrições, contadores de caracteres, filtros, metadados, menus, badges e rótulos do dashboard passam a partir de 14px na escala padrão.
+- Badges de notificação foram ampliados junto com a fonte para preservar a leitura sem cortar contagens.
+- Token base de badge atualizado de 12px para 14px; multiplicadores de fonte da acessibilidade continuam aplicados normalmente.
 
 **Concluído nesta frente (2026-07-22, Tati):**
 

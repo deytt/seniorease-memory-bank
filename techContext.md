@@ -19,6 +19,14 @@ Stack completa, tokens do Design System, schema Firebase e configurações de am
 | React Hook Form | última | Formulários com validação |
 | Zod | última | Validação de schemas |
 
+#### Fonte dos design tokens web
+
+`seniorease-web/src/app/globals.css` é a fonte única dos tokens da aplicação
+web. O arquivo reúne as custom properties, os overrides de tema e contraste e
+o mapeamento semântico do Tailwind em `@theme inline`. O layout raiz, o
+Storybook, o shadcn e o Tailwind devem consumir esse mesmo arquivo; não criar
+folhas paralelas de tokens.
+
 ### Mobile — seniorease-mobile
 
 | Tecnologia | Versão | Motivo |
@@ -91,8 +99,8 @@ Stack completa, tokens do Design System, schema Firebase e configurações de am
 | Heading 2 | 22-24px | Subtítulos, títulos de card |
 | Body Large | 18-20px | Texto de destaque, labels de formulário |
 | Body | 16px | Texto padrão |
-| Caption | 13-14px | Textos auxiliares, badges |
-| Badge | 12px uppercase | Tags, status badges |
+| Caption | 14px | Textos auxiliares |
+| Badge | 14px | Tags, contadores e status badges |
 
 > A escala de fonte é multiplicada pelo fator de preferência do usuário:
 > - `small`: × 0.875 (mínimo absoluto — nunca abaixo de 14px)
