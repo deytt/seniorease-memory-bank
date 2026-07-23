@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-23 (Tati — UX/UI web, etapa 01)
+> Última atualização: 2026-07-23 (Tati — UX/UI web, etapa 04; integração da master)
 
 ---
 
@@ -88,6 +88,9 @@
 - [x] Firebase Auth integrado
 - [x] Login com Google (OAuth) — `SignInWithGoogleUseCase` + botão na UI com logo Google
 - [x] Rota protegida (redirect se não autenticado) — guard no `(app)/layout.tsx`
+- [x] "Lembrar de mim" — paridade mobile: guarda e-mail + método (`email`|`google`) em localStorage; Modo A (identidade) / Modo B (formulário); sessão Firebase independente (issue #32, 2026-07-23)
+- [x] Google OAuth robusto — `photoUrl` no 1.º login, fallback `signInWithRedirect` se popup bloqueado, `/auth/callback` + conclusão no Login, erros amigáveis (issue #32, 2026-07-23)
+- [x] Seed demo não automático no registo — só via "Carregar exemplos" no dashboard (issue #52/#32); Success Screen sem prometer tarefas/lembretes pré-criados
 
 ### Dashboard
 
@@ -135,7 +138,11 @@
 - [x] Skip navigation link (`#main-content`) no layout do app — WCAG 2.4.1
 - [x] `role="status"` + `aria-live="polite"` nos estados de loading de todas as telas principais
 - [x] `aria-label` em botões de ícone (editar, excluir, marcar como concluído) nos cards de tarefa e lembrete
-- [x] `.advanced-only` aplicado no dashboard somente aos três números do banner de encorajamento (ontem, concluídas hoje e restantes); cards e navegação permanecem disponíveis no Modo Básico
+- [x] `.advanced-only` no Modo Básico (issue #58, 2026-07-23):
+  - Dashboard: stats do banner de encorajamento; card **Status de acessibilidade**; botão “Carregar exemplos”; badge de prioridade na próxima atividade
+  - Tarefas: badge de prioridade nos cards; filtro de prioridade no modal
+  - Já existentes (mantidos): CPF no perfil; eventos de baixa relevância no histórico; categorias extras de lembrete na criação
+  - Tour do Dashboard omite o passo de acessibilidade no Modo Básico
 
 ### Módulo 2 — Tarefas
 

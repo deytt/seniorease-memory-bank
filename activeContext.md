@@ -37,8 +37,8 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Web (seniorease-web)
 
-**Responsável:** Henrique / Tati
-**Status:** Em andamento — revisão geral de UX/UI na branch `fix/web-ux-ui-general-adjustments`, documentada em `docs/web-ux-ui-general-adjustments`.
+**Responsável:** Henrique / Tati / Vinicius
+**Status:** Em andamento — revisão geral de UX/UI na branch `fix/web-ux-ui-audit-2026`, documentada em `docs/web-ux-ui-audit-2026`.
 
 **Concluído nesta frente (2026-07-23, Tati) — etapa 01, temas acessíveis:**
 
@@ -61,6 +61,18 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - Datas, descrições, contadores de caracteres, filtros, metadados, menus, badges e rótulos do dashboard passam a partir de 14px na escala padrão.
 - Badges de notificação foram ampliados junto com a fonte para preservar a leitura sem cortar contagens.
 - Token base de badge atualizado de 12px para 14px; multiplicadores de fonte da acessibilidade continuam aplicados normalmente.
+
+**Concluído nesta frente (2026-07-23, Vinicius — issue #58):**
+
+- Reforçar Modo Básico: ocultar card Status de acessibilidade e UI densa no dashboard/tarefas via `.advanced-only`
+- Manter ocultações existentes (CPF, histórico filtrado, categorias de lembrete)
+- Atualizar `progress.md` com a cobertura real
+
+**Concluído nesta frente (2026-07-23, Vinicius — issue #32):**
+
+- "Lembrar de mim" paridade mobile (e-mail + método; Modo A/B)
+- Google OAuth: photoUrl, fallback redirect, callback e mensagens amigáveis
+- Success Screen alinhada (sem seed automático de tarefas/lembretes no registo)
 
 **Concluído nesta frente (2026-07-22, Tati):**
 
