@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-23 (Vinicius — issue #32 Login web)
+> Última atualização: 2026-07-23 (Tati — UX/UI web, etapa 09 concluída)
 
 ---
 
@@ -62,6 +62,7 @@
 - [x] `.github/skills/project-overview/` sincronizado a partir do memory-bank
 - [x] `scripts/update-memory-bank.sh` atualizado para sincronizar Cursor + Copilot
 - [x] Tailwind CSS configurado com tokens do Design System (`globals.css` com todas as CSS custom properties)
+- [x] `globals.css` consolidado como fonte única dos design tokens web; folha legada `design-tokens.css` removida e Storybook alinhado aos tokens semânticos (revisão UX/UI etapa 02, 2026-07-23)
 - [x] Firebase SDK configurado
 - [x] Zustand configurado
 
@@ -74,6 +75,14 @@
 - [x] Toast / Notificação — via sonner
 - [x] Badge — via shadcn/ui
 - [x] Tema dinâmico (CSS custom properties para fonte, contraste, espaçamento) — `PreferencesProvider` aplica no `<html>`
+- [x] Revisão UX/UI etapa 01 — telas e componentes de conteúdo usam tokens semânticos em vez de cores claras fixas; tema escuro, alto contraste e contraste máximo preservam fundos, textos, bordas e foregrounds corretos (2026-07-23)
+- [x] Revisão UX/UI etapa 03 — conteúdo legível não usa tipografia abaixo de 14px na escala padrão; menus, badges, metadados, descrições e contadores ajustados (2026-07-23)
+- [x] Revisão UX/UI etapa 04 — títulos padronizados por papel em página (30px), seção (22px) e card/subseção (18px), preservando exceção focal do modo guiado (2026-07-23)
+- [x] Revisão UX/UI etapa 05 — `PageHeader` e `BackNavigationButton` compartilhados aplicados; componentes de domínio mantidos separados quando responsabilidade e comportamento diferem (2026-07-23)
+- [x] Revisão UX/UI etapa 06 — rota canônica `/accessibility` aplicada à navegação, Dashboard e tours; `/acessibility` mantida como redirecionamento legado (2026-07-23)
+- [x] Revisão UX/UI etapa 07 — menu móvel migrado para painel acessível com foco contido/restaurado, fechamento por `Esc`, `aria-current`, nomes acessíveis e alvos de toque de 48px (2026-07-23)
+- [ ] Revisão UX/UI etapa 08 — bloco de suporte adiado para implementação coordenada entre web e mobile; nenhuma alteração realizada (2026-07-23)
+- [x] Revisão UX/UI etapa 09 — ações compactas em 44px, principais em 56px, ícones em 44×44px, raio padrão de 14px e links de ação migrados para `Button` (2026-07-23)
 - [x] Storybook — **concluído** (19 stories; ver secção Documentação abaixo)
 
 ### Autenticação

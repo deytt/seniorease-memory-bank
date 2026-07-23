@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-22 (David — tasks dueDate DESC server-side)
+> Última atualização: 2026-07-23 (Tati — início da revisão geral de UX/UI web)
 
 ---
 
@@ -38,9 +38,31 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Web (seniorease-web)
 
 **Responsável:** Henrique / Tati / Vinicius
-**Status:** Em andamento — issue #58 (Modo Básico) por Vinicius (2026-07-23)
+**Status:** Em andamento — revisão geral de UX/UI na branch `fix/web-ux-ui-audit-2026`, documentada em `docs/web-ux-ui-audit-2026`.
 
-**Em curso (2026-07-23, Vinicius — issue #58):**
+**Concluído nesta frente (2026-07-23, Tati) — etapa 01, temas acessíveis:**
+
+- Cores claras fixas removidas de estados de carregamento, lembretes, notificações, perfil, segurança, diálogos e componentes compartilhados.
+- Fundos, textos e bordas dessas áreas passam a usar os tokens semânticos `background`, `card`, `foreground`, `muted`, `border`, `primary` e estados de feedback.
+- Conteúdo sobre fundos `primary`, `secondary`, `success` e `destructive` passa a usar o respectivo token `*-foreground`, incluindo o contraste máximo, no qual o botão primário é amarelo com texto preto.
+- Badges e ações de detalhes da tarefa deixam de depender de cores Tailwind/hex fixas e acompanham tema escuro, alto contraste e contraste máximo.
+- Cores oficiais do logotipo do Google e a identidade escura da navegação foram preservadas intencionalmente.
+- Validação da etapa: ESLint e TypeScript sem erros; suíte Vitest com 81 testes aprovada.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 02, fonte de design tokens:**
+
+- `src/app/globals.css` formalizado como fonte única dos tokens da aplicação web, consumida pelo layout raiz, Tailwind, shadcn e Storybook.
+- `src/app/design-tokens.css` removido por estar órfão e conter valores antigos conflitantes de tipografia, raios, cores e espaçamento.
+- Wrapper global do Storybook passa a usar `bg-background` e `text-foreground`, permitindo validar componentes com os mesmos temas da aplicação; padding reduzido de 32px para 16px e removida a altura mínima de viewport para o Canvas/Docs crescer conforme o conteúdo.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 03, tipografia legível:**
+
+- Textos operacionais e auxiliares abaixo de 14px removidos das telas e componentes de produção.
+- Datas, descrições, contadores de caracteres, filtros, metadados, menus, badges e rótulos do dashboard passam a partir de 14px na escala padrão.
+- Badges de notificação foram ampliados junto com a fonte para preservar a leitura sem cortar contagens.
+- Token base de badge atualizado de 12px para 14px; multiplicadores de fonte da acessibilidade continuam aplicados normalmente.
+
+**Concluído nesta frente (2026-07-23, Vinicius — issue #58):**
 
 - Reforçar Modo Básico: ocultar card Status de acessibilidade e UI densa no dashboard/tarefas via `.advanced-only`
 - Manter ocultações existentes (CPF, histórico filtrado, categorias de lembrete)
@@ -51,6 +73,50 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - "Lembrar de mim" paridade mobile (e-mail + método; Modo A/B)
 - Google OAuth: photoUrl, fallback redirect, callback e mensagens amigáveis
 - Success Screen alinhada (sem seed automático de tarefas/lembretes no registo)
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 04, hierarquia de títulos:**
+
+- Hierarquia estrutural consolidada em três classes semânticas ligadas aos tokens: `page-title` (30px), `section-title` (22px) e `card-title` (18px).
+- Títulos de páginas, seções, cards, formulários, filtros e estados vazios passam a seguir o mesmo papel visual em todas as áreas.
+- Título do passo ativo no modo guiado mantém escala responsiva própria por ser o conteúdo focal da experiência, não um cabeçalho estrutural.
+- A criação de um componente compartilhado de cabeçalho permanece reservada para a análise de componentes da etapa 05.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 05, componentes compartilhados:**
+
+- `PageHeader` criado para centralizar título, descrição, ação lateral, retorno opcional e identificação dos tours.
+- Primeira migração concluída nas páginas de tarefas, lembretes, perfil, histórico e acessibilidade.
+- `BackNavigationButton` permanece como composição interna única para os retornos contextuais.
+- Cards de Dashboard, Perfil e Histórico foram mantidos separados por terem responsabilidades e composições próprias; cards de tarefas, lembretes e notificações também não foram unificados apenas por semelhança visual.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 06, rota de acessibilidade:**
+
+- Rota canônica corrigida de `/acessibility` para `/accessibility`.
+- Navegação, Dashboard e catálogo de tours passam a apontar para a grafia correta.
+- Rota antiga preservada apenas como redirecionamento, mantendo compatibilidade com favoritos e links existentes.
+- Validação concluída com ESLint, TypeScript, teste do catálogo de tours e build das 29 rotas.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 07, menu móvel acessível:**
+
+- Menu móvel migrado para o `Sheet` acessível do design system, com contenção de foco, fechamento por `Esc`, overlay e restauração do foco ao disparador.
+- Painel recebe título e descrição acessíveis; navegação recebe nome semântico e o item ativo expõe `aria-current="page"`.
+- Ícones decorativos foram ocultados da árvore de acessibilidade e todos os itens mantêm alvos de toque de pelo menos 48px.
+- Botões de abrir, fechar e sair possuem nomes acessíveis e foco visível de alto contraste.
+- Validação concluída com ESLint, TypeScript e build das 29 rotas.
+
+**Adiado nesta frente (2026-07-23, Tati) — etapa 08, bloco de suporte:**
+
+- Identificado que `1-800-SENIOR` não representa um canal real e também está presente na experiência mobile.
+- Alteração adiada para uma implementação coordenada entre web e mobile, evitando divergência de conteúdo e comportamento entre plataformas.
+- Nenhuma mudança de interface foi realizada nesta etapa.
+
+**Concluído nesta frente (2026-07-23, Tati) — etapa 09, botões:**
+
+- Raio padrão do componente `Button` consolidado em 14px.
+- Ações compactas do Dashboard (`Adicionar tarefa`, `Carregar exemplos` e `Ajustar configurações`) passam a usar explicitamente 44px.
+- Links de ação `Iniciar/Continuar`, `Ver todas as tarefas` e `Gerenciar lembretes` passam a compor o `Button`, removendo estilos paralelos.
+- Ações de edição do Perfil e ícones de editar/excluir lembrete passam a respeitar o alvo mínimo de 44px e o raio compartilhado.
+- Botões principais de formulários e diálogos permanecem em 56px; modo guiado mantém dimensões maiores por ser uma experiência focal.
+- Validação concluída com ESLint, TypeScript, testes do Dashboard e build das 29 rotas.
 
 **Concluído nesta frente (2026-07-22, Tati):**
 
