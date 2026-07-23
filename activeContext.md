@@ -37,8 +37,14 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ### Web (seniorease-web)
 
-**Responsável:** Henrique / Tati
-**Status:** Concluído — issues web #61/#62 integradas à `master`; documentação em alinhamento pela issue #63 (Tati, 2026-07-22)
+**Responsável:** Henrique / Tati / Vinicius
+**Status:** Em andamento — issue #32 (Login) em correção por Vinicius (2026-07-23)
+
+**Em curso (2026-07-23, Vinicius — issue #32):**
+
+- "Lembrar de mim" real: persistência Firebase local/session + e-mail lembrado
+- Google OAuth: photoUrl, fallback redirect, callback e mensagens amigáveis
+- Success Screen alinhada (sem seed automático de tarefas/lembretes no registo)
 
 **Concluído nesta frente (2026-07-22, Tati):**
 
