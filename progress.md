@@ -135,7 +135,11 @@
 - [x] Skip navigation link (`#main-content`) no layout do app — WCAG 2.4.1
 - [x] `role="status"` + `aria-live="polite"` nos estados de loading de todas as telas principais
 - [x] `aria-label` em botões de ícone (editar, excluir, marcar como concluído) nos cards de tarefa e lembrete
-- [x] `.advanced-only` aplicado no dashboard somente aos três números do banner de encorajamento (ontem, concluídas hoje e restantes); cards e navegação permanecem disponíveis no Modo Básico
+- [x] `.advanced-only` no Modo Básico (issue #58, 2026-07-23):
+  - Dashboard: stats do banner de encorajamento; card **Status de acessibilidade**; botão “Carregar exemplos”; badge de prioridade na próxima atividade
+  - Tarefas: badge de prioridade nos cards; filtro de prioridade no modal
+  - Já existentes (mantidos): CPF no perfil; eventos de baixa relevância no histórico; categorias extras de lembrete na criação
+  - Tour do Dashboard omite o passo de acessibilidade no Modo Básico
 
 ### Módulo 2 — Tarefas
 

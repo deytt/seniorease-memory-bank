@@ -38,11 +38,17 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 ### Web (seniorease-web)
 
 **Responsável:** Henrique / Tati / Vinicius
-**Status:** Em andamento — issue #32 (Login) em correção por Vinicius (2026-07-23)
+**Status:** Em andamento — issue #58 (Modo Básico) por Vinicius (2026-07-23)
 
-**Em curso (2026-07-23, Vinicius — issue #32):**
+**Em curso (2026-07-23, Vinicius — issue #58):**
 
-- "Lembrar de mim" real: persistência Firebase local/session + e-mail lembrado
+- Reforçar Modo Básico: ocultar card Status de acessibilidade e UI densa no dashboard/tarefas via `.advanced-only`
+- Manter ocultações existentes (CPF, histórico filtrado, categorias de lembrete)
+- Atualizar `progress.md` com a cobertura real
+
+**Concluído nesta frente (2026-07-23, Vinicius — issue #32):**
+
+- "Lembrar de mim" paridade mobile (e-mail + método; Modo A/B)
 - Google OAuth: photoUrl, fallback redirect, callback e mensagens amigáveis
 - Success Screen alinhada (sem seed automático de tarefas/lembretes no registo)
 
