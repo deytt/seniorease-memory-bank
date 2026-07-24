@@ -21,6 +21,24 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ## Foco atual por frente
 
+### Avaliação final / Specs de correção
+
+**Responsável:** David  
+**Status:** Em andamento — specs criadas no repositório Mobile em `docs/specs/`.  
+**Em curso:** Executar as correções de entrega de forma isolada: documentação, acessibilidade, segurança Firestore, arquitetura/qualidade e vídeo.  
+**Dependência crítica:** qualquer mudança de Firestore/schema ou de contrato de preferências deve ser validada com a frente Web antes da implementação.
+
+**Concluído (2026-07-24, David — SPEC-03 Segurança Firestore):**
+
+- Sub-collection legada `tasks/{taskId}/steps` restrita ao proprietário da tarefa pai via `get()` (era aberta a todo autenticado — violava isolamento por utilizador).
+- Adicionada função auxiliar `fieldUnchanged()` + validação de imutabilidade: `email`/`id` em `users`; `userId` em `tasks`, `reminders`, `history`, `preferences`, `onboarding`.
+- Regras granularizadas (read/create/update/delete separados) para controlo preciso.
+- `history` passa a negar `delete` pelo cliente — histórico imutável preserva integridade de streak/semana.
+- Rules compiladas sem erros e publicadas no `seniorease-backend` (2026-07-24).
+- ADR-024 criado em `decisions.md` — decisão estrutural sobre sub-collection legada.
+- `firebaseSchema.md` atualizado: tabela de permissões + changelog 2026-07-24.
+- Próxima etapa (pós-inventário): negar completamente a sub-collection se zero documentos legados em produção (`allow read, write: if false;`).
+
 ### Memory Bank / Agentes
 
 **Responsável:** David

@@ -690,6 +690,41 @@ Ver `firebaseSchema.md` — campo `steps` em `tasks`; changelog 2026-07-22.
 
 ---
 
+## ADR-024 — Restrição de acesso à sub-collection legada `tasks/{taskId}/steps`
+
+**Data:** 2026-07-24
+**Status:** Aceito
+
+**Contexto:**
+A sub-collection `tasks/{taskId}/steps/{stepId}` foi criada em ADR-004 para o Modo Guiado. Em ADR-023 (2026-07-22) o contrato foi migrado para o campo array `steps` no documento da tarefa. Nenhum cliente (Web ou Mobile) lê ou escreve a sub-collection a partir de ADR-023.
+
+O ficheiro `firestore.rules` ainda mantinha `allow read, write: if request.auth != null;` para a sub-collection legada, abrindo leitura e escrita a **qualquer utilizador autenticado**, violando o princípio de isolamento por utilizador (SPEC-03).
+
+**Decisão:**
+Negar completamente o acesso à sub-collection legada com `allow read, write: if false;`.
+
+Dados legados existentes ficam "órfãos" no Firestore — não são lidos por nenhum cliente e não afetam nenhum fluxo. Limpeza pode ser feita via Admin SDK num script posterior se necessário.
+
+Esta decisão elimina também o custo de leitura do `get()` que a rule anterior (restrita ao dono) gerava a cada avaliação.
+
+**Histórico:**
+- **2026-07-24 (deploy inicial):** restrito ao proprietário da tarefa pai via `get()` — eliminou o acesso cruzado entre utilizadores autenticados.
+- **2026-07-24 (deploy final):** negado completamente (`if false`) — confirmado que nenhum cliente usa a sub-collection; dados legados existentes são ignorados.
+
+**Motivo:**
+- Ambas as plataformas (Web e Mobile) e Cloud Functions confirmaram não usar a sub-collection. A decisão de negar completamente (`if false`) pode ser tomada numa próxima iteração após inventário.
+- Restringir ao dono é zero-risco operacional: quem precisar de cleanup dos seus próprios dados legados continua a conseguir.
+- A rule com `get()` fica documentada e pode ser monitorada no Firebase Console (quota de leituras).
+
+**Alternativas consideradas:**
+- `allow read, write: if false;` (negar completamente) — optado por não fazer agora porque o inventário dos documentos existentes na sub-collection não foi executado antes da entrega. Esta opção é a próxima a ser aplicada após confirmar zero documentos na sub-collection em produção.
+- Manter `auth != null` — descartado por violar isolamento de dados por utilizador.
+
+**Impacto no schema Firebase:**
+Ver `firebaseSchema.md` — tabela de permissões e changelog 2026-07-24 (SPEC-03).
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:

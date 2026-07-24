@@ -232,23 +232,23 @@ as iniciais do nome caso contrário.
 ## Regras de Segurança (Firestore Rules)
 
 > O ficheiro `firestore.rules` neste mesmo diretório contém o conteúdo em formato nativo.
-> Última publicação: **2026-07-03**
+> Última publicação: **2026-07-24** (SPEC-03 — restrição legado steps + validação campos imutáveis)
 
 Princípio: **cada utilizador só acede aos seus próprios dados**. Não existe acesso admin via cliente — operações administrativas (se necessárias) devem usar Firebase Admin SDK num ambiente seguro.
 
 Resumo das permissões:
 
-| Collection | Leitura | Escrita | Criação |
-|------------|---------|---------|---------|
-| `users` | próprio userId | próprio userId | — |
-| `tasks` | resource.userId == auth.uid | resource.userId == auth.uid | request.resource.userId == auth.uid |
-| `tasks/steps` (legado) | auth != null | auth != null | auth != null |
-| `preferences` | próprio userId | próprio userId | — |
-| `onboarding` | próprio userId | próprio userId | — |
-| `reminders` | resource.userId == auth.uid | resource.userId == auth.uid | request.resource.userId == auth.uid |
-| `history` | resource.userId == auth.uid | resource.userId == auth.uid | request.resource.userId == auth.uid |
-| `notifications` | resource.userId == auth.uid | Admin SDK apenas | Admin SDK apenas |
-| `users/{uid}/fcmTokens` | uid == auth.uid | uid == auth.uid | uid == auth.uid |
+| Collection | Leitura | Escrita | Criação | Notas |
+|------------|---------|---------|---------|-------|
+| `users` | próprio userId | próprio userId (email e id imutáveis) | próprio userId | `email` e `id` nunca alteráveis pelo cliente |
+| `tasks` | resource.userId == auth.uid | resource.userId == auth.uid (userId imutável) | request.resource.userId == auth.uid | `userId` imutável após criação |
+| `tasks/steps` (legado) | negado (`if false`) | negado (`if false`) | negado (`if false`) | **SPEC-03/ADR-024:** acesso totalmente negado — nenhum cliente usa a sub-collection |
+| `preferences` | próprio userId | próprio userId (userId imutável) | próprio userId | — |
+| `onboarding` | próprio userId | próprio userId (userId imutável) | próprio userId | — |
+| `reminders` | resource.userId == auth.uid | resource.userId == auth.uid (userId imutável) | request.resource.userId == auth.uid | `userId` imutável após criação |
+| `history` | resource.userId == auth.uid | resource.userId == auth.uid (userId imutável) | request.resource.userId == auth.uid | sem delete pelo cliente |
+| `notifications` | resource.userId == auth.uid | Admin SDK apenas | Admin SDK apenas | escrita via Cloud Functions apenas |
+| `users/{uid}/fcmTokens` | uid == auth.uid | uid == auth.uid | uid == auth.uid | — |
 
 Ver `firestore.rules` para o código completo.
 
@@ -321,6 +321,8 @@ Ver `firestore.rules` para o código completo.
 
 | Data | Mudança | ADR |
 |------|---------|-----|
+| 2026-07-24 | **SPEC-03 (final):** sub-collection legada `tasks/{taskId}/steps` negada completamente (`allow read, write: if false`) — nenhum cliente usa a sub-collection; dados legados existentes ignorados; custo de `get()` eliminado. Rules publicadas (`seniorease-backend`) | ADR-024 |
+| 2026-07-24 | **SPEC-03:** sub-collection legada `tasks/{taskId}/steps` restrita ao dono da tarefa pai via `get()` (era aberta a todo autenticado). Adicionada validação de campos imutáveis: `email`/`id` em `users`; `userId` em `tasks`, `reminders`, `history`, `preferences`, `onboarding`. Rules publicadas (`seniorease-backend`) | ADR-024 |
 | 2026-07-22 | Lista de `tasks`: ordenação server-side por `dueDate` **DESC** (Web + Mobile); índices ASC de filtro/hoje substituídos por variantes DESC (`idx-tasks-*-desc`); documentos sem `dueDate` fora do resultado do `orderBy` | ADR-011 (atualizado) / ADR-012 |
 | 2026-07-22 | `steps` passa a ser campo `array` em `tasks/{taskId}` (contrato único Web/Mobile); sub-collection `tasks/{taskId}/steps` marcada como legado; `order` 0-indexed; campos do passo: `id`, `taskId`, `order`, `title`, `instruction`, `isCompleted` | ADR-023 |
 | 2026-07-22 | Mobile: ordenação de `reminders` passa a `scheduledAt` **DESC** (lista + preview Home); índice `idx-reminders-list-desc` volta a ser necessário; novo `idx-reminders-category-desc` (`userId ASC, category ASC, scheduledAt DESC`) | — |
