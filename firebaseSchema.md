@@ -215,10 +215,8 @@
 
 ## Firebase Storage — fotos de perfil
 
-> Regras nativas em `memory-bank/storage.rules`. **Pré-requisito (manual):** o
-> bucket do Storage tem de estar ativado no console `seniorease-backend`
-> (Build → Storage → Get started) antes do primeiro upload e do deploy das
-> regras.
+> Regras nativas em `memory-bank/storage.rules`. Bucket ativado no console
+> `seniorease-backend` e `storage.rules` publicadas (2026-07-24).
 
 | Caminho | Conteúdo | Acesso |
 |---------|----------|--------|

@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-23 (Tati — UX/UI web, etapa 09 concluída)
+> Última atualização: 2026-07-24 (David — Storage, índices, Functions e TestFlight concluídos)
 
 ---
 
@@ -33,7 +33,9 @@
 - [x] Regras de segurança do Firestore configuradas
 - [x] Firebase Cloud Messaging habilitado (push notifications)
 - [x] Variáveis de ambiente compartilhadas com o time
-- [x] Firebase Storage — `storage.rules` criado (`profile_photos/{userId}`) e referenciado em `firebase.json` (ADR-014); **pendente ativar o bucket no console + publicar regras**
+- [x] Firebase Storage — bucket ativado no console + `storage.rules` publicadas (`profile_photos/{userId}`; ADR-014) (2026-07-24)
+- [x] Índices Firestore publicados — `dueDate` DESC (`idx-tasks-*-desc`) + lembretes (`idx-reminders-list-desc`, `idx-reminders-category-desc`) via `firestore.indexes.json` (2026-07-24)
+- [x] Cloud Functions recompiladas e publicadas — `sendDueNotifications`, `resetTaskNotified`, `resetReminderNotified` (2026-07-24)
 - [x] APNs configurado (iOS) — Auth Key na Apple Developer + upload no Firebase Cloud Messaging; push FCM em dispositivo físico validado (2026-07-15)
 
 > Coleções Firestore serão populadas automaticamente pela app na primeira gravação. Apps registadas: Web (`seniorease-web`), Android e iOS (`com.seniorease.mobile`).
@@ -236,7 +238,7 @@
 
 | Feature               | Status atual                    | O que falta                                                                                |
 | --------------------- | ------------------------------- | ------------------------------------------------------------------------------------------ |
-| Upload de foto        | Integrado (`UploadProfilePhotoUseCase`) | Ativar bucket Storage + publicar `storage.rules` no Firebase Console                         |
+| Upload de foto        | Integrado (`UploadProfilePhotoUseCase`) | Bucket Storage ativado + `storage.rules` publicadas (2026-07-24)                             |
 | Alterar senha         | Integrado (`ChangePasswordUseCase`)     | —                                                                                          |
 | Verificar e-mail      | Tela `/profile/security` (unificada)    | —                                                                                          |
 | Storybook             | Concluído (19+ stories)         | Manter sincronizado com novos componentes                                                  |
@@ -497,7 +499,7 @@
 - [x] Archive + upload via Xcode (TestFlight)
 - [x] Ícone App Store 1024×1024 sem canal alpha (`Icon-App-1024x1024@1x.png`) — Apple rejeita RGBA com transparência (erro 90717)
 - [x] Avisos dSYM de frameworks Firebase (`FirebaseFirestoreInternal`, `grpc`, `absl`, etc.) durante upload — **não bloqueantes**; ignoráveis para distribuição beta
-- [ ] Convidar testers externos / partilhar link TestFlight com a turma (conforme necessidade)
+- [x] Convidar testers externos / partilhar link TestFlight com a turma (2026-07-24)
 
 ## Vídeo e entrega final
 

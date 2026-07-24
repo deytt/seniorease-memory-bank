@@ -1,19 +1,19 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-23 (Tati — início da revisão geral de UX/UI web)
+> Última atualização: 2026-07-24 (David — Storage, índices, Functions e TestFlight concluídos)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Mobile em preparação de entrega — TestFlight a funcionar; push iOS (APNs) validado; Google Sign-In no iPhone corrigido. Web — Storybook concluído; backlog de testes e features pendentes. Entrega: vídeo de demo + avaliação interna + repos públicos.
+**Fase atual:** Mobile pronto para entrega final — Storage, índices Firestore, Cloud Functions e TestFlight (testers) concluídos. Web — Storybook concluído; backlog de testes e features pendentes. Entrega restante: vídeo de demo + avaliação interna + repos/Figma públicos.
 
 O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma.
 
 **ADR-015 + ADR-016 concluídos (2026-06-30):** **Login com Google (OAuth)** e **Verificação de e-mail**. Google via `google_sign_in` v6 (`googleSignInProvider` injetado com `serverClientId` = Web Client ID); `AuthRepository.signInWithGoogle` → `signInWithCredential`; 1.º login cria `users/{uid}` com nome/foto do Google sem sobrescrever perfil existente; cancelamento tratado por `AuthCancelledException` (UI ignora); botão "Entrar com Google" só no Login (logo "G" oficial em `assets/images/google_logo.png` via novo `SeniorButton.leading`); vinculação automática por e-mail ativada no console; iOS com `CFBundleURLTypes` (`REVERSED_CLIENT_ID`). Verificação de e-mail: `AppUser.emailVerified`, `sendEmailVerification`/`reloadAndCheckEmailVerified` no repo + use cases; `AuthController.refreshEmailVerification` invalida `authStateProvider`; `SettingsNavRow.showAlert` (exclamação) na linha "Segurança" quando não verificado; `SecurityScreen` com selo verde/âmbar + painel enviar/confirmar. Testes de auth ampliados (122 testes a passar, 0 erros de análise). Biometria e alteração de senha foram concluídas posteriormente (2026-07-09).
 
-**ADR-014 concluído (2026-06-30):** Módulo Perfil (`features/profile/`) com Clean Architecture — `UserProfile`/`Address`, `ProfileRepository` (estende `users/{userId}` via merge) e `ProfilePhotoStorage` (Firebase Storage `profile_photos/{userId}`), use cases e providers injetados. `ProfileScreen` (`/profile`) exibe foto/nome/email/telefone e edita Informações Pessoais (nome 30, e-mail só-leitura, data de nascimento/telefone/CPF mascarados) e Endereço (bairro/rua/número/CEP/cidade/estado/país); foto via `image_picker` (galeria/câmara) com upload imediato. CPF (opcional) oculto em Modo Básico. Tour Guiado da tela (`TourId.profile`, 3 passos) + oferta na 1ª utilização (Modo Básico) + entrada na Central. `SeniorInput` ganhou `inputFormatters`/`readOnly`; máscaras em `core/utils/input_masks.dart`. "Informação Pessoal" renomeado para "Perfil" nas Definições. **Pendente:** ativar o bucket Storage no console e publicar `storage.rules`.
+**ADR-014 concluído (2026-06-30):** Módulo Perfil (`features/profile/`) com Clean Architecture — `UserProfile`/`Address`, `ProfileRepository` (estende `users/{userId}` via merge) e `ProfilePhotoStorage` (Firebase Storage `profile_photos/{userId}`), use cases e providers injetados. `ProfileScreen` (`/profile`) exibe foto/nome/email/telefone e edita Informações Pessoais (nome 30, e-mail só-leitura, data de nascimento/telefone/CPF mascarados) e Endereço (bairro/rua/número/CEP/cidade/estado/país); foto via `image_picker` (galeria/câmara) com upload imediato. CPF (opcional) oculto em Modo Básico. Tour Guiado da tela (`TourId.profile`, 3 passos) + oferta na 1ª utilização (Modo Básico) + entrada na Central. `SeniorInput` ganhou `inputFormatters`/`readOnly`; máscaras em `core/utils/input_masks.dart`. "Informação Pessoal" renomeado para "Perfil" nas Definições. Bucket Storage ativado + `storage.rules` publicadas (2026-07-24).
 
 **Refactor ADR-008 concluído:** projeto migrado para Feature-First + Clean Architecture. **ADR-009 concluído:** Dynamic Theme Engine (`AppTheme.buildDynamic`) + Módulo Acessibilidade implementado. **ADR-010 concluído:** schema `tasks` estendido (priority, category, reminderTime) e Módulo Tarefas mobile implementado com passos dinâmicos, modo guiado sequencial inteligente e celebração Lottie. **ADR-011 concluído:** ordenação de tarefas por `dueDate` ascendente + `nextPendingTaskProvider`. **Melhorias UX 2026-06-25 (1ª vaga):** limites de caracteres; TaskDetails com header genérico; TaskCard com badges; Home com Próxima Atividade dinâmica. **ADR-012 concluído (2026-06-25):** Filtros na Task List com queries Firestore (category, priority, isToday), bottom sheet `TaskFilterSheet`, barra de chips activos, pull-to-refresh com reset de filtros. **ADR-013 concluído (2026-06-29):** Sistema de Tour Guiado com `showcaseview` — infra genérica em `core/tour/` (port `TourGate`, `SeniorShowcase`, mixin `TourHost`, sinais), feature `guides` (persistência híbrida: `shared_preferences` local + collection Firestore `onboarding/{userId}`), adaptador `AppTourGate` na camada `app/` (injetado via `ProviderScope`), tutoriais em Home/Criar Tarefa/Lista de Tarefas, Central "Guias do aplicativo" em Definições. Inversão de dependência respeita Feature-First (nenhuma feature importa outra). 0 erros de análise estática.
 
@@ -159,19 +159,25 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Próximos passos prioritários (segunda fase / time):**
 
 1. Testes unitários — ampliar vitest para Domain, Data e Presentation
-2. Ativar bucket Firebase Storage + publicar `storage.rules` (David)
-3. Credenciais FCM/VAPID de produção no ambiente web
-4. Avaliação interna + vídeo de demo + repos públicos
+2. Credenciais FCM/VAPID de produção no ambiente web
+3. Avaliação interna + vídeo de demo + repos públicos
 
 ### Mobile (seniorease-mobile)
 
 **Responsável:** David
-**Status:** Entrega iOS em curso (2026-07-15) — TestFlight + correções nativas iOS.
+**Status:** Pronto para entrega final (2026-07-24) — infra + TestFlight fechados; falta só vídeo/avaliação/repos públicos.
+**Feito nesta sessão (2026-07-24):**
+
+- **Firebase Storage:** bucket ativado no console + `storage.rules` publicadas (foto de perfil operacional).
+- **Índices Firestore:** `dueDate` DESC (`idx-tasks-*-desc`) + lembretes (`idx-reminders-list-desc`, `idx-reminders-category-desc`) publicados.
+- **Cloud Functions:** `sendDueNotifications`, `resetTaskNotified`, `resetReminderNotified` recompiladas e publicadas.
+- **TestFlight:** testers externos convidados / link partilhado com a turma.
+
 **Feito nesta sessão (2026-07-22):**
 
-- **Lista de tarefas — `dueDate` DESC server-side:** `watchTasksFiltered` usa `orderBy('dueDate', descending: true)` (sem sort em memória); índices compostos DESC em `firestore.indexes.json` — **publicar**; ADR-011 + `firebaseSchema` atualizados para paridade Web.
+- **Lista de tarefas — `dueDate` DESC server-side:** `watchTasksFiltered` usa `orderBy('dueDate', descending: true)` (sem sort em memória); índices compostos DESC em `firestore.indexes.json` — **publicados** (2026-07-24); ADR-011 + `firebaseSchema` atualizados para paridade Web.
 - **ADR-023 — `steps` como array:** mobile deixa de usar a sub-collection `tasks/{taskId}/steps` e passa a ler/gravar o campo `steps` no documento da tarefa (paridade com a web). Create/update/complete/delete no novo modelo; `TaskStep` com `taskId`; `order` 0-indexed; schema + ADR + rules (legado) atualizados.
-- **Ordenação de lembretes:** lista e preview Home passam a `scheduledAt` **DESC** (data/hora maior primeiro; mais antigos por último). Preview "Próximos Lembretes" mostra até 3 ativos (exclui concluídos), mesma ordenação da lista. Novo índice `idx-reminders-category-desc`; `idx-reminders-list-desc` volta a ser necessário — **publicar** `firestore.indexes.json`.
+- **Ordenação de lembretes:** lista e preview Home passam a `scheduledAt` **DESC** (data/hora maior primeiro; mais antigos por último). Preview "Próximos Lembretes" mostra até 3 ativos (exclui concluídos), mesma ordenação da lista. Novo índice `idx-reminders-category-desc`; `idx-reminders-list-desc` — **publicados** (2026-07-24).
 - **Excluir concluídos:** lembretes concluídos voltam a permitir swipe de **Excluir** (Editar continua bloqueado).
 
 **Feito nesta sessão (2026-07-15):**
@@ -190,7 +196,6 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - Router atualizado: nova rota `/biometric-lock`, redirect `isLoggedIn && biometricEnabled && biometricLocked → /biometric-lock`, `GoRouterRefreshNotifier` escuta `biometricLockedProvider` + `biometricControllerProvider`.
 - `LoginScreen` limpa: credenciais mock (`senior@teste.com` / `123456`) removidas, botão "Entrar com biometria" removido (coberto pelo lock screen).
 - Testes: `biometric_usecases_test.dart` (6 casos) + `biometric_controller_test.dart` (4 casos).
-  **Próximo passo:** gravação do vídeo de demo + avaliação interna final antes da entrega.
 - `core/widgets/senior_feedback_overlay.dart` — novo widget genérico reutilizável com `check_animation.json`
 - Tarefas: guided task, task details (conclusão), create task (criação) usam `SeniorFeedbackOverlay`
 - Lembretes: criação, edição e conclusão (mark done) usam `SeniorFeedbackOverlay`; feedback `SeniorFeedback.success()` em todos os fluxos de sucesso
@@ -201,17 +206,12 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
   **Tela de Segurança (2026-06-30 → atualizado 2026-07-09):** nova tela `/security` (`features/profile/presentation/screens/security_screen.dart`) acessível em Definições logo abaixo de "Perfil". Reúne três opções: **Habilitar biometria** (implementado 2026-07-09), **Verificar conta (e-mail)** (implementado, ADR-016) e **Alterar senha** (implementado 2026-07-09). **Biometria:** pacote `local_auth` adicionado ao `pubspec.yaml`; `BiometricRepository` (domain/abstract) + `LocalBiometricRepository` (data, usa `local_auth` + `SharedPreferences`); 4 use cases (`CheckBiometricAvailabilityUseCase`, `AuthenticateWithBiometricUseCase`, `EnableBiometricUseCase`, `DisableBiometricUseCase`); `biometric_provider.dart` com `BiometricState` + `BiometricController` (AsyncNotifier); preferência persistida localmente em `shared_preferences` (`biometric_enabled`); `SecurityScreen` com toggle real (selos Ativo/Inativo/Indisponível, loading state, toast de sucesso/erro); `LoginScreen` com botão "Entrar com biometria" condicional (visível quando `isAvailable && isEnabled`); permissões Android (`USE_BIOMETRIC`) e iOS (`NSFaceIDUsageDescription`) configuradas. **Alterar senha:** painel inline com 3 campos (`SeniorInput obscureText`) — senha atual, nova senha, confirmar nova senha; validação client-side (mínimo 6 caracteres, confirmação igual, nova ≠ atual); `reauthenticateWithCredential` + `updatePassword` via `FirebaseAuthRepository.reauthenticateAndChangePassword`; use case `ChangePasswordUseCase`; provider `changePasswordUseCaseProvider`; `AuthController.changePassword` com `AsyncValue.guard` + registo em Histórico (`HistoryActionType.passwordChanged`); aviso específico para contas Google (sem provedor de senha); erros mapeados incluindo `requires-recent-login`. Tour Guiado (`TourId.security`, 3 passos) + entrada na Central. A alteração de senha também está integrada na Web via `ChangePasswordUseCase` e tela `/profile/security`.
   **Tour Guiado (ADR-013 + ADR-021, 2026-07-08):** `core/tour/` (port + widgets reutilizáveis), `features/guides/` (use cases + repos local/Firestore + `GuidesScreen`), `app/tour/app_tour_gate.dart` (composição), tutoriais integrados em todas as 16 telas. **ADR-021 concluído:** `_maybeOfferFirstUse()` adicionado a todas as telas (em Modo Básico, modal de convite na 1ª visita de cada tela); `tourSessionProvider` removido de `core/tour/tour_signal_provider.dart` (redundante face ao `isOffered` por `TourId`); em Modo Avançado, tour apenas via botão `?` ou Central de Guias. 0 erros de análise estática.
   **Já feito:** CI/CD Mobile; Design System em `core/widgets/`; `core/theme/` com tokens Figma e `AppTheme.buildDynamic`; edge-to-edge; autenticação Firebase com use cases; auth guard GoRouter; telas auth alinhadas ao Figma; estrutura Feature-First; **Módulo Acessibilidade** (dynamic theme, tela, Firestore; migrada para `SeniorScreenScaffold`); **Home/Dashboard** (header gradiente, SOS, quick actions, reminders, bottom nav 5 tabs; **Próxima Atividade** ligada a `nextPendingTaskProvider`); **Settings** (profile banner, 5 nav rows, HelpCard, logout com confirmação); **Módulo Tarefas** (`features/tasks/` domain/data/presentation; Create/List/Details/Guided; passos dinâmicos; modo guiado sequencial; celebração Lottie); **Melhorias UX Tarefas** (header `CreateTask` sem botão Guardar; `CategoryDropdown`; `dueDate` full datetime; limites de caracteres título/descrição/passo; `TaskDetails` com header genérico título+badges e data na card; botões Guided=teal, Complete=verde; `TaskCard` com badges prioridade+categoria e data formatada; ordenação por `dueDate` ascendente; `nextPendingTaskProvider`; widgets base: `SeniorInput.maxLength`, `SeniorButton.customColors`, `SeniorScreenHeader.subtitleWidget`).
-  **Próximo passo (Mobile):**
+  **Próximo passo (Mobile):** gravação do vídeo de demo + avaliação interna final + tornar repos/Figma públicos.
 - Todos os 5 gaps corrigidos e validados (2026-07-06).
-- Cloud Functions: `sendDueNotifications`, `resetTaskNotified` (novo), `resetReminderNotified` deployadas.
+- Cloud Functions: `sendDueNotifications`, `resetTaskNotified`, `resetReminderNotified` — **recompiladas e publicadas** (2026-07-24).
 - `resetTaskNotified` repõe `notified=false` quando `dueDate` muda ou tarefa é reactivada após conclusão.
 - `prefs.tasksNotificationsEnabled` / `prefs.remindersNotificationsEnabled` verificados pelo cron antes de cada push.
 - Documentação `notifications.md` actualizada com tabela de comportamento ao deletar/completar entidades (secção 3a).
-- **Passos manuais necessários:** recompilar e publicar as Cloud Functions:
-  ```bash
-  cd memory-bank/functions && npm run build
-  firebase deploy --config memory-bank/firebase.json --only functions
-  ```
 
 ### CI/CD
 
