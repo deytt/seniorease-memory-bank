@@ -504,10 +504,11 @@
 ## Vídeo e entrega final
 
 - [ ] Avaliação interna criteriosa antes da entrega (Web + Mobile)
-  - [ ] Criar um agente que conheça o desafio e os requisitos do projeto (projectbrief, productContext, telas obrigatórias, entregáveis)
-  - [ ] Conferir o cumprimento de todos os requisitos em ambos os projetos (Web e Mobile)
-  - [ ] Levantar lacunas, riscos e possíveis soluções/melhorias antes de entregar
-  - [ ] Registar o resultado da avaliação (checklist final + ações)
+  - [x] Criar um agente que conheça o desafio e os requisitos do projeto (projectbrief, productContext, telas obrigatórias, entregáveis)
+  - [x] Conferir o cumprimento de todos os requisitos em ambos os projetos (Web e Mobile)
+  - [x] Levantar lacunas, riscos e possíveis soluções/melhorias antes de entregar
+  - [x] Registar o resultado da avaliação em 5 specs de correção no repositório Mobile (`docs/specs/`)
+  - [x] **SPEC-03 — Segurança Firestore:** sub-collection legada restrita ao dono; `userId`/`email`/`id` imutáveis; rules publicadas (2026-07-24); ADR-024; schema atualizado
 - [ ] **Tornar público o repositório Mobile** (está privado — obrigatório antes da entrega)
 - [ ] **Tornar público o repositório Web** (está privado — obrigatório antes da entrega)
 - [ ] **Tornar público o Figma Design** (ficheiro de design está privado — obrigatório antes da entrega)
