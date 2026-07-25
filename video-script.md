@@ -1,7 +1,7 @@
 # Roteiro do Vídeo de Entrega — SeniorEase
 
 > Máximo: **15 minutos** | Destino: Plataforma FIAP
-> Status: **em construção** — ir complementando à medida que a entrega se aproxima
+> Status: **pronto para gravação** — links preenchidos, inconsistências corrigidas; pendente apenas gravar e submeter
 
 ---
 
@@ -12,10 +12,11 @@
 | Protótipo Figma publicado (Figma Make → Figma Design) | https://senior-ease.figma.site |
 | Figma Design (ficheiro oficial, Design System + telas) | https://www.figma.com/design/3avWJD9n4gI9mZHw9dksIy/SeniorEase?node-id=2-2396&p=f&m=dev |
 | Kanban do projeto (GitHub Projects) | https://github.com/users/deytt/projects/3 |
-| Repositório Mobile | *(adicionar link)* |
-| Repositório Web | *(adicionar link)* |
-| App Distribution (APK) | *(adicionar link)* |
-| Deploy Web (Vercel) | *(adicionar link)* |
+| Repositório Mobile | https://github.com/deytt/seniorease-mobile |
+| Repositório Web | https://github.com/deytt/seniorease-web |
+| App Distribution (APK Android) | https://github.com/deytt/seniorease-mobile/actions (artefato `distribute` — job na `master`) |
+| Deploy Web (Vercel) | https://seniorease-web.vercel.app/ |
+| Vídeo de demonstração | _a confirmar após gravação_ |
 
 ---
 
@@ -70,7 +71,7 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 - A acessibilidade não foi um "extra" — foi uma **constraint de arquitetura** desde o início.
 - Design System com tokens de contraste validados (WCAG AA mínimo), áreas de toque ≥ 44px, `Semantics` em todos os elementos interativos.
 - **Modo Básico / Avançado**: simplifica a UI em tempo real, ocultando elementos não essenciais — implementado como lógica real no tema e nos providers, não apenas visualmente.
-- **Dynamic Theme Engine**: tipografia escalável (87% a 150%), Dark Mode, Alto Contraste e `largeTouchTargets` persistidos por utilizador no Firestore e aplicados globalmente via `ThemeData` dinâmico.
+- **Dynamic Theme Engine**: tipografia escalável (87% a 125%), Dark Mode, Alto Contraste e `largeTouchTargets` persistidos por utilizador no Firestore e aplicados globalmente via `ThemeData` dinâmico.
 
 ### 8. Tour Guiado — Onboarding Ativo para Idosos
 
@@ -81,8 +82,8 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 
 ### 9. CI/CD Automatizado desde o Início — Mais do que Qualidade de Código
 
-- **Mobile:** GitHub Actions — CI (analyze + test) em todo push/PR; CD (build APK + Firebase App Distribution) só na `master`.
-- **Web:** GitHub Actions — CI (lint + type-check + build); CD (Vercel `--prebuilt`) só na `master` após CI passar.
+- **Mobile:** GitHub Actions — CI (analyze + test com cobertura) em todo push/PR; CD (build APK + Firebase App Distribution) só na `master`. **300 testes unitários** cobrem as 3 camadas da Clean Architecture (Domain, Data, Presentation).
+- **Web:** GitHub Actions — CI (lint + type-check + build + 81 testes Vitest); CD (Vercel `--prebuilt`) só na `master` após CI passar. Design System documentado com **Storybook** (19 stories com todos os estados e variantes).
 - Isto garantiu que o código que chega à `master` está sempre compilando, testado e distribuído — mesmo trabalhando em velocidade de hackathon.
 - **Colaboração assíncrona entre plataformas:** como a web estava sempre deployada no Vercel e o mobile sempre distribuído via App Distribution, cada developer podia **ver o trabalho do outro sem clonar nem subir ambiente**. Por exemplo: eu, como dev Android, pude verificar como a feature de Histórico foi implementada na web simplesmente abrindo o deploy do Vercel — e vice-versa. Isto elimina um dos maiores atritos num projeto multi-plataforma: a necessidade de configurar e correr dois projetos diferentes para entender o que foi feito.
 - O CI/CD não foi só uma ferramenta de qualidade — foi também uma ferramenta de **comunicação e transparência** entre as frentes do projeto.
@@ -96,7 +97,7 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 
 ## Estrutura Sugerida para o Vídeo (15 min)
 
-> A preencher e ajustar à medida que o produto estiver mais completo.
+> Estrutura validada — ajustar duração exata durante o ensaio.
 
 | # | Bloco | Duração estimada | Notas |
 |---|-------|-----------------|-------|
@@ -105,7 +106,7 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 | 3 | **Arquitetura do projeto** — Memory-bank, Clean Architecture, plataforma dupla, base Firebase única | ~2 min | Submódulo, ADRs, estrutura de pastas, Cloud Functions, Kanban |
 | 4 | **Demo Mobile — fluxo principal** | ~4 min | Ver roteiro detalhado abaixo |
 | 5 | **Demo Web** — mesmos fluxos na plataforma web | ~2 min | Deploy Vercel; destacar paridade visual com o mobile |
-| 6 | **Acessibilidade em detalhe** — Modo Básico, fonte 150%, Dark Mode, Alto Contraste, espaçamento, tour | ~1 min | Demonstrar ao vivo nas duas plataformas |
+| 6 | **Acessibilidade em detalhe** — Modo Básico, fonte 125% (Extra Grande), Dark Mode, Alto Contraste, espaçamento, tour | ~1 min | Demonstrar ao vivo nas duas plataformas |
 | 7 | **Encerramento** — diferenciais, próximos passos, agradecimento | ~1 min | Ligeiro e positivo |
 
 ### Roteiro detalhado — Demo Mobile (bloco 4)
@@ -115,7 +116,7 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 1. **Abertura da app** — mostrar o ícone "SE" azul no launcher + nome "Senior Ease" no ecrã inicial do dispositivo
 2. **Abertura com biometria** — app abre; tela de bloqueio (`/biometric-lock`) surge automaticamente com o logo SeniorEase e o ícone de impressão digital/Face ID; autenticação com biometria nativa; app entra diretamente na Home sem escrever qualquer senha. *(Se biometria não estiver ativada, mostrar o Login normal e ativá-la em Ajustes → Segurança para a próxima abertura.)*
 3. **Home** — destacar:
-   - Header gradiente azul **contínuo** com o status bar (sem linha de separação — funcionalidade implementada esta sessão)
+   - Header gradiente azul **contínuo** com o status bar (edge-to-edge, sem linha de separação entre o sistema operativo e a app)
    - Sininho com **badge vermelho** (contagem de notificações de hoje)
    - Card "Próxima Atividade" ligado ao Firestore em tempo real
 4. **Criar tarefa** — título + prazo + passos dinâmicos; mostrar validação em tempo real
@@ -125,7 +126,7 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 8. **Tela de Notificações** — tocar no sininho; mostrar o histórico de avisos recebidos; tocar num card para navegar à entidade
 9. **Preferências de Notificação** — Ajustes → Preferências de Notificação; mostrar os offsets configuráveis por tipo (tarefas e lembretes separados)
 10. **Histórico** — stats de streak + lista de atividade recente agrupada por dia; Modo Básico oculta eventos de baixa relevância
-11. **Acessibilidade** — aumentar fonte para 150% + ativar Modo Básico (UI simplifica em tempo real) + ligar Dark Mode
+11. **Acessibilidade** — aumentar fonte para 125% (tamanho Extra Grande) + ativar Alto Contraste + ativar Modo Básico (UI simplifica em tempo real) + ligar Dark Mode; tocar em **Salvar configurações** para aplicar e demonstrar o efeito global
 12. **Tour Guiado** — tocar no "?" de qualquer tela; mostrar o showcase com balão explicativo; Central "Guias do aplicativo" nas Definições
 13. **Ajustes** — mostrar o header gradiente contínuo; perfil com foto + dados persistidos
 
@@ -147,21 +148,34 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 - *"O status bar não tem linha de separação — é o mesmo gradiente do header, porque o app deve parecer uma coisa só, não uma janela dentro do sistema operativo."*
 - *"Com o CI/CD sempre ativo, eu, como dev Android, sabia exatamente o que estava na web — só abrindo o browser. Sem clonar, sem configurar ambiente, sem esperar."*
 - *"O Kanban, o memory-bank e o CI/CD formaram um sistema de gestão de projeto que funcionava mesmo sem reuniões."*
+- *"300 testes unitários cobrindo Domain, Data e Presentation — porque acessibilidade real exige código confiável, não apenas bonito."*
+- *"As 13 telas obrigatórias de cada plataforma foram implementadas, testadas e distribuídas — o SeniorEase está pronto para a Margaret."*
 
 ---
 
 ## Pendências para o Vídeo
 
-> ⚠️ **ANTES DE ENTREGAR — AÇÕES OBRIGATÓRIAS:**
-> - [ ] **Tornar público o repositório Mobile** (está privado atualmente)
-> - [ ] **Tornar público o repositório Web** (está privado atualmente)
-> - [ ] **Tornar público o Figma Design** (ficheiro de design está privado atualmente)
-> - [ ] Verificar se o protótipo https://senior-ease.figma.site continua acessível publicamente
+### Já concluído (não bloqueia a gravação)
 
-- [ ] Adicionar links dos repositórios e deploy na tabela acima
-- [ ] Gravar demo mobile (APK final, fluxo completo)
-- [ ] Gravar demo web (deploy Vercel, fluxo completo)
-- [ ] Rever e ajustar duração estimada de cada bloco
-- [ ] Ensaiar a narração dos diferenciais (secção acima)
+- [x] Repositório Mobile público — https://github.com/deytt/seniorease-mobile
+- [x] Repositório Web público — https://github.com/deytt/seniorease-web
+- [x] Figma Design público — https://www.figma.com/design/3avWJD9n4gI9mZHw9dksIy/SeniorEase
+- [x] Links de repos e deploy preenchidos na tabela acima
+- [x] Inconsistências do roteiro corrigidas (escala de fonte, nota interna removida)
+- [x] 300/300 testes passando, `flutter analyze` com 0 erros
+- [x] TestFlight — testers externos convidados; link partilhado com a turma
+
+### Obrigatório antes de entregar
+
+- [ ] Verificar se o protótipo https://senior-ease.figma.site continua acessível em janela anônima
+- [ ] Usar conta de demonstração com tarefas, passos, lembretes e histórico pré-carregados antes de gravar
+- [ ] Ativar permissões de notificação e biometria no dispositivo de gravação previamente
+- [ ] Criar lembrete de teste com antecedência compatível com o offset configurado (para demo de push)
+- [ ] Gravar demo mobile no dispositivo físico (fluxo completo — ver roteiro detalhado acima)
+- [ ] Gravar demo web no deploy Vercel (fluxo completo)
+- [ ] Rever duração de cada bloco durante o ensaio (limite: 15 min)
+- [ ] Ensaiar narração dos diferenciais (seção "Frases e Argumentos-Chave")
+- [ ] Confirmar que nenhum dado pessoal real, token ou segredo aparece na tela durante a gravação
 - [ ] Gravar e editar o vídeo (máx. 15 min)
-- [ ] Submeter na plataforma FIAP
+- [ ] Preencher link do vídeo na tabela "Links e Recursos para o Vídeo" acima
+- [ ] Submeter vídeo + links na plataforma FIAP (arquivo `.docx` ou `.txt`)
