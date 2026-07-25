@@ -725,6 +725,35 @@ Ver `firebaseSchema.md` — tabela de permissões e changelog 2026-07-24 (SPEC-0
 
 ---
 
+## ADR-025 — Contrato de paridade Modo Básico/Avançado cross-platform
+
+**Data:** 2026-07-25
+**Status:** Aceito — implementação web pendente (ver `progress.md`)
+
+**Contexto:**
+A SPEC-02 definiu o Modo Básico como lógica real que oculta elementos não essenciais. O Mobile implementou ocultações em 6 telas (Home, Tarefas, Lembretes, Settings, Histórico, Perfil) via `preferencesProvider`. O Web implementou um subconjunto diferente via `.advanced-only` (issue #58). Após a SPEC-02, detectou-se que as duas plataformas divergem em quais elementos são ocultados: o card "Precisa de Ajuda?" está oculto no Mobile (Settings) mas presente no Web (Profile); os filtros de lembrete têm tratamento diferente entre plataformas. Sem um contrato explícito, cada manutenção futura agrava a divergência.
+
+**Decisão:**
+Formalizar o contrato de paridade no `systemPatterns.md` (tabela "Modo Básico vs. Modo Avançado") como **fonte única da verdade** para os dois projetos. Toda alteração de visibilidade em Modo Básico deve: (1) atualizar a tabela, (2) implementar nas duas plataformas na mesma PR/tarefa, (3) marcar o status de paridade.
+
+A adequação do Web ao contrato do Mobile (SPEC-02) fica registada como pendência explícita em `progress.md`.
+
+**Motivo:**
+- Utilizadores que usam Web e Mobile devem ter a mesma experiência em Modo Básico — elementos ocultos no Mobile mas visíveis no Web (ou vice-versa) geram confusão e inconsistência de produto.
+- Um contrato explícito reduz o risco de regressão silenciosa ao adicionar novas features.
+- A tabela em `systemPatterns.md` serve como checklist para code review: qualquer PR que adicione UI deve declarar se o novo elemento segue o Modo Básico.
+
+**Alternativas consideradas:**
+- Manter a divergência e documentar só por plataforma — descartado porque aumenta a carga cognitiva do time e gera UX inconsistente.
+- Unificar numa única config JSON compartilhada pelo memory-bank — descartado por complexidade desnecessária; a tabela em Markdown é suficiente para o escopo do Hackathon.
+
+**Impacto:**
+- `systemPatterns.md` — nova seção "Modo Básico vs. Modo Avançado" com tabela de paridade e regra de decisão.
+- `progress.md` — pendência `[ ]` para adequação do Web ao contrato.
+- `activeContext.md` — pendência registada na frente Web.
+
+---
+
 ## Como adicionar um novo ADR
 
 Copie o template abaixo e preencha:

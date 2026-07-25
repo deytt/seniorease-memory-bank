@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-24 (David — Storage, índices, Functions e TestFlight concluídos)
+> Última atualização: 2026-07-25 (David — ADR-025: contrato de paridade Modo Básico/Avançado documentado; pendência Web criada)
 
 ---
 
@@ -27,6 +27,15 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 **Status:** Em andamento — specs criadas no repositório Mobile em `docs/specs/`.  
 **Em curso:** Executar as correções de entrega de forma isolada: documentação, acessibilidade, segurança Firestore, arquitetura/qualidade e vídeo.  
 **Dependência crítica:** qualquer mudança de Firestore/schema ou de contrato de preferências deve ser validada com a frente Web antes da implementação.
+
+**Concluído (2026-07-24, David — SPEC-02 Acessibilidade real e Modo Básico):**
+
+- Tipografia: `bodySmall` 13→14px, `labelSmall` 12→14px; clamp 14px mínimo no `_scale`; `_CardBadge` 11→14px; `_ActiveChip` 13→14px; badge filtro redesenhado (18×18).
+- Escala de fonte alinhada a `techContext.md`: `large` 1.2→1.125 (112%), `extraLarge` 1.5→1.25 (125%).
+- `ContrastModeCard` com 3 estados visíveis (Padrão / Alto / Máximo) substitui o toggle binário de Alto Contraste na tela de Acessibilidade.
+- `SeniorSpacingTheme` aplicado em `SettingsScreen`, `CreateTaskScreen` e `GuidedTaskScreen`; telas já cobertas mantidas.
+- Modo Básico real em 6 telas: Home (oculta SuccessBanner), Tarefas (oculta badge prioridade no card + seção prioridade no FilterSheet), Lembretes (oculta seção categoria no ReminderFilterSheet), Settings (oculta _HelpCard); Histórico (eventos leves) e Perfil (CPF) já tinham suporte.
+- `flutter analyze lib/` — 0 erros.
 
 **Concluído (2026-07-24, David — SPEC-03 Segurança Firestore):**
 
@@ -174,6 +183,13 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 **Próximo nesta frente:** entrega hackathon (vídeo, repos públicos) + validação final; lista `/tasks` deve usar `orderBy(dueDate, 'desc')` (contrato ADR-011 atualizado) + ampliar testes unitários.
 
+**Pendência crítica — ADR-025 (Modo Básico/Avançado):**
+O Mobile (SPEC-02, 2026-07-25) formalizou o contrato de paridade cross-platform em `systemPatterns.md`. O Web precisa ser adequado para ocultar os mesmos elementos em Modo Básico. Divergências identificadas:
+- Card "Precisa de Ajuda?" visível no Web → ocultar com `.advanced-only` no `/profile` (paridade com Mobile que oculta em Settings)
+- Filtro de lembretes por "Categoria" → definir se o comportamento do Web (chips exclusivos) já equivale ao Mobile ou precisa de ajuste
+- Badge de prioridade na "Próxima Atividade" do Dashboard → confirmar se `.advanced-only` está aplicado
+Referência: tabela "Modo Básico vs. Modo Avançado" em `systemPatterns.md` — atualizar coluna "Status paridade" de ⚠️/❌ para ✅ após cada correção.
+
 **Próximos passos prioritários (segunda fase / time):**
 
 1. Testes unitários — ampliar vitest para Domain, Data e Presentation
@@ -241,7 +257,7 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 ## Decisões em aberto
 
-- (nenhuma em aberto nesta frente)
+- **ADR-025 (2026-07-25):** Contrato de paridade Modo Básico/Avançado cross-platform formalizado. Web precisa adequar as ocultações para alinhar ao Mobile. Ver `systemPatterns.md` (tabela) e `progress.md` (checklist de divergências).
 
 ---
 

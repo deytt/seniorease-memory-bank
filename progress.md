@@ -508,7 +508,18 @@
   - [x] Conferir o cumprimento de todos os requisitos em ambos os projetos (Web e Mobile)
   - [x] Levantar lacunas, riscos e possíveis soluções/melhorias antes de entregar
   - [x] Registar o resultado da avaliação em 5 specs de correção no repositório Mobile (`docs/specs/`)
-  - [x] **SPEC-03 — Segurança Firestore:** sub-collection legada restrita ao dono; `userId`/`email`/`id` imutáveis; rules publicadas (2026-07-24); ADR-024; schema atualizado
+    - [x] **SPEC-03 — Segurança Firestore:** sub-collection legada restrita ao dono; `userId`/`email`/`id` imutáveis; rules publicadas (2026-07-24); ADR-024; schema atualizado
+    - [x] **SPEC-02 — Acessibilidade real e Modo Básico (2026-07-24):**
+      - Tipografia: `bodySmall` 13→14px, `labelSmall` 12→14px; clamp 14px mínimo no `_scale`; `_CardBadge` 11→14px; `_ActiveChip` 13→14px; badge filtro redesenhado (18×18)
+      - Escala de fonte alinhada aos tokens: `large` 1.2→1.125 (112%), `extraLarge` 1.5→1.25 (125%)
+      - Contraste: toggle binário "Alto Contraste" restaurado (paridade com web); `ContrastModeCard` removido; enum `ContrastMode` mantido intacto no domínio/tema
+      - Espaçamento: `SeniorSpacingTheme` aplicado em Settings, CreateTask e GuidedTask (já existia em Home, Reminders, History, Accessibility, TaskList)
+      - Modo Básico ativo em 6 telas: Home (oculta SuccessBanner), Tarefas (oculta badge prioridade no card + seção prioridade no FilterSheet), Lembretes (oculta seção categoria no FilterSheet), Settings (oculta _HelpCard); Histórico e Perfil já tinham suporte
+- [ ] **[ADR-025] Adequar o Web ao contrato de paridade Modo Básico/Avançado** — alinhar `seniorease-web` às ocultações definidas em `systemPatterns.md` (tabela "Modo Básico vs. Modo Avançado"); divergências identificadas:
+  - Card "Precisa de Ajuda?" visível no Web (Profile) → deve ser oculto em Modo Básico (paridade com Mobile/Settings)
+  - Secção "Categoria" no filtro de lembretes: revisar se web usa chips exclusivos ou modal (definir comportamento único)
+  - Badge de prioridade na "Próxima Atividade" do Dashboard Web: confirmar se `.advanced-only` já está aplicado
+  - Após adequar: atualizar a coluna "Status paridade" em `systemPatterns.md` de ⚠️/❌ para ✅
 - [ ] **Tornar público o repositório Mobile** (está privado — obrigatório antes da entrega)
 - [ ] **Tornar público o repositório Web** (está privado — obrigatório antes da entrega)
 - [ ] **Tornar público o Figma Design** (ficheiro de design está privado — obrigatório antes da entrega)

@@ -357,6 +357,76 @@ Sempre exibir modal de confirmação antes de deletar qualquer item. Nunca delet
 - Ferramentas (Mobile): `flutter_test`, `mocktail`, `fake_cloud_firestore`.
 - Estrutura: a pasta `test/` espelha a estrutura de `lib/` (feature → camada).
 
+---
+
+## Modo Básico vs. Modo Avançado — contrato de paridade cross-platform
+
+> Este contrato define quais elementos devem ser **ocultados no Modo Básico** e **exibidos no Modo Avançado** em ambas as plataformas. Qualquer alteração aqui exige atualização coordenada no Web **e** no Mobile.
+
+O Modo Básico simplifica a UI ocultando elementos de complexidade secundária — sem remover funcionalidade estrutural. O critério de ocultação é: *o utilizador sênior consegue realizar a tarefa principal sem este elemento?*
+
+### Implementação por plataforma
+
+| Plataforma | Mecanismo de ocultação |
+|------------|------------------------|
+| Mobile (Flutter) | `if (isBasic) return const SizedBox.shrink()` via `preferencesProvider` |
+| Web (Next.js) | Classe CSS `.advanced-only { display: none }` + atributo `data-interface-mode="basic"` no `<html>` |
+
+### Contrato: o que ocultar em Modo Básico
+
+#### Dashboard / Home
+
+| Elemento | Mobile | Web | Status paridade |
+|---|---|---|---|
+| Banner de encorajamento (stats da semana) | — (sem equivalente) | oculto (`.advanced-only`) | ✅ N/A |
+| `SuccessBanner` / card de boas-vindas decorativo | oculto | oculto (`.advanced-only`) | ✅ Paridade |
+| Card "Status de acessibilidade" | — (sem equivalente) | oculto (`.advanced-only`) | ✅ N/A |
+| Botão "Carregar exemplos" | — (sem equivalente) | oculto (`.advanced-only`) | ✅ N/A |
+| Badge de prioridade na "Próxima Atividade" | — (via TaskCard abaixo) | oculto (`.advanced-only`) | ⚠️ Verificar mobile |
+
+#### Tarefas
+
+| Elemento | Mobile | Web | Status paridade |
+|---|---|---|---|
+| Badge de prioridade nos cards de tarefa | oculto | oculto (`.advanced-only`) | ✅ Paridade |
+| Secção "Prioridade" no modal de filtros | oculta | oculta (`.advanced-only`) | ✅ Paridade |
+
+#### Lembretes
+
+| Elemento | Mobile | Web | Status paridade |
+|---|---|---|---|
+| Secção "Categoria" no modal de filtros | oculta | — (web usa chips exclusivos; sem modal de categoria separado) | ⚠️ Revisar web |
+
+#### Perfil
+
+| Elemento | Mobile | Web | Status paridade |
+|---|---|---|---|
+| Campo CPF | oculto | oculto | ✅ Paridade |
+| Card "Precisa de Ajuda?" (1-800-SENIOR) | oculto (Settings) | presente (Profile) | ❌ **Divergência — ver ADR-025** |
+
+#### Histórico
+
+| Elemento | Mobile | Web | Status paridade |
+|---|---|---|---|
+| Eventos de baixa relevância (edições/exclusões/acessibilidade/perfil) | ocultos | ocultos | ✅ Paridade |
+
+#### Tours / Onboarding
+
+| Elemento | Mobile | Web | Status paridade |
+|---|---|---|---|
+| Oferta automática de tour na 1ª visita (modal convite) | Modo Básico apenas | Modo Básico apenas | ✅ Paridade |
+| Passo de acessibilidade no Tour do Dashboard | N/A | omitido em Modo Básico | ✅ N/A |
+
+### Regra de decisão para novos elementos
+
+Ao criar um novo componente ou secção, decida:
+
+1. **É essencial para a tarefa principal?** → exibir em ambos os modos.
+2. **É informação contextual / avançada?** → aplicar `.advanced-only` (Web) ou guard `if (isBasic)` (Mobile) e registar na tabela acima.
+3. **A decisão diverge entre plataformas?** → criar ADR antes de implementar.
+
+---
+
 ### Documentação de componentes (Storybook) — requisito (Web)
 - Todos os componentes da web devem estar documentados no **Storybook**.
 - Documentação completa: cada componente do Design System com **todas as variações/estados**, mais os componentes **customizados** que eventualmente não existam no DS.
