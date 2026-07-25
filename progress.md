@@ -508,6 +508,12 @@
   - [x] Conferir o cumprimento de todos os requisitos em ambos os projetos (Web e Mobile)
   - [x] Levantar lacunas, riscos e possíveis soluções/melhorias antes de entregar
   - [x] Registar o resultado da avaliação em 5 specs de correção no repositório Mobile (`docs/specs/`)
+    - [x] **SPEC-01 — Documentação e entregáveis de submissão (2026-07-25):**
+      - **README.md reescrito** em português com proposta/público-alvo, funcionalidades e telas, stack e arquitetura Feature-First/Clean Architecture, pré-requisitos, instalação, configuração Firebase segura (sem segredos), comandos (`flutter pub get`, `flutter run`, `flutter analyze`, `flutter test`), seção "Cobertura de Testes", CI/CD, estrutura de pastas e links do projeto
+      - **`scripts/coverage.sh`** criado — executa `flutter test --coverage`, remove arquivos gerados e gera relatório HTML via `genhtml` (lcov)
+      - **CI atualizado** (`.github/workflows/mobile.yml`) — passo `Run tests with coverage` substitui `Run tests`; passos `Install lcov` + `Generate HTML coverage report` adicionados; artefato `coverage-report` publicado com retenção de 30 dias a cada push
+      - **Cobertura atual:** 300/300 testes passando; percentual exato disponível via `bash scripts/coverage.sh` ou artefato CI
+      - `flutter analyze lib/` — 0 erros
     - [x] **SPEC-04 — Arquitetura, testes e eficiência operacional (2026-07-25):**
       - **Domain sem Firebase:** import `cloud_firestore` removido de `task.dart`, `reminder.dart`, `history_event.dart` e `user_preferences.dart`; `toMap()` devolve `DateTime` (Firestore SDK aceita diretamente); `fromMap()` usa helper duck-type `_dateFrom()` (suporta Timestamp e DateTime); `updatedAt` com `FieldValue.serverTimestamp()` movido para repositórios Data
       - **Repositórios adaptados:** `firebase_task_repository` (createTask + updateTask) e `firebase_preferences_repository` (save) adicionam `'updatedAt': FieldValue.serverTimestamp()` antes de gravar

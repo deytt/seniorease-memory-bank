@@ -128,3 +128,28 @@ git submodule update --init --recursive
 | `seniorease-memory-bank` | Este repositório — contexto e decisões |
 | `seniorease-web` | Aplicação Web (Next.js 14+) |
 | `seniorease-mobile` | Aplicação Mobile (Flutter) |
+
+---
+
+## Cobertura de Testes (Mobile)
+
+O projeto Mobile usa `flutter test --coverage` para medir cobertura. O relatório é gerado localmente via `scripts/coverage.sh` e publicado como artefato no CI a cada push.
+
+### Gerar o relatório localmente
+
+```bash
+# Requer lcov instalado (brew install lcov no macOS)
+bash scripts/coverage.sh
+# Abre coverage/html/index.html com o relatório completo
+```
+
+### Estrutura gerada
+
+```
+coverage/
+  lcov.info          # relatório bruto (gerado por flutter test --coverage)
+  html/              # relatório HTML (gerado por genhtml)
+    index.html
+```
+
+> O percentual de cobertura atual está registrado em `progress.md`. O badge no README do `seniorease-mobile` reflete o valor mais recente publicado pelo CI.
