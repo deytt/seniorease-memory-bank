@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-25 (David — SPEC-04 concluída: Domain sem Firebase, 9 novos ficheiros de testes, 300/300 testes a passar)
+> Última atualização: 2026-07-25 (David — SPEC-01 concluída: README reescrito em PT, scripts/coverage.sh, CI com artefato de cobertura)
 
 ---
 
@@ -54,6 +54,13 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
   - `firebase_profile_photo_storage_test.dart` — upload com fakes manuais (sem mocktail para `UploadTask`)
 - **Testes existentes actualizados:** `task_test`, `reminder_test`, `history_event_test`, `user_preferences_test` com asserções `DateTime` em vez de `Timestamp`/`FieldValue`.
 - `flutter analyze lib/` — 0 erros; `flutter test` — 300/300 a passar.
+
+**Concluído (2026-07-25, David — SPEC-01 Documentação e entregáveis):**
+
+- `README.md` reescrito em português: proposta/público-alvo, funcionalidades e telas, stack e arquitetura, pré-requisitos, instalação, configuração Firebase segura, comandos (`flutter pub get`, `flutter run`, `flutter analyze`, `flutter test`), seção "Cobertura de Testes", CI/CD, estrutura de pastas e links do projeto.
+- `scripts/coverage.sh` criado — executa `flutter test --coverage` e gera relatório HTML via `genhtml` (lcov).
+- `.github/workflows/mobile.yml` atualizado — `flutter test --coverage` + `lcov` + `genhtml` + artefato `coverage-report` (30 dias) em cada push.
+- Pendências externas que dependem de decisão da equipe: tornar repos públicos, preencher links de Figma/vídeo/Web, criar arquivo de submissão `.txt`/`.docx`.
 
 **Concluído (2026-07-24, David — SPEC-03 Segurança Firestore):**
 
