@@ -1,13 +1,13 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-25 (David — ADR-025: contrato de paridade Modo Básico/Avançado documentado; pendência Web criada)
+> Última atualização: 2026-07-25 (David — SPEC-04 concluída: Domain sem Firebase, 9 novos ficheiros de testes, 300/300 testes a passar)
 
 ---
 
 ## Status geral
 
-**Fase atual:** Mobile pronto para entrega final — Storage, índices Firestore, Cloud Functions e TestFlight (testers) concluídos. Web — Storybook concluído; backlog de testes e features pendentes. Entrega restante: vídeo de demo + avaliação interna + repos/Figma públicos.
+**Fase atual:** Mobile pronto para entrega final — SPEC-04 concluída (300/300 testes, 0 erros análise, Domain sem Firebase); Storage, índices Firestore, Cloud Functions e TestFlight (testers) concluídos. Web — Storybook concluído; backlog de testes e features pendentes. Entrega restante: vídeo de demo + avaliação interna + repos/Figma públicos.
 
 O memory-bank está configurado no repositório mobile. Firebase (`seniorease-backend`) está operacional. CI/CD Mobile funcional com App Distribution. Design System base implementado. Autenticação (Login, Register, Forgot Password) integrada com Firebase Auth e rotas protegidas. Telas auth alinhadas ao Figma.
 
@@ -36,6 +36,24 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - `SeniorSpacingTheme` aplicado em `SettingsScreen`, `CreateTaskScreen` e `GuidedTaskScreen`; telas já cobertas mantidas.
 - Modo Básico real em 6 telas: Home (oculta SuccessBanner), Tarefas (oculta badge prioridade no card + seção prioridade no FilterSheet), Lembretes (oculta seção categoria no ReminderFilterSheet), Settings (oculta _HelpCard); Histórico (eventos leves) e Perfil (CPF) já tinham suporte.
 - `flutter analyze lib/` — 0 erros.
+
+**Concluído (2026-07-25, David — SPEC-04 Arquitetura, testes e eficiência operacional):**
+
+- **Domain sem Firebase:** import `cloud_firestore` removido de `task.dart`, `reminder.dart`, `history_event.dart` e `user_preferences.dart`. `toMap()` devolve tipos Dart nativos (`DateTime`); `fromMap()` usa helper duck-type `_dateFrom()` que suporta tanto `Timestamp` (dinâmico, sem import) como `DateTime` e `String` ISO. `updatedAt` com `FieldValue.serverTimestamp()` movido para os repositórios Data (`firebase_task_repository` e `firebase_preferences_repository`).
+- **Inventário cross-feature:** 16 imports `features/X → features/Y` mapeados; todos classificados como composição legítima na Presentation layer — `auth_provider` e `preferences_provider` como providers de estado partilhado; `home` como tela Dashboard de composição; nenhuma violação a migrar (ADR-018/019 confirmados).
+- **Streams Firestore:** Riverpod `StreamProvider` garante única subscrição por provider — Home e listas partilham a mesma instância; zero duplicação confirmada, sem alterações necessárias.
+- **9 novos ficheiros de teste (63 testes adicionados; suíte: 300/300):**
+  - `preferences_provider_test.dart` — `AccessibilityController` e `NotificationPreferencesController`
+  - `tour_providers_test.dart` — 5 use case providers de tour/onboarding
+  - `notifications_provider_test.dart` — `registerFcmToken` e `removeFcmToken` (sucesso + erro)
+  - `login_preferences_provider_test.dart` — repositório + 2 use cases
+  - `secure_credential_provider_test.dart` — provider + roundtrip save/load/clear
+  - `change_password_use_case_test.dart` — delegação + cenários de erro
+  - `local_biometric_repository_test.dart` — `isAvailable` (4 cenários) + `isEnabled/setEnabled` + `authenticate`
+  - `secure_credential_cache_test.dart` — save, load (5 cenários), clear
+  - `firebase_profile_photo_storage_test.dart` — upload com fakes manuais (sem mocktail para `UploadTask`)
+- **Testes existentes actualizados:** `task_test`, `reminder_test`, `history_event_test`, `user_preferences_test` com asserções `DateTime` em vez de `Timestamp`/`FieldValue`.
+- `flutter analyze lib/` — 0 erros; `flutter test` — 300/300 a passar.
 
 **Concluído (2026-07-24, David — SPEC-03 Segurança Firestore):**
 
