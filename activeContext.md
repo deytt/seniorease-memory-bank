@@ -134,6 +134,19 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - Google OAuth: photoUrl, fallback redirect, callback e mensagens amigáveis
 - Success Screen alinhada (sem seed automático de tarefas/lembretes no registo)
 
+**Em andamento (2026-07-25, Vinicius — issue #81, itens 11→1):**
+
+- Branch única: `fix/issue-81-bugs-melhorias` (todos os itens da issue na mesma PR)
+- Item 11: toast sucesso dark + a11y — commit `bef9d6b`
+- Item 10: header Notificações alinhado ao `PageHeader` — commit `465c42a`
+- Item 9: ícones/cores do Histórico alinhados ao mobile — commit `f8a1892`
+- Item 8: About — card `bg-card` legível no dark+alto contraste — commit `267fc16`
+- Item 7: Acessibilidade mobile 125%+espaçoso — commit `d2460cf`
+- Item 4/3/6: commits anteriores na branch `fix/issue-81-bugs-melhorias`
+- Itens 1/2/5: causa raiz — `FirebaseTaskRepository` usava sub-collection `steps` bloqueada nas rules; restaurado contrato ADR-023 (`steps` array no documento)
+- Auth web OK; erro era permissão na sub-collection, não login
+- Filtros de tarefas alinhados aos lembretes: `TaskFilterSheet` + `TaskActiveFilterBar` (chips removíveis + badge no botão Filtrar)
+
 **Concluído nesta frente (2026-07-23, Tati) — etapa 04, hierarquia de títulos:**
 
 - Hierarquia estrutural consolidada em três classes semânticas ligadas aos tokens: `page-title` (30px), `section-title` (22px) e `card-title` (18px).
