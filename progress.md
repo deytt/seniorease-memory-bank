@@ -531,6 +531,12 @@
         - `firebase_profile_photo_storage_test.dart` — upload com URL correto, content-type padrão e personalizado, propagação de FirebaseException
       - **Testes existentes atualizados:** asserções de `toMap()` corrigidas (`isA<Timestamp>()` → `isA<DateTime>()`, `isA<FieldValue>()` → `isA<String>()`); valores de tipografia atualizados (`large.scale` 1.2→1.125, `extraLarge.label` '150%'→'125%' — SPEC-02)
       - `flutter analyze lib/` — 0 erros; `flutter test` — 300/300
+    - [x] **SPEC-06 — Lottie de Celebração na Conclusão de Tarefa (2026-07-25):**
+      - `AppLottie` com constantes `checkAnimation` e `celebration` definidas em `senior_feedback_overlay.dart`
+      - `SeniorFeedbackOverlay` aceita `lottiePath` opcional (padrão `AppLottie.checkAnimation` — retrocompatível)
+      - `guided_task_screen.dart` e `task_details_screen.dart` passam `AppLottie.celebration` ao concluir a tarefa inteira
+      - `create_task_screen.dart` e `create_reminder_screen.dart` continuam usando o valor padrão `check_animation.json`
+      - `flutter analyze lib/` — 0 erros; `flutter test` — 309/309
     - [x] **SPEC-03 — Segurança Firestore:** sub-collection legada restrita ao dono; `userId`/`email`/`id` imutáveis; rules publicadas (2026-07-24); ADR-024; schema atualizado
     - [x] **SPEC-02 — Acessibilidade real e Modo Básico (2026-07-24):**
       - Tipografia: `bodySmall` 13→14px, `labelSmall` 12→14px; clamp 14px mínimo no `_scale`; `_CardBadge` 11→14px; `_ActiveChip` 13→14px; badge filtro redesenhado (18×18)
@@ -548,6 +554,7 @@
 - [x] **Tornar público o repositório Mobile** — público e links adicionados no README (2026-07-25)
 - [x] **Tornar público o repositório Web** — público e links adicionados no README (2026-07-25)
 - [x] **Tornar público o Figma Design** — público e links adicionados no README (2026-07-25)
+- [x] **`video-script.md` revisado (2026-07-25):** links de repos/Vercel preenchidos; escala de fonte corrigida (150% → 125% após SPEC-02); nota interna "implementada esta sessão" removida; demo step 11 atualizado; seção "Pendências" reestruturada em "Já concluído" vs "Obrigatório antes de entregar"; contagem de testes (300 mobile / 81 web) e Storybook adicionados ao diferencial CI/CD; 2 novas frases-chave
 - [ ] Vídeo gravado (máx. 15 min)
 - [ ] Vídeo enviado para plataforma FIAP
 - [ ] Links dos repositórios submetidos (arquivo `.docx` ou `.txt`)

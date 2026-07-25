@@ -55,6 +55,14 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - **Testes existentes actualizados:** `task_test`, `reminder_test`, `history_event_test`, `user_preferences_test` com asserções `DateTime` em vez de `Timestamp`/`FieldValue`.
 - `flutter analyze lib/` — 0 erros; `flutter test` — 300/300 a passar.
 
+**Concluído (2026-07-25, David — SPEC-06 Lottie de Celebração):**
+
+- `AppLottie` (constantes `checkAnimation` e `celebration`) definida em `core/widgets/senior_feedback_overlay.dart`.
+- `SeniorFeedbackOverlay` e `.show()` recebem `lottiePath` opcional (padrão `AppLottie.checkAnimation`).
+- `guided_task_screen.dart` e `task_details_screen.dart` passam `AppLottie.celebration` na conclusão da tarefa inteira.
+- Criação/edição mantém o comportamento existente (sem mudança nos chamadores).
+- `flutter analyze lib/` — 0 erros; `flutter test` — 309/309.
+
 **Concluído (2026-07-25, David — SPEC-01 Documentação e entregáveis):**
 
 - `README.md` reescrito em português: proposta/público-alvo, funcionalidades e telas, stack e arquitetura, pré-requisitos, instalação, configuração Firebase segura, comandos (`flutter pub get`, `flutter run`, `flutter analyze`, `flutter test`), seção "Cobertura de Testes", CI/CD, estrutura de pastas e links do projeto.
