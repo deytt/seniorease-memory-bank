@@ -508,6 +508,23 @@
   - [x] Conferir o cumprimento de todos os requisitos em ambos os projetos (Web e Mobile)
   - [x] Levantar lacunas, riscos e possíveis soluções/melhorias antes de entregar
   - [x] Registar o resultado da avaliação em 5 specs de correção no repositório Mobile (`docs/specs/`)
+    - [x] **SPEC-04 — Arquitetura, testes e eficiência operacional (2026-07-25):**
+      - **Domain sem Firebase:** import `cloud_firestore` removido de `task.dart`, `reminder.dart`, `history_event.dart` e `user_preferences.dart`; `toMap()` devolve `DateTime` (Firestore SDK aceita diretamente); `fromMap()` usa helper duck-type `_dateFrom()` (suporta Timestamp e DateTime); `updatedAt` com `FieldValue.serverTimestamp()` movido para repositórios Data
+      - **Repositórios adaptados:** `firebase_task_repository` (createTask + updateTask) e `firebase_preferences_repository` (save) adicionam `'updatedAt': FieldValue.serverTimestamp()` antes de gravar
+      - **Inventário cross-feature:** 16 imports identificados (script Python); todos classificados como composição legítima na Presentation layer — `auth_provider` (estado partilhado) e `preferences_provider` (Modo Básico) usados por todas as features; `home` é tela Dashboard de composição; sem violações a migrar; ADR-018/019 confirmados
+      - **Streams:** sem duplicação — Riverpod `StreamProvider` garante única subscrição Firestore por provider (Home e listas partilham a mesma instância)
+      - **9 ficheiros de testes novos** (63 testes adicionados; suíte agora em 300 testes, todos verdes):
+        - `preferences_provider_test.dart` — `AccessibilityController` e `NotificationPreferencesController` (save success/error, deduplicação de histórico)
+        - `tour_providers_test.dart` — todos os 5 use case providers (`shouldOffer`, `markOffered`, `markSeen`, `isInitialTourCompleted`, `completeInitialTour`)
+        - `notifications_provider_test.dart` — `registerFcmTokenUseCaseProvider` e `removeFcmTokenUseCaseProvider` (sucesso + erro)
+        - `login_preferences_provider_test.dart` — `loginPreferencesRepositoryProvider`, `getLoginPreferencesUseCaseProvider`, `saveLoginPreferencesUseCaseProvider`
+        - `secure_credential_provider_test.dart` — `secureCredentialCacheProvider` + roundtrip save/load/clear
+        - `change_password_use_case_test.dart` — delegação, erro genérico e erro de conta Google
+        - `local_biometric_repository_test.dart` — `isAvailable` (3 cenários + exceção), `isEnabled/setEnabled`, `authenticate` (success/cancel/exceção)
+        - `secure_credential_cache_test.dart` — save (2 chaves), load (5 cenários: sucesso/null/vazio), clear
+        - `firebase_profile_photo_storage_test.dart` — upload com URL correto, content-type padrão e personalizado, propagação de FirebaseException
+      - **Testes existentes atualizados:** asserções de `toMap()` corrigidas (`isA<Timestamp>()` → `isA<DateTime>()`, `isA<FieldValue>()` → `isA<String>()`); valores de tipografia atualizados (`large.scale` 1.2→1.125, `extraLarge.label` '150%'→'125%' — SPEC-02)
+      - `flutter analyze lib/` — 0 erros; `flutter test` — 300/300
     - [x] **SPEC-03 — Segurança Firestore:** sub-collection legada restrita ao dono; `userId`/`email`/`id` imutáveis; rules publicadas (2026-07-24); ADR-024; schema atualizado
     - [x] **SPEC-02 — Acessibilidade real e Modo Básico (2026-07-24):**
       - Tipografia: `bodySmall` 13→14px, `labelSmall` 12→14px; clamp 14px mínimo no `_scale`; `_CardBadge` 11→14px; `_ActiveChip` 13→14px; badge filtro redesenhado (18×18)
