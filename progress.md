@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-24 (David — Storage, índices, Functions e TestFlight concluídos)
+> Última atualização: 2026-07-25 (David — número de suporte substituído por `0800 600 0300` no Mobile; pendências Web documentadas)
 
 ---
 
@@ -538,14 +538,16 @@
       - Contraste: toggle binário "Alto Contraste" restaurado (paridade com web); `ContrastModeCard` removido; enum `ContrastMode` mantido intacto no domínio/tema
       - Espaçamento: `SeniorSpacingTheme` aplicado em Settings, CreateTask e GuidedTask (já existia em Home, Reminders, History, Accessibility, TaskList)
       - Modo Básico ativo em 6 telas: Home (oculta SuccessBanner), Tarefas (oculta badge prioridade no card + seção prioridade no FilterSheet), Lembretes (oculta seção categoria no FilterSheet), Settings (oculta _HelpCard); Histórico e Perfil já tinham suporte
+- [x] **Número de suporte Mobile** — `1-800-SENIOR` substituído por `0800 600 0300` em `settings_screen.dart` e `login_screen.dart` (2026-07-25)
+- [ ] **Número de suporte Web** — substituir `1-800-SENIOR` por `0800 600 0300` no card "Precisa de Ajuda?" do `/profile` e em qualquer outra ocorrência no `seniorease-web` (paridade com Mobile, 2026-07-25)
 - [ ] **[ADR-025] Adequar o Web ao contrato de paridade Modo Básico/Avançado** — alinhar `seniorease-web` às ocultações definidas em `systemPatterns.md` (tabela "Modo Básico vs. Modo Avançado"); divergências identificadas:
   - Card "Precisa de Ajuda?" visível no Web (Profile) → deve ser oculto em Modo Básico (paridade com Mobile/Settings)
   - Secção "Categoria" no filtro de lembretes: revisar se web usa chips exclusivos ou modal (definir comportamento único)
   - Badge de prioridade na "Próxima Atividade" do Dashboard Web: confirmar se `.advanced-only` já está aplicado
   - Após adequar: atualizar a coluna "Status paridade" em `systemPatterns.md` de ⚠️/❌ para ✅
-- [ ] **Tornar público o repositório Mobile** (está privado — obrigatório antes da entrega)
-- [ ] **Tornar público o repositório Web** (está privado — obrigatório antes da entrega)
-- [ ] **Tornar público o Figma Design** (ficheiro de design está privado — obrigatório antes da entrega)
+- [x] **Tornar público o repositório Mobile** — público e links adicionados no README (2026-07-25)
+- [x] **Tornar público o repositório Web** — público e links adicionados no README (2026-07-25)
+- [x] **Tornar público o Figma Design** — público e links adicionados no README (2026-07-25)
 - [ ] Vídeo gravado (máx. 15 min)
 - [ ] Vídeo enviado para plataforma FIAP
 - [ ] Links dos repositórios submetidos (arquivo `.docx` ou `.txt`)

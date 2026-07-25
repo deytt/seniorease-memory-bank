@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-25 (David — SPEC-01 concluída: README reescrito em PT, scripts/coverage.sh, CI com artefato de cobertura)
+> Última atualização: 2026-07-25 (David — número de suporte substituído por `0800 600 0300`; pendências Web documentadas: número + paridade Modo Básico/Avançado)
 
 ---
 
@@ -208,7 +208,20 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 **Próximo nesta frente:** entrega hackathon (vídeo, repos públicos) + validação final; lista `/tasks` deve usar `orderBy(dueDate, 'desc')` (contrato ADR-011 atualizado) + ampliar testes unitários.
 
-**Pendência crítica — ADR-025 (Modo Básico/Avançado):**
+**Pendências Web a corrigir para paridade com Mobile (2026-07-25):**
+
+### 1. Número de suporte — `0800 600 0300`
+
+O Mobile substituiu `1-800-SENIOR` por **`0800 600 0300`** (formato brasileiro, fictício) em dois locais:
+- `features/profile/presentation/screens/settings_screen.dart` — card "Precisa de Ajuda?" nas Definições
+- `features/auth/presentation/screens/login_screen.dart` — texto de ajuda na tela de Login
+
+**O Web precisa fazer o mesmo.** Locais conhecidos no `seniorease-web`:
+- Card "Precisa de Ajuda?" na tela `/profile` — substituir `1-800-SENIOR` por `0800 600 0300`
+- Qualquer outra ocorrência de `1-800-SENIOR` ou `0800-SENIOR` no código web
+
+### 2. ADR-025 — Paridade Modo Básico/Avançado
+
 O Mobile (SPEC-02, 2026-07-25) formalizou o contrato de paridade cross-platform em `systemPatterns.md`. O Web precisa ser adequado para ocultar os mesmos elementos em Modo Básico. Divergências identificadas:
 - Card "Precisa de Ajuda?" visível no Web → ocultar com `.advanced-only` no `/profile` (paridade com Mobile que oculta em Settings)
 - Filtro de lembretes por "Categoria" → definir se o comportamento do Web (chips exclusivos) já equivale ao Mobile ou precisa de ajuste
