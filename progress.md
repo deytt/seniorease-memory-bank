@@ -550,7 +550,7 @@
 - [x] **Número de suporte Mobile** — `1-800-SENIOR` substituído por `0800 600 0300` em `settings_screen.dart` e `login_screen.dart` (2026-07-25)
 - [x] **Número de suporte Web (SPEC-WEB-01)** — `1-800-SENIOR` substituído por `0800 600 0300` em `profileHelpCard.tsx`, `login/page.tsx` e `profileTourSteps.ts` (2026-07-26)
 - [ ] **[ADR-025] Adequar o Web ao contrato de paridade Modo Básico/Avançado** — alinhar `seniorease-web` às ocultações definidas em `systemPatterns.md` (tabela "Modo Básico vs. Modo Avançado"); divergências identificadas:
-  - Card "Precisa de Ajuda?" visível no Web (Profile) → deve ser oculto em Modo Básico (paridade com Mobile/Settings)
+  - [x] Card "Precisa de Ajuda?" oculto em Modo Básico no Web (Profile) via `.advanced-only` — SPEC-WEB-02 (2026-07-26); paridade com Mobile/Settings
   - Secção "Categoria" no filtro de lembretes: revisar se web usa chips exclusivos ou modal (definir comportamento único)
   - Badge de prioridade na "Próxima Atividade" do Dashboard Web: confirmar se `.advanced-only` já está aplicado
   - Após adequar: atualizar a coluna "Status paridade" em `systemPatterns.md` de ⚠️/❌ para ✅

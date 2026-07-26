@@ -402,7 +402,7 @@ O Modo Básico simplifica a UI ocultando elementos de complexidade secundária �
 | Elemento | Mobile | Web | Status paridade |
 |---|---|---|---|
 | Campo CPF | oculto | oculto | ✅ Paridade |
-| Card "Precisa de Ajuda?" (`0800 600 0300`) | oculto (Settings) | presente (Profile) | ❌ **Divergência — ver ADR-025** |
+| Card "Precisa de Ajuda?" (`0800 600 0300`) | oculto (Settings) | oculto (`.advanced-only` no Profile) | ✅ Paridade |
 
 #### Histórico
 
