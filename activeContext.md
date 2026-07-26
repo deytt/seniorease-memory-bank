@@ -285,14 +285,14 @@ Referência: tabela "Modo Básico vs. Modo Avançado" em `systemPatterns.md` —
 3. **Gravar vídeo** (máx. 15 min) — roteiro completo em `video-script.md`; ensaiar antes de gravar
 4. **Submeter na FIAP** — criar `.docx` ou `.txt` com links (repos, Vercel, Figma, vídeo)
 
-**Alteração necessária no Mobile (2026-07-26, David — paridade filtro de status):**
+**Concluído (2026-07-26, David — paridade filtro de status):**
 
-A Web adicionou filtro por status (Pendentes / Concluídas) tanto na lista de tarefas quanto na central de lembretes (`TaskListFilter.status` e `ReminderListFilter.status`). O Mobile ainda não possui esta opção no `TaskFilterSheet` nem no `ReminderFilterSheet`. Para manter paridade cross-platform, o time mobile deve:
-- Adicionar `TaskFilter.status` (`pending` | `completed` | `null`) ao model de filtro de tarefas e aplicar na query/lista.
-- Adicionar `ReminderFilter.status` (`pending` | `completed` | `null`) ao model de filtro de lembretes e aplicar na query/lista.
-- Exibir a seção "Status" (dois chips: Pendentes / Concluídas) nos respectivos bottom sheets de filtro.
-- Exibir o chip removível de status na barra de filtros ativos das duas listas.
-
+Filtro de status adicionado tanto na lista de tarefas quanto na central de lembretes, em paridade com a Web:
+- `TaskFilter.status` (`TaskStatus.pending` | `TaskStatus.completed` | `null`) adicionado ao model; filtro aplicado in-memory no `FirebaseTaskRepository` (evita índices compostos adicionais); `pending` inclui `pending + in_progress`.
+- `ReminderFilter.isDone` (`false` = pendente | `true` = concluído | `null`) adicionado ao model; filtro aplicado in-memory no `FirebaseReminderRepository` via campo `isRead`.
+- Secção "Status" com dois chips (Pendente / Concluída) adicionada ao `TaskFilterSheet` e ao `ReminderFilterSheet`.
+- Chip removível de status adicionado à barra de filtros ativos de ambas as listas.
+- `flutter analyze lib/` — 0 erros.
 **Alteração necessária no Mobile (2026-07-26, David — badge de notificação: estado lido/não lido):**
 
 A Web corrigiu o badge do sininho para exibir apenas notificações **não lidas** (i.e., recebidas após a última vez que o utilizador abriu a aba `/notifications`). O estado de leitura é persistido em `localStorage` com a chave `seniorease_notif_last_seen_{userId}`. Ao abrir a tela, `markAllAsRead()` é chamado → timestamp gravado → badge vai a zero. Itens não lidos têm indicador visual (borda + fundo `primary/5` + ponto azul).
@@ -316,6 +316,22 @@ Como o Mobile não tem tela dedicada de histórico de notificações push (a col
 - Indicador visual nos cards de lembrete não lidos (ex.: borda ou ponto colorido), espelhando o `NotificationCard` do Web.
 
 Confirmar que a Cloud Function `sendDueNotifications` respeita `isRead == false` antes de reenviar push (já presente no index `idx-reminders-notified`).
+
+
+**Concluído (2026-07-26, David — badge de notificação: estado lido/não lido):**
+
+- `_ReadVersionNotifier` + `_notifReadVersionProvider` (Riverpod `NotifierProvider<int>`) em `notification_history_provider.dart` para forçar re-derivação sem `StateProvider` (removido no Riverpod 3).
+- `notifLastSeenAtProvider` (`FutureProvider<DateTime?>`) — lê `SharedPreferences` com chave `seniorease_notif_last_seen_{userId}`; re-deriva ao incrementar `_notifReadVersionProvider`.
+- `unreadNotificationCountProvider` (`Provider<int>`) — conta notificações com `sentAt > lastSeenAt`; devolve `items.length` se `lastSeenAt == null`.
+- `markNotificationsSeen(WidgetRef)` — escreve `DateTime.now()` em SharedPreferences e incrementa `_notifReadVersionProvider` → badge vai a zero imediatamente.
+- `todayNotificationCountProvider` mantido como alias `@deprecated` de `unreadNotificationCountProvider` (retrocompatibilidade).
+- `NotificationsScreen.initState` chama `markNotificationsSeen(ref)` via `addPostFrameCallback` — equivalente ao `useEffect(fn, [])` do Web.
+- `_NotificationList` passa `isUnread: lastSeenAt == null || item.sentAt.isAfter(lastSeenAt)` a cada `NotificationItemCard`.
+- `NotificationItemCard` recebe `isUnread: bool` e aplica borda `primary/40`, fundo `primary/5` e ponto azul de 8px nos itens não lidos; `aria-label` inclui "Não lida." quando aplicável.
+- `_NotificationBell` (Home) usa `unreadNotificationCountProvider`; `aria-label` atualizado para "X não lida(s)".
+- Testes atualizados: grupo `todayNotificationCountProvider` substituído por `unreadNotificationCountProvider` (5 casos) + alias test; 36 testes passam.
+- `flutter analyze lib/` — 0 erros.
+
 
 ### Mobile (seniorease-mobile)
 

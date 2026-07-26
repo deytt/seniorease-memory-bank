@@ -561,6 +561,7 @@
 - [x] **Tornar público o repositório Web** — público e links adicionados no README (2026-07-25)
 - [x] **Tornar público o Figma Design** — público e links adicionados no README (2026-07-25)
 - [x] **`video-script.md` revisado (2026-07-25):** links de repos/Vercel preenchidos; escala de fonte corrigida (150% → 125% após SPEC-02); nota interna "implementada esta sessão" removida; demo step 11 atualizado; seção "Pendências" reestruturada em "Já concluído" vs "Obrigatório antes de entregar"; contagem de testes (300 mobile / 81 web) e Storybook adicionados ao diferencial CI/CD; 2 novas frases-chave
+- [x] **Badge de notificações Mobile — estado lido/não lido (2026-07-26, David):** `unreadNotificationCountProvider` + `notifLastSeenAtProvider` (SharedPreferences `seniorease_notif_last_seen_{userId}`) + `markNotificationsSeen(WidgetRef)` + `_ReadVersionNotifier`; `NotificationsScreen.initState` marca tudo como lido ao abrir; `NotificationItemCard` com `isUnread` (borda + fundo + ponto azul); `_NotificationBell` usa `unreadNotificationCountProvider`; testes atualizados (36 passam); `flutter analyze lib/` — 0 erros.
 - [ ] Vídeo gravado (máx. 15 min)
 - [ ] Vídeo enviado para plataforma FIAP
 - [ ] Links dos repositórios submetidos (arquivo `.docx` ou `.txt`)
