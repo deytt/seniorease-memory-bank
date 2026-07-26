@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-26 (David — SPEC-WEB-05 concluída: rotas Modo Guiado hub+tela documentadas; pendências ADR-025 restantes: filtro categoria lembretes + badge prioridade dashboard)
+> Última atualização: 2026-07-26 (David — SPEC-WEB-03 concluída: README Web completo para entrega; pendências ADR-025 restantes: filtro categoria lembretes + badge prioridade dashboard)
 
 ---
 
@@ -254,6 +254,12 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - Confirmado: `/tasks/guided` (hub) e `/tasks/[id]/guided` (tela) **não são duplicadas** — propósitos distintos e complementares.
 - Entry points verificados: Navigation + tour catalog → hub; lista/detalhes/Dashboard (tarefa específica) → `/tasks/[id]/guided`; hub redireciona ou mostra empty state ("Nova Tarefa" / "Ver Tarefas").
 - JSDoc em `guided/page.tsx`; estrutura + nota hub+tela em `systemPatterns.md`.
+
+**Concluído (2026-07-26, David — SPEC-WEB-03 README Web completo):**
+
+- `README.md` reescrito no padrão Mobile (SPEC-01): proposta/público-alvo, 13 telas com rotas, links (Vercel, Mobile, Figma, Protótipo, Kanban), instalação, scripts, env, **120 testes Vitest**, Storybook (19 stories), CI/CD e estrutura Clean Architecture.
+- Contagem de testes atualizada após SPEC-WEB-04 (template original citava 81).
+- Sem segredos no README; critérios de aceitação da SPEC-WEB-03 marcados.
 
 **Pendências Web a corrigir para paridade com Mobile (2026-07-25):**
 

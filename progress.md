@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-26 (David — SPEC-WEB-05: rotas Modo Guiado hub + tela documentadas)
+> Última atualização: 2026-07-26 (David — SPEC-WEB-03: README Web completo para entrega)
 
 ---
 
@@ -550,6 +550,7 @@
 - [x] **Número de suporte Mobile** — `1-800-SENIOR` substituído por `0800 600 0300` em `settings_screen.dart` e `login_screen.dart` (2026-07-25)
 - [x] **Número de suporte Web (SPEC-WEB-01)** — `1-800-SENIOR` substituído por `0800 600 0300` em `profileHelpCard.tsx`, `login/page.tsx` e `profileTourSteps.ts` (2026-07-26)
 - [x] **Rotas Modo Guiado Web (SPEC-WEB-05)** — confirmado que `/tasks/guided` (hub) e `/tasks/[id]/guided` (tela) não são duplicadas; links de entrada corretos; JSDoc no hub; nota hub+tela em `systemPatterns.md` (2026-07-26)
+- [x] **README Web completo (SPEC-WEB-03)** — reescrito com proposta/público-alvo, 13 telas, links (Vercel/Mobile/Figma/Protótipo/Kanban), 120 testes Vitest, Storybook (19 stories), CI/CD, estrutura Clean Architecture e instalação passo a passo; sem segredos (2026-07-26)
 - [ ] **[ADR-025] Adequar o Web ao contrato de paridade Modo Básico/Avançado** — alinhar `seniorease-web` às ocultações definidas em `systemPatterns.md` (tabela "Modo Básico vs. Modo Avançado"); divergências identificadas:
   - [x] Card "Precisa de Ajuda?" oculto em Modo Básico no Web (Profile) via `.advanced-only` — SPEC-WEB-02 (2026-07-26); paridade com Mobile/Settings
   - Secção "Categoria" no filtro de lembretes: revisar se web usa chips exclusivos ou modal (definir comportamento único)
