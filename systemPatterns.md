@@ -42,7 +42,8 @@ seniorease-web/
 │   │   │   │   ├── page.tsx           ← Task List
 │   │   │   │   ├── [id]/page.tsx      ← Task Details
 │   │   │   │   ├── create/page.tsx    ← Create Task
-│   │   │   │   └── [id]/guided/page.tsx ← Guided Task Mode
+│   │   │   │   ├── guided/page.tsx    ← Hub Modo Guiado (próxima tarefa → redirect)
+│   │   │   │   └── [id]/guided/page.tsx ← Tela real do Modo Guiado (passo a passo)
 │   │   │   ├── reminders/
 │   │   │   ├── history/
 │   │   │   └── profile/
@@ -340,6 +341,13 @@ Sempre exibir modal de confirmação antes de deletar qualquer item. Nunca delet
 - Botão "Passo anterior" sempre visível (exceto no passo 1)
 - Botão "Sair do modo guiado" sempre acessível
 - Ao concluir o último passo: exibir animação Lottie de celebração
+
+### Modo Guiado Web — padrão hub + tela (não são rotas duplicadas)
+
+| Rota | Propósito |
+|------|-----------|
+| `/tasks/guided` | **Hub** — encontra a próxima tarefa com passos e redireciona para `/tasks/[id]/guided`. Usado pela navegação e pelo catálogo de tours quando o utilizador não escolhe uma tarefa. Estado vazio: card com "Nova Tarefa" e "Ver Tarefas". |
+| `/tasks/[id]/guided` | **Tela real** — executa o Modo Guiado passo a passo para uma tarefa específica. Acessada pelo hub, pelos cards da lista, pelos detalhes da tarefa ou pela "Próxima atividade" do Dashboard. |
 
 ### Acessibilidade — regras de implementação
 - Tamanho mínimo de área clicável: 44×44px (ideal 56×56px)
