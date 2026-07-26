@@ -276,6 +276,14 @@ Referência: tabela "Modo Básico vs. Modo Avançado" em `systemPatterns.md` —
 2. Credenciais FCM/VAPID de produção no ambiente web
 3. Avaliação interna + vídeo de demo
 
+**Alteração necessária no Mobile (2026-07-26, David — paridade filtro de status):**
+
+A Web adicionou filtro por status (Pendentes / Concluídas) tanto na lista de tarefas quanto na central de lembretes (`TaskListFilter.status` e `ReminderListFilter.status`). O Mobile ainda não possui esta opção no `TaskFilterSheet` nem no `ReminderFilterSheet`. Para manter paridade cross-platform, o time mobile deve:
+- Adicionar `TaskFilter.status` (`pending` | `completed` | `null`) ao model de filtro de tarefas e aplicar na query/lista.
+- Adicionar `ReminderFilter.status` (`pending` | `completed` | `null`) ao model de filtro de lembretes e aplicar na query/lista.
+- Exibir a seção "Status" (dois chips: Pendentes / Concluídas) nos respectivos bottom sheets de filtro.
+- Exibir o chip removível de status na barra de filtros ativos das duas listas.
+
 ### Mobile (seniorease-mobile)
 
 **Responsável:** David
