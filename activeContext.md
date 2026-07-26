@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-26 (David — SPEC-WEB-03 concluída: README Web completo para entrega; pendências ADR-025 restantes: filtro categoria lembretes + badge prioridade dashboard)
+> Última atualização: 2026-07-26 (David — Dashboard: preview de lembretes mostra próximos 3 ativos; SPEC-WEB-03 README concluída; pendências ADR-025 restantes: filtro categoria lembretes + badge prioridade dashboard)
 
 ---
 
@@ -213,8 +213,8 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 **Concluído nesta frente (2026-07-21, Henrique):**
 
-- **Lembretes lista (PR #50):** chips exclusivos Hoje / Medicação / Consultas (paridade mobile); default Hoje; `scheduledAt` ASC; remove modal combinável
-- **Dashboard previews:** “Próxima atividade” (1 pendente ASC) + “Lembretes de hoje” (dia civil ASC, inclui concluídos); hora 24h
+- **Lembretes lista (PR #50 + 2026-07-26):** chips exclusivos Hoje / Medicação / Consultas (paridade mobile); default Hoje; `scheduledAt` DESC
+- **Dashboard previews:** “Próximas atividades” (pendentes) + “Próximos lembretes” (3 ativos `!isRead`, `scheduledAt` DESC)
 - **Polish tours/UX (PR #48/#49):** `TourHelpButton` padronizado; Voltar/Sair hover-only; toasts sem Close; tour Acessibilidade no stack partilhado; Guia “Dashboard”; favicon SE; tour Endereço removido do catálogo
 - **Lote anterior (PRs #38–#44):** Guia `/guides`, infra de tour, tours nas telas, shell UX
 

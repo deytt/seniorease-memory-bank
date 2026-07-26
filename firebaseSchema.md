@@ -290,7 +290,7 @@ Ver `firestore.rules` para o código completo.
 
 > **Nota (mobile):** filtro da lista é **combinável** (Categoria + "Hoje"). Ordenação `scheduledAt` **DESC** (mais antigos por último). "Hoje" usa range server-side; categoria usa `where` + orderBy.
 >
-> **Nota (web, 2026-07-21):** filtro da lista alinhado ao mobile — chips exclusivos Hoje / Medicação / Consultas (default Hoje), filtragem em memória após fetch `userId` + `orderBy(scheduledAt asc)`. Mobile passou a DESC em 2026-07-22.
+> **Nota (web, 2026-07-26):** lista e preview do Dashboard usam `orderBy(scheduledAt, 'desc')` — paridade com o mobile. Filtro da lista: chips exclusivos Hoje / Medicação / Consultas (default Hoje), filtragem em memória após o fetch.
 
 ---
 
@@ -321,6 +321,7 @@ Ver `firestore.rules` para o código completo.
 
 | Data | Mudança | ADR |
 |------|---------|-----|
+| 2026-07-26 | Web: lista e preview de lembretes passam a `scheduledAt` **DESC** (`FirebaseReminderRepository` + `getNextActiveReminders`) — paridade mobile; índice `idx-reminders-list-desc` | — |
 | 2026-07-24 | **SPEC-03 (final):** sub-collection legada `tasks/{taskId}/steps` negada completamente (`allow read, write: if false`) — nenhum cliente usa a sub-collection; dados legados existentes ignorados; custo de `get()` eliminado. Rules publicadas (`seniorease-backend`) | ADR-024 |
 | 2026-07-24 | **SPEC-03:** sub-collection legada `tasks/{taskId}/steps` restrita ao dono da tarefa pai via `get()` (era aberta a todo autenticado). Adicionada validação de campos imutáveis: `email`/`id` em `users`; `userId` em `tasks`, `reminders`, `history`, `preferences`, `onboarding`. Rules publicadas (`seniorease-backend`) | ADR-024 |
 | 2026-07-22 | Lista de `tasks`: ordenação server-side por `dueDate` **DESC** (Web + Mobile); índices ASC de filtro/hoje substituídos por variantes DESC (`idx-tasks-*-desc`); documentos sem `dueDate` fora do resultado do `orderBy` | ADR-011 (atualizado) / ADR-012 |
