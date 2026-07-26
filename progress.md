@@ -106,6 +106,7 @@
 
 - [x] Tela Dashboard com saudação dinâmica (bom dia/tarde/noite)
 - [x] Sininho de notificações no header (badge vermelho + `/notifications`) — paridade mobile (2026-07-16)
+- [x] Badge de notificações corrigido: estado lido/não lido via `localStorage` (`seniorease_notif_last_seen_{userId}`) — badge exibe apenas notificações recebidas após a última visita à tela; `markAllAsRead()` chamado ao abrir `/notifications`; indicador visual (borda + fundo + ponto) nos itens não lidos (2026-07-26)
 - [x] Grid de Ações Rápidas (2×2: Nova Tarefa, Acessibilidade, Lembretes, **Ajuda rápida** → `/guides`) — Histórico só no menu lateral (PRs #40, 2026-07-21)
 - [x] Banner de encorajamento diário com stats reais (ontem/hoje/pendentes — todas as não concluídas) (2026-07-26)
 - [x] Card “Próxima atividade” — exibe uma tarefa incompleta: prioriza a próxima com `dueDate >= agora` em ordem ASC e, na ausência, usa a primeira incompleta da lista (2026-07-21)
