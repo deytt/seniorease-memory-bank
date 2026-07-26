@@ -261,6 +261,14 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - Contagem de testes atualizada após SPEC-WEB-04 (template original citava 81).
 - Sem segredos no README; critérios de aceitação da SPEC-WEB-03 marcados.
 
+**Concluído (2026-07-26, David — Badge de notificações: estado lido/não lido):**
+
+- `useNotificationHistory` atualizado: adiciona `lastSeenAt` (lido de `localStorage` com chave `seniorease_notif_last_seen_{userId}`), `unreadCount` (notificações com `sentAt > lastSeenAt`) e `markAllAsRead()` (persiste `Date.now()` no localStorage).
+- `notificationBell.tsx` atualizado: badge exibe `unreadCount` em vez de `todayCount`; aria-label atualizado para "X não lida(s)".
+- `notificationsScreen.tsx` atualizado: chama `onMarkAllAsRead()` no `useEffect` do mount (badge vai a zero ao abrir a tela); `NotificationCard` recebe `isUnread: boolean` e aplica estilo visual diferenciado (borda `primary/40`, fundo `primary/5`, ponto indicador azul).
+- `notifications/page.tsx` atualizado: passa `lastSeenAt` e `onMarkAllAsRead` para `NotificationsScreen`.
+- Solução sem alterações no schema Firestore nem nas rules (collection `notifications` continua write-only pelo Admin SDK).
+
 **Pendências Web a corrigir para paridade com Mobile (2026-07-25):**
 
 ### 1. ADR-025 — Paridade Modo Básico/Avançado
@@ -283,6 +291,30 @@ A Web adicionou filtro por status (Pendentes / Concluídas) tanto na lista de ta
 - Adicionar `ReminderFilter.status` (`pending` | `completed` | `null`) ao model de filtro de lembretes e aplicar na query/lista.
 - Exibir a seção "Status" (dois chips: Pendentes / Concluídas) nos respectivos bottom sheets de filtro.
 - Exibir o chip removível de status na barra de filtros ativos das duas listas.
+
+**Alteração necessária no Mobile (2026-07-26, David — badge de notificação: estado lido/não lido):**
+
+A Web corrigiu o badge do sininho para exibir apenas notificações **não lidas** (i.e., recebidas após a última vez que o utilizador abriu a aba `/notifications`). O estado de leitura é persistido em `localStorage` com a chave `seniorease_notif_last_seen_{userId}`. Ao abrir a tela, `markAllAsRead()` é chamado → timestamp gravado → badge vai a zero. Itens não lidos têm indicador visual (borda + fundo `primary/5` + ponto azul).
+
+**Referência da solução Web (para guiar a implementação Mobile):**
+
+A solução no Web evitou alterar o schema Firestore ou as security rules (a collection `notifications` é write-only pelo Admin SDK). O padrão adotado foi:
+
+1. **`useNotificationHistory.ts`** — mantém um contador `readVersion` em estado React. `lastSeenAt` é derivado de `localStorage` via `useMemo` com `[userId, readVersion]` como dependências (re-lê o localStorage toda vez que o utilizador marca como lido ou troca de conta). `unreadCount = notifications.filter(n => n.sentAt > lastSeenAt).length`.
+2. **`markAllAsRead()`** — escreve `Date.now()` em `localStorage[seniorease_notif_last_seen_{userId}]` e incrementa `readVersion`, forçando a re-derivação sem `setState` dentro de um `useEffect`.
+3. **`NotificationsScreen`** — chama `onMarkAllAsRead()` num `useEffect(fn, [])` no mount: ao abrir a tela, o badge vai imediatamente a zero.
+4. **`NotificationCard`** — recebe `isUnread: boolean` (calculado com `sentAt > lastSeenAt`) e aplica estilo visual diferenciado nos itens ainda não vistos.
+
+**Equivalente sugerido para o Mobile (Flutter/Riverpod):**
+
+Como o Mobile não tem tela dedicada de histórico de notificações push (a collection `notifications` é só do Web), o foco é nos **lembretes** (`reminders.isRead`), que já têm o campo no Firestore mas cuja lógica de marcação não está completa. Adotar a mesma abordagem:
+
+- Criar/ajustar um `MarkReminderAsReadUseCase` que escreva `isRead: true` no Firestore ao abrir os detalhes ou ao concluir (`markDone`) o lembrete.
+- O provider do badge (sininho na Home) deve usar `where('isRead', isEqualTo: false)` — já verificado no index `idx-reminders-notified`.
+- Para a tela de lembretes (`RemindersScreen`): chamar `markAllRemindersAsRead()` no `initState`/`onFirstBuild`, equivalente ao `useEffect(fn, [])` do Web.
+- Indicador visual nos cards de lembrete não lidos (ex.: borda ou ponto colorido), espelhando o `NotificationCard` do Web.
+
+Confirmar que a Cloud Function `sendDueNotifications` respeita `isRead == false` antes de reenviar push (já presente no index `idx-reminders-notified`).
 
 ### Mobile (seniorease-mobile)
 
