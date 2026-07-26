@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-25 (David — número de suporte substituído por `0800 600 0300` no Mobile; pendências Web documentadas)
+> Última atualização: 2026-07-26 (David — SPEC-WEB-01: número de suporte `0800 600 0300` no Web)
 
 ---
 
@@ -83,7 +83,7 @@
 - [x] Revisão UX/UI etapa 05 — `PageHeader` e `BackNavigationButton` compartilhados aplicados; componentes de domínio mantidos separados quando responsabilidade e comportamento diferem (2026-07-23)
 - [x] Revisão UX/UI etapa 06 — rota canônica `/accessibility` aplicada à navegação, Dashboard e tours; `/acessibility` mantida como redirecionamento legado (2026-07-23)
 - [x] Revisão UX/UI etapa 07 — menu móvel migrado para painel acessível com foco contido/restaurado, fechamento por `Esc`, `aria-current`, nomes acessíveis e alvos de toque de 48px (2026-07-23)
-- [ ] Revisão UX/UI etapa 08 — bloco de suporte adiado para implementação coordenada entre web e mobile; nenhuma alteração realizada (2026-07-23)
+- [x] Revisão UX/UI etapa 08 — bloco de suporte: número atualizado para `0800 600 0300` (SPEC-WEB-01, 2026-07-26); ocultação em Modo Básico fica na SPEC-WEB-02 / ADR-025
 - [x] Revisão UX/UI etapa 09 — ações compactas em 44px, principais em 56px, ícones em 44×44px, raio padrão de 14px e links de ação migrados para `Button` (2026-07-23)
 - [x] Storybook — **concluído** (19 stories; ver secção Documentação abaixo)
 
@@ -206,7 +206,7 @@
 - [x] Verificar conta por e-mail — tela unificada `/profile/security` (ADR-016, paridade mobile) (2026-07-15)
 - [x] Alterar senha — integrado na tela `/profile/security` (2026-07-15)
 - [x] Removido 2FA (TOTP) — web espelha mobile (verificação por e-mail, sem MFA) (2026-07-15)
-- [x] Card "Precisa de Ajuda?" (1-800-SENIOR) — no perfil (2026-07-15)
+- [x] Card "Precisa de Ajuda?" (`0800 600 0300`) — no perfil (2026-07-15; número atualizado SPEC-WEB-01, 2026-07-26)
 - [x] Validação do nome (3–30 caracteres) — `profileNameValidation` no domain + formulário de edição (2026-07-15)
 - [x] Tour guiado do Perfil — `driver.js`, 8 passos (visão geral, foto, status, ajuda, dados pessoais, endereço, notificações, conta e suporte), estilização SeniorEase, oferta em Modo Básico + botão `?` (2026-07-16)
 - [x] Testes unitários do módulo Perfil — `validateProfileName`, `SaveUserProfileUseCase`, `profileTourSteps`, `tourStorage` (vitest, 2026-07-15)
@@ -548,7 +548,7 @@
       - Espaçamento: `SeniorSpacingTheme` aplicado em Settings, CreateTask e GuidedTask (já existia em Home, Reminders, History, Accessibility, TaskList)
       - Modo Básico ativo em 6 telas: Home (oculta SuccessBanner), Tarefas (oculta badge prioridade no card + seção prioridade no FilterSheet), Lembretes (oculta seção categoria no FilterSheet), Settings (oculta _HelpCard); Histórico e Perfil já tinham suporte
 - [x] **Número de suporte Mobile** — `1-800-SENIOR` substituído por `0800 600 0300` em `settings_screen.dart` e `login_screen.dart` (2026-07-25)
-- [ ] **Número de suporte Web** — substituir `1-800-SENIOR` por `0800 600 0300` no card "Precisa de Ajuda?" do `/profile` e em qualquer outra ocorrência no `seniorease-web` (paridade com Mobile, 2026-07-25)
+- [x] **Número de suporte Web (SPEC-WEB-01)** — `1-800-SENIOR` substituído por `0800 600 0300` em `profileHelpCard.tsx`, `login/page.tsx` e `profileTourSteps.ts` (2026-07-26)
 - [ ] **[ADR-025] Adequar o Web ao contrato de paridade Modo Básico/Avançado** — alinhar `seniorease-web` às ocultações definidas em `systemPatterns.md` (tabela "Modo Básico vs. Modo Avançado"); divergências identificadas:
   - Card "Precisa de Ajuda?" visível no Web (Profile) → deve ser oculto em Modo Básico (paridade com Mobile/Settings)
   - Secção "Categoria" no filtro de lembretes: revisar se web usa chips exclusivos ou modal (definir comportamento único)
