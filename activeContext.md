@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-26 (David — SPEC-WEB-03 concluída: README Web completo para entrega; pendências ADR-025 restantes: filtro categoria lembretes + badge prioridade dashboard)
+> Última atualização: 2026-07-26 (David — Dashboard: card Encorajamento diário conta Pendentes = todas não concluídas; preview lembretes 3 ativos; SPEC-WEB-03 README; pendências ADR-025: filtro categoria lembretes + badge prioridade dashboard)
 
 ---
 
@@ -213,8 +213,8 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 
 **Concluído nesta frente (2026-07-21, Henrique):**
 
-- **Lembretes lista (PR #50):** chips exclusivos Hoje / Medicação / Consultas (paridade mobile); default Hoje; `scheduledAt` ASC; remove modal combinável
-- **Dashboard previews:** “Próxima atividade” (1 pendente ASC) + “Lembretes de hoje” (dia civil ASC, inclui concluídos); hora 24h
+- **Lembretes lista (PR #50 + 2026-07-26):** chips exclusivos Hoje / Medicação / Consultas (paridade mobile); default Hoje; `scheduledAt` DESC
+- **Dashboard previews:** “Próximas atividades” (pendentes) + “Próximos lembretes” (3 ativos `!isRead`, `scheduledAt` DESC)
 - **Polish tours/UX (PR #48/#49):** `TourHelpButton` padronizado; Voltar/Sair hover-only; toasts sem Close; tour Acessibilidade no stack partilhado; Guia “Dashboard”; favicon SE; tour Endereço removido do catálogo
 - **Lote anterior (PRs #38–#44):** Guia `/guides`, infra de tour, tours nas telas, shell UX
 
@@ -275,6 +275,14 @@ Referência: tabela "Modo Básico vs. Modo Avançado" em `systemPatterns.md` —
 1. ADR-025 — fechar paridade Modo Básico restante (filtro lembretes / badge dashboard)
 2. Credenciais FCM/VAPID de produção no ambiente web
 3. Avaliação interna + vídeo de demo
+
+**Alteração necessária no Mobile (2026-07-26, David — paridade filtro de status):**
+
+A Web adicionou filtro por status (Pendentes / Concluídas) tanto na lista de tarefas quanto na central de lembretes (`TaskListFilter.status` e `ReminderListFilter.status`). O Mobile ainda não possui esta opção no `TaskFilterSheet` nem no `ReminderFilterSheet`. Para manter paridade cross-platform, o time mobile deve:
+- Adicionar `TaskFilter.status` (`pending` | `completed` | `null`) ao model de filtro de tarefas e aplicar na query/lista.
+- Adicionar `ReminderFilter.status` (`pending` | `completed` | `null`) ao model de filtro de lembretes e aplicar na query/lista.
+- Exibir a seção "Status" (dois chips: Pendentes / Concluídas) nos respectivos bottom sheets de filtro.
+- Exibir o chip removível de status na barra de filtros ativos das duas listas.
 
 ### Mobile (seniorease-mobile)
 

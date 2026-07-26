@@ -102,14 +102,14 @@
 
 ### Dashboard
 
-> Espelha a Home do mobile: saudação dinâmica, sininho de notificações, quick actions (Nova Tarefa, Acessibilidade, Lembretes, Ajuda rápida), **Próxima atividade**, **Lembretes de hoje** e card de status de acessibilidade. Ver Figma `134-851`.
+> Espelha a Home do mobile: saudação dinâmica, sininho de notificações, quick actions (Nova Tarefa, Acessibilidade, Lembretes, Ajuda rápida), **Próximas atividades**, **Próximos lembretes** e card de status de acessibilidade. Ver Figma `134-851`.
 
 - [x] Tela Dashboard com saudação dinâmica (bom dia/tarde/noite)
 - [x] Sininho de notificações no header (badge vermelho + `/notifications`) — paridade mobile (2026-07-16)
 - [x] Grid de Ações Rápidas (2×2: Nova Tarefa, Acessibilidade, Lembretes, **Ajuda rápida** → `/guides`) — Histórico só no menu lateral (PRs #40, 2026-07-21)
-- [x] Banner de encorajamento diário com stats reais (ontem/hoje/restantes)
+- [x] Banner de encorajamento diário com stats reais (ontem/hoje/pendentes — todas as não concluídas) (2026-07-26)
 - [x] Card “Próxima atividade” — exibe uma tarefa incompleta: prioriza a próxima com `dueDate >= agora` em ordem ASC e, na ausência, usa a primeira incompleta da lista (2026-07-21)
-- [x] Seção “Lembretes de hoje” — dia civil atual, inclui concluídos, ordenação `scheduledAt` ASC e limite de 3 itens (2026-07-21)
+- [x] Seção “Próximos lembretes” — próximos 3 ativos (`!isRead`), ordenação `scheduledAt` DESC (2026-07-26)
 - [x] Card "Status de Acessibilidade" com fundo Figma `#eff6ff`, ícone `Accessibility` e campos da tela `/acessibility` (2026-07-16)
 - [x] `DashboardScreen` + `dashboardUtils` + testes vitest (2026-07-16)
 
@@ -175,11 +175,11 @@
 - [x] Labels de prioridade/categoria/status em português (corrigido 2026-07-07)
 - [x] Ordenação da lista por `dueDate` descendente, com tarefas sem data no fim (issue web #34, 2026-07-21)
 - [x] Card "Próxima Atividade" no Dashboard — paridade mobile (`getNextPendingTask`, 1 pendente ASC) (2026-07-21)
-- [x] Tela Reminder Center (`/reminders`) — lista, marcar concluído, ordenação por `scheduledAt` **ASC** (paridade mobile; PR #50, 2026-07-21)
+- [x] Tela Reminder Center (`/reminders`) — lista, marcar concluído, ordenação por `scheduledAt` **DESC** (paridade mobile; 2026-07-26)
 - [x] Filtro exclusivo por chips Hoje / Medicação / Consultas (default Hoje) — paridade mobile; remove modal combinável (PR #50, 2026-07-21)
-- [x] Dashboard: “Lembretes de hoje” (dia civil ASC, inclui concluídos, limite 3) + hora 24h (2026-07-21)
+- [x] Dashboard: “Próximos lembretes” (ativos `!isRead`, DESC, limite 3) + rótulo de dia/hora (2026-07-26)
 - [x] Polish tours/dashboard/botões/toasts/favicon; tour Endereço removido do Guia (PRs #48/#49, 2026-07-21)
-- [x] Índice `idx-reminders-list-desc` permanece no `firestore.indexes.json` como opcional/legado (lista web voltou a ASC)
+- [x] Índice `idx-reminders-list-desc` usado na listagem web (`orderBy scheduledAt DESC`) — paridade mobile (2026-07-26)
 - [x] Tela Create Reminder (`/reminders/create`)
 - [x] Reminder alinhado ao schema/mobile (`category`, `notified`, `createdAt`; 5 categorias) — branch `feat/web-reminders-figma` (2026-07-10)
 - [x] Edição (`/reminders/[id]/edit`) e exclusão com modal de confirmação — paridade com mobile (2026-07-10)
