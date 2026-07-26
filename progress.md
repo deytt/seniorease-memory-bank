@@ -107,7 +107,7 @@
 - [x] Tela Dashboard com saudação dinâmica (bom dia/tarde/noite)
 - [x] Sininho de notificações no header (badge vermelho + `/notifications`) — paridade mobile (2026-07-16)
 - [x] Grid de Ações Rápidas (2×2: Nova Tarefa, Acessibilidade, Lembretes, **Ajuda rápida** → `/guides`) — Histórico só no menu lateral (PRs #40, 2026-07-21)
-- [x] Banner de encorajamento diário com stats reais (ontem/hoje/restantes)
+- [x] Banner de encorajamento diário com stats reais (ontem/hoje/pendentes — todas as não concluídas) (2026-07-26)
 - [x] Card “Próxima atividade” — exibe uma tarefa incompleta: prioriza a próxima com `dueDate >= agora` em ordem ASC e, na ausência, usa a primeira incompleta da lista (2026-07-21)
 - [x] Seção “Próximos lembretes” — próximos 3 ativos (`!isRead`), ordenação `scheduledAt` DESC (2026-07-26)
 - [x] Card "Status de Acessibilidade" com fundo Figma `#eff6ff`, ícone `Accessibility` e campos da tela `/acessibility` (2026-07-16)

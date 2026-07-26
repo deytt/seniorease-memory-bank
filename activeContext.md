@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-26 (David — Dashboard: preview de lembretes mostra próximos 3 ativos; SPEC-WEB-03 README concluída; pendências ADR-025 restantes: filtro categoria lembretes + badge prioridade dashboard)
+> Última atualização: 2026-07-26 (David — Dashboard: card Encorajamento diário conta Pendentes = todas não concluídas; preview lembretes 3 ativos; SPEC-WEB-03 README; pendências ADR-025: filtro categoria lembretes + badge prioridade dashboard)
 
 ---
 
