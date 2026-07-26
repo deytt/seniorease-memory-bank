@@ -278,6 +278,14 @@ O Mobile (SPEC-02, 2026-07-25) formalizou o contrato de paridade cross-platform 
 - Badge de prioridade na "Próxima Atividade" do Dashboard → confirmar se `.advanced-only` está aplicado
 Referência: tabela "Modo Básico vs. Modo Avançado" em `systemPatterns.md` — atualizar coluna "Status paridade" de ⚠️/❌ para ✅ após cada correção.
 
+**Concluído (2026-07-26, David — Botão "Redefinir padrões" na tela de Acessibilidade):**
+
+- Botão "Redefinir padrões" (`SeniorButtonVariant.outline`) adicionado à `AccessibilityScreen` acima do botão "Salvar configurações".
+- `_resetToDefaults()` restaura o draft para `UserPreferences.defaults()` preservando o `userId`; exibe toast info "Padrões restaurados".
+- Padrões definidos: fonte 100% (`FontSizeScale.medium`), modo avançado (`InterfaceMode.advanced`), espaçamento confortável (`SpacingMode.comfortable`), todos os ajustes rápidos desligados (`darkMode: false`, `contrast: defaultMode`, `audioFeedbackEnabled: false`, `largeTouchTargets: false`).
+- Tour guiado atualizado: novo passo `_resetShowcaseKey` inserido entre toggles e botão salvar (tour agora com 6 passos).
+- `flutter analyze` — 0 erros.
+
 **Próximos passos prioritários (segunda fase / time):**
 
 1. ~~ADR-025 — fechar paridade Modo Básico restante~~ **CONCLUÍDO (2026-07-26)** — badge prioridade e categoria lembretes confirmados com `.advanced-only`; tabela ✅
