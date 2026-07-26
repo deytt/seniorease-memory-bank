@@ -1,7 +1,7 @@
 # Progress — SeniorEase
 
 > Atualizado por cada dev ao concluir uma tarefa. Use `[x]` para marcar como concluído.
-> Última atualização: 2026-07-26 (David — SPEC-WEB-01: número de suporte `0800 600 0300` no Web)
+> Última atualização: 2026-07-26 (David — SPEC-WEB-04: testes unitários Domain/Data, 120 Vitest)
 
 ---
 
@@ -233,7 +233,7 @@
 - [x] Vitest configurado (`npm test`) — cobertura inicial do módulo Perfil e tour (14 testes, 2026-07-15); expandido com helpers de filtro/dashboard/tours (2026-07-21)
 - [x] Menu hamburger: fecha ao clicar fora (overlay) e com Escape (PR #44, 2026-07-21)
 - [x] Botão “Sair do Modo Guiado” sem fundo idle (só hover) (PR #44, 2026-07-21)
-- [ ] Testes unitários (Domain, Data, Presentation) — **em andamento** (demais módulos ainda sem cobertura plena)
+- [x] Testes unitários (Domain, Data, Presentation) — **SPEC-WEB-04 (2026-07-26):** 120 testes Vitest; Domain (`CreateTask`, `CompleteTask`, `SavePreferences`/`UpdatePreferences`, `CreateReminder`) + Data (`FirebaseTaskRepository` com mocks); Presentation já coberta em helpers/tours; módulos auth/UpdateTask/Reminder repo ainda sem ficheiro dedicado
 
 ---
 
@@ -245,7 +245,7 @@
 | Alterar senha         | Integrado (`ChangePasswordUseCase`)     | —                                                                                          |
 | Verificar e-mail      | Tela `/profile/security` (unificada)    | —                                                                                          |
 | Storybook             | Concluído (19+ stories)         | Manter sincronizado com novos componentes                                                  |
-| Testes unitários      | Em andamento                    | Ampliar cobertura Domain/Data/Presentation nos módulos restantes                           |
+| Testes unitários      | 120 Vitest (SPEC-WEB-04)        | Opcional: auth use cases, UpdateTask, FirebaseReminderRepository                           |
 | Tela "Sobre"          | `/about` + tour                 | —                                                                                          |
 | Tour Guiado           | Infra + Guia + tours nas telas listadas | Manter catálogo ao adicionar telas novas                                          |
 | Ordenação por dueDate | Lista + preview: **DESC** (contrato Web/Mobile ADR-011) | Web: confirmar `orderBy('dueDate','desc')` na lista `/tasks`; publicar índices DESC |

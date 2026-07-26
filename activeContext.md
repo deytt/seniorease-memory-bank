@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-26 (David — SPEC-WEB-02 concluída: card "Precisa de Ajuda?" oculto em Modo Básico; pendências ADR-025 restantes: filtro categoria lembretes + badge prioridade dashboard)
+> Última atualização: 2026-07-26 (David — SPEC-WEB-04 concluída: 120 testes Vitest Domain/Data; pendências ADR-025 restantes: filtro categoria lembretes + badge prioridade dashboard)
 
 ---
 
@@ -243,6 +243,12 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
 - Em Modo Básico o card "Precisa de Ajuda?" fica oculto via CSS global; em Modo Avançado permanece visível.
 - Tabela de paridade em `systemPatterns.md` atualizada: Card "Precisa de Ajuda?" → ✅ Paridade.
 
+**Concluído (2026-07-26, David — SPEC-WEB-04 Testes unitários):**
+
+- 5 ficheiros novos (31 testes): `CreateTaskUseCase`, `CompleteTaskUseCase`, `SavePreferencesUseCase` (`UpdatePreferencesUseCase`), `CreateReminderUseCase`, `FirebaseTaskRepository`
+- Suíte Vitest: **120/120** a passar; ESLint + TypeScript sem erros
+- Validação de título/data permanece na Presentation (Zod); Domain testa orquestração, derivação `maximum` e mocks Firestore
+
 **Pendências Web a corrigir para paridade com Mobile (2026-07-25):**
 
 ### 1. ADR-025 — Paridade Modo Básico/Avançado
@@ -254,9 +260,9 @@ Referência: tabela "Modo Básico vs. Modo Avançado" em `systemPatterns.md` —
 
 **Próximos passos prioritários (segunda fase / time):**
 
-1. Testes unitários — ampliar vitest para Domain, Data e Presentation
+1. ADR-025 — fechar paridade Modo Básico restante (filtro lembretes / badge dashboard)
 2. Credenciais FCM/VAPID de produção no ambiente web
-3. Avaliação interna + vídeo de demo + repos públicos
+3. Avaliação interna + vídeo de demo
 
 ### Mobile (seniorease-mobile)
 
