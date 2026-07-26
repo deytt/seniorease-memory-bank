@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-26 (David — SPEC-WEB-01 concluída: número de suporte `0800 600 0300` no Web; pendência restante: paridade Modo Básico/Avançado)
+> Última atualização: 2026-07-26 (David — SPEC-WEB-02 concluída: card "Precisa de Ajuda?" oculto em Modo Básico; pendências ADR-025 restantes: filtro categoria lembretes + badge prioridade dashboard)
 
 ---
 
@@ -237,12 +237,17 @@ O memory-bank está configurado no repositório mobile. Firebase (`seniorease-ba
   - `profileTourSteps.ts` (texto do tour)
 - ESLint e TypeScript sem erros; zero ocorrências de `1-800-SENIOR` em `src/`.
 
+**Concluído (2026-07-26, David — SPEC-WEB-02 Card ajuda em Modo Básico):**
+
+- Wrapper do `ProfileHelpCard` em `profileScreen.tsx` com `className="advanced-only"` (`data-tour="profile-help"` preservado).
+- Em Modo Básico o card "Precisa de Ajuda?" fica oculto via CSS global; em Modo Avançado permanece visível.
+- Tabela de paridade em `systemPatterns.md` atualizada: Card "Precisa de Ajuda?" → ✅ Paridade.
+
 **Pendências Web a corrigir para paridade com Mobile (2026-07-25):**
 
 ### 1. ADR-025 — Paridade Modo Básico/Avançado
 
-O Mobile (SPEC-02, 2026-07-25) formalizou o contrato de paridade cross-platform em `systemPatterns.md`. O Web precisa ser adequado para ocultar os mesmos elementos em Modo Básico. Divergências identificadas:
-- Card "Precisa de Ajuda?" visível no Web → ocultar com `.advanced-only` no `/profile` (paridade com Mobile que oculta em Settings)
+O Mobile (SPEC-02, 2026-07-25) formalizou o contrato de paridade cross-platform em `systemPatterns.md`. O Web precisa ser adequado para ocultar os mesmos elementos em Modo Básico. Divergências restantes:
 - Filtro de lembretes por "Categoria" → definir se o comportamento do Web (chips exclusivos) já equivale ao Mobile ou precisa de ajuste
 - Badge de prioridade na "Próxima Atividade" do Dashboard → confirmar se `.advanced-only` está aplicado
 Referência: tabela "Modo Básico vs. Modo Avançado" em `systemPatterns.md` — atualizar coluna "Status paridade" de ⚠️/❌ para ✅ após cada correção.
