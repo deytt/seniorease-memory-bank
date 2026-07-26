@@ -1,7 +1,7 @@
 # Active Context — SeniorEase
 
 > Este arquivo é atualizado pelo dev que inicia uma nova frente de trabalho. Reflete o estado atual do time.
-> Última atualização: 2026-07-26 (David — Dashboard: card Encorajamento diário conta Pendentes = todas não concluídas; preview lembretes 3 ativos; SPEC-WEB-03 README; pendências ADR-025: filtro categoria lembretes + badge prioridade dashboard)
+> Última atualização: 2026-07-26 (David — Avaliação criteriosa pré-entrega: ADR-025 totalmente fechado; 81→120 testes no video-script; roteiro web expandido; paridade tabela ✅; pendente: gravar vídeo + submeter FIAP)
 
 ---
 
@@ -280,9 +280,10 @@ Referência: tabela "Modo Básico vs. Modo Avançado" em `systemPatterns.md` —
 
 **Próximos passos prioritários (segunda fase / time):**
 
-1. ADR-025 — fechar paridade Modo Básico restante (filtro lembretes / badge dashboard)
+1. ~~ADR-025 — fechar paridade Modo Básico restante~~ **CONCLUÍDO (2026-07-26)** — badge prioridade e categoria lembretes confirmados com `.advanced-only`; tabela ✅
 2. Credenciais FCM/VAPID de produção no ambiente web
-3. Avaliação interna + vídeo de demo
+3. **Gravar vídeo** (máx. 15 min) — roteiro completo em `video-script.md`; ensaiar antes de gravar
+4. **Submeter na FIAP** — criar `.docx` ou `.txt` com links (repos, Vercel, Figma, vídeo)
 
 **Alteração necessária no Mobile (2026-07-26, David — paridade filtro de status):**
 

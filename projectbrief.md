@@ -44,7 +44,10 @@ Um painel onde o usuário pode ajustar:
 - **Modo de interface** — Básico (interface simplificada) / Avançado (interface completa)
 - **Feedback visual reforçado** — ativação de animações e confirmações visuais extras
 
-> Nota de implementação: A opção de "confirmação adicional antes de ações críticas" é um comportamento **sempre ativo** no app — não é configurável pelo usuário. O Modo Básico implica automaticamente maior cautela e clareza na interface.
+> **Decisão de produto — Confirmação antes de ações críticas (não configurável):**
+> O Hackathon menciona "confirmação adicional antes de ações críticas" como um item do painel de personalização. A equipa decidiu implementá-la como **comportamento padrão e inegociável** — não como um toggle que o utilizador pode desativar.
+> Justificativa: a persona Margaret não deve precisar de configurar a sua própria proteção. Toda ação irreversível (excluir tarefa, excluir lembrete, sair da conta, redefinir acessibilidade) exibe sempre um modal de confirmação com linguagem simples. Esta decisão está alinhada ao princípio de produto #5 ("Confirmação antes do irreversível") definido em `productContext.md`.
+> O Modo Básico reforça ainda mais esta cautela ao simplificar a interface e reduzir a probabilidade de acções acidentais.
 
 ### Módulo 2 — Organizador de Atividades Simplificado
 

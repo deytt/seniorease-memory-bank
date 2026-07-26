@@ -390,7 +390,7 @@ O Modo Básico simplifica a UI ocultando elementos de complexidade secundária �
 | `SuccessBanner` / card de boas-vindas decorativo | oculto | oculto (`.advanced-only`) | ✅ Paridade |
 | Card "Status de acessibilidade" | — (sem equivalente) | oculto (`.advanced-only`) | ✅ N/A |
 | Botão "Carregar exemplos" | — (sem equivalente) | oculto (`.advanced-only`) | ✅ N/A |
-| Badge de prioridade na "Próxima Atividade" | — (via TaskCard abaixo) | oculto (`.advanced-only`) | ⚠️ Verificar mobile |
+| Badge de prioridade na "Próxima Atividade" | — (via TaskCard abaixo) | oculto (`.advanced-only`) — `dashboardScreen.tsx` l.140 | ✅ Paridade |
 
 #### Tarefas
 
@@ -403,7 +403,7 @@ O Modo Básico simplifica a UI ocultando elementos de complexidade secundária �
 
 | Elemento | Mobile | Web | Status paridade |
 |---|---|---|---|
-| Secção "Categoria" no modal de filtros | oculta | — (web usa chips exclusivos; sem modal de categoria separado) | ⚠️ Revisar web |
+| Secção "Categoria" no modal de filtros | oculta | oculta (`.advanced-only`) — `reminderFilterSheet.tsx` l.189 | ✅ Paridade |
 
 #### Perfil
 

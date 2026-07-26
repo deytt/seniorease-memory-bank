@@ -1,7 +1,8 @@
 # Roteiro do Vídeo de Entrega — SeniorEase
 
 > Máximo: **15 minutos** | Destino: Plataforma FIAP
-> Status: **pronto para gravação** — links preenchidos, inconsistências corrigidas; pendente apenas gravar e submeter
+> Status: **pronto para gravação** — avaliação interna concluída (2026-07-26); pendente apenas gravar e submeter
+> Última revisão: 2026-07-26 — contagem de testes corrigida (120 Vitest), roteiro web expandido, diferenciais atualizados, confirmação-sempre-ativa documentada
 
 ---
 
@@ -72,6 +73,7 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 - Design System com tokens de contraste validados (WCAG AA mínimo), áreas de toque ≥ 44px, `Semantics` em todos os elementos interativos.
 - **Modo Básico / Avançado**: simplifica a UI em tempo real, ocultando elementos não essenciais — implementado como lógica real no tema e nos providers, não apenas visualmente.
 - **Dynamic Theme Engine**: tipografia escalável (87% a 125%), Dark Mode, Alto Contraste e `largeTouchTargets` persistidos por utilizador no Firestore e aplicados globalmente via `ThemeData` dinâmico.
+- **Confirmação antes de ações irreversíveis — comportamento padrão, não configurável**: toda ação destrutiva (excluir tarefa, excluir lembrete, sair da conta, redefinir acessibilidade) exibe um modal de confirmação em linguagem simples. Esta proteção é **sempre ativa** — o idoso não precisa de ativar nenhum toggle para tê-la. Decisão deliberada: a segurança não é uma opção, é o comportamento mínimo esperado pela persona Margaret.
 
 ### 8. Tour Guiado — Onboarding Ativo para Idosos
 
@@ -83,7 +85,7 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 ### 9. CI/CD Automatizado desde o Início — Mais do que Qualidade de Código
 
 - **Mobile:** GitHub Actions — CI (analyze + test com cobertura) em todo push/PR; CD (build APK + Firebase App Distribution) só na `master`. **300 testes unitários** cobrem as 3 camadas da Clean Architecture (Domain, Data, Presentation).
-- **Web:** GitHub Actions — CI (lint + type-check + build + 81 testes Vitest); CD (Vercel `--prebuilt`) só na `master` após CI passar. Design System documentado com **Storybook** (19 stories com todos os estados e variantes).
+- **Web:** GitHub Actions — CI (lint + type-check + build + 120 testes Vitest); CD (Vercel `--prebuilt`) só na `master` após CI passar. Design System documentado com **Storybook** (19 stories com todos os estados e variantes).
 - Isto garantiu que o código que chega à `master` está sempre compilando, testado e distribuído — mesmo trabalhando em velocidade de hackathon.
 - **Colaboração assíncrona entre plataformas:** como a web estava sempre deployada no Vercel e o mobile sempre distribuído via App Distribution, cada developer podia **ver o trabalho do outro sem clonar nem subir ambiente**. Por exemplo: eu, como dev Android, pude verificar como a feature de Histórico foi implementada na web simplesmente abrindo o deploy do Vercel — e vice-versa. Isto elimina um dos maiores atritos num projeto multi-plataforma: a necessidade de configurar e correr dois projetos diferentes para entender o que foi feito.
 - O CI/CD não foi só uma ferramenta de qualidade — foi também uma ferramenta de **comunicação e transparência** entre as frentes do projeto.
@@ -105,8 +107,8 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 | 2 | **Processo de Design** — Figma Make → Design System → Figma MCP → código | ~2 min | Protótipo: https://senior-ease.figma.site · Logo "SE" azul · Figma MCP a gerar código Flutter |
 | 3 | **Arquitetura do projeto** — Memory-bank, Clean Architecture, plataforma dupla, base Firebase única | ~2 min | Submódulo, ADRs, estrutura de pastas, Cloud Functions, Kanban |
 | 4 | **Demo Mobile — fluxo principal** | ~4 min | Ver roteiro detalhado abaixo |
-| 5 | **Demo Web** — mesmos fluxos na plataforma web | ~2 min | Deploy Vercel; destacar paridade visual com o mobile |
-| 6 | **Acessibilidade em detalhe** — Modo Básico, fonte 125% (Extra Grande), Dark Mode, Alto Contraste, espaçamento, tour | ~1 min | Demonstrar ao vivo nas duas plataformas |
+| 5 | **Demo Web** — mesmos fluxos na plataforma web + Storybook + badge não-lido | ~3 min | Deploy Vercel; Storybook (Design System); badge notificações unread; paridade visual com o mobile |
+| 6 | **Acessibilidade em detalhe** — Modo Básico, fonte 125% (Extra Grande), Dark Mode, Alto Contraste, espaçamento, tour, WCAG AA | ~1 min | Demonstrar ao vivo nas duas plataformas; mencionar 44px touch targets e contraste 4.5:1 |
 | 7 | **Encerramento** — diferenciais, próximos passos, agradecimento | ~1 min | Ligeiro e positivo |
 
 ### Roteiro detalhado — Demo Mobile (bloco 4)
@@ -121,6 +123,7 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
    - Card "Próxima Atividade" ligado ao Firestore em tempo real
 4. **Criar tarefa** — título + prazo + passos dinâmicos; mostrar validação em tempo real
 5. **Modo Guiado** — iniciar o modo guiado; destacar "**Passo X de Y**" + barra de progresso + **celebração Lottie** ao concluir
+5b. **Confirmação antes de ação destrutiva** — tentar excluir a tarefa criada; o modal de confirmação aparece com linguagem simples ("Tem certeza? Esta ação não pode ser desfeita."); narrar: *"esta confirmação é sempre ativa — o idoso não precisa configurar nada para estar protegido"*
 6. **Criar lembrete** — criar um lembrete com horário futuro; mencionar que em até 2 minutos chegará uma notificação push real no dispositivo
 7. **Notificação push** — fechar o app → aguardar a notificação do sistema aparecer na barra de status → tocar nela → app abre diretamente no item correto
 8. **Tela de Notificações** — tocar no sininho; mostrar o histórico de avisos recebidos; tocar num card para navegar à entidade
@@ -129,6 +132,19 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 11. **Acessibilidade** — aumentar fonte para 125% (tamanho Extra Grande) + ativar Alto Contraste + ativar Modo Básico (UI simplifica em tempo real) + ligar Dark Mode; tocar em **Salvar configurações** para aplicar e demonstrar o efeito global
 12. **Tour Guiado** — tocar no "?" de qualquer tela; mostrar o showcase com balão explicativo; Central "Guias do aplicativo" nas Definições
 13. **Ajustes** — mostrar o header gradiente contínuo; perfil com foto + dados persistidos
+
+### Roteiro detalhado — Demo Web (bloco 5)
+
+> Seguir esta sequência no deploy Vercel (https://seniorease-web.vercel.app). Ter conta de demonstração com tarefas e lembretes pré-carregados.
+
+1. **Login** — abrir o deploy Vercel; destacar "Lembrar de mim" + opção Google OAuth
+2. **Dashboard** — saudação dinâmica; sininho com badge de notificações não lidas; card "Próxima atividade" ligado ao Firestore; seção "Próximos lembretes"
+3. **Modo Guiado** — iniciar a partir do Dashboard; mostrar "Passo X de Y" + barra de progresso + celebração Lottie
+4. **Confirmação antes de ação destrutiva** — tentar excluir uma tarefa; modal de confirmação aparece com linguagem clara; cancelar; narrar que esta proteção é sempre ativa, sem toggle
+5. **Badge não-lido** — tocar no sininho; notificações novas destacadas com borda e ponto azul; ao sair o badge vai a zero
+6. **Acessibilidade** — aumentar fonte (Extra Grande); ativar Dark Mode + Alto Contraste; mostrar a UI adaptando-se em tempo real; ativar Modo Básico (elementos avançados desaparecem via CSS `advanced-only`)
+7. **Storybook** — abrir no `localhost:6006` ou mencionar: *"cada componente do Design System está documentado com todas as variantes, estados (hover, disabled, loading, erro) e tokens — 19 stories"*
+8. **Next.js App Router + SSR** — mencionar: *"as páginas são renderizadas no servidor por padrão, acelerando o carregamento inicial — alinhado à Fase 2 da pós-graduação"*
 
 ---
 
@@ -150,6 +166,10 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 - *"O Kanban, o memory-bank e o CI/CD formaram um sistema de gestão de projeto que funcionava mesmo sem reuniões."*
 - *"300 testes unitários cobrindo Domain, Data e Presentation — porque acessibilidade real exige código confiável, não apenas bonito."*
 - *"As 13 telas obrigatórias de cada plataforma foram implementadas, testadas e distribuídas — o SeniorEase está pronto para a Margaret."*
+- *"A confirmação antes de ações irreversíveis não é um toggle — é um comportamento inegociável. O idoso não deve precisar configurar a sua própria segurança."*
+- *"O que aprendemos em cada fase da pós está aqui: Design System e Storybook na Fase 1, deploy Vercel e acessibilidade na Fase 2, Flutter e Firebase na Fase 3, Clean Architecture e segurança na Fase 4."*
+- *"Todos os botões têm pelo menos 44×44px de área de toque e contraste mínimo de 4.5:1 — WCAG AA auditado e validado, não apenas estimado."*
+- *"120 testes Vitest no Web, 300 no Mobile — o CI não deixa nenhum commit chegar à produção sem passar por todos eles."*
 
 ---
 
@@ -162,8 +182,16 @@ Esta secção documenta os pontos de destaque da **forma como o projeto foi cons
 - [x] Figma Design público — https://www.figma.com/design/3avWJD9n4gI9mZHw9dksIy/SeniorEase
 - [x] Links de repos e deploy preenchidos na tabela acima
 - [x] Inconsistências do roteiro corrigidas (escala de fonte, nota interna removida)
-- [x] 300/300 testes passando, `flutter analyze` com 0 erros
+- [x] 300/300 testes Mobile passando; `flutter analyze` com 0 erros
+- [x] 120/120 testes Web Vitest passando; ESLint + TypeScript sem erros
 - [x] TestFlight — testers externos convidados; link partilhado com a turma
+- [x] Avaliação interna criteriosa concluída (2026-07-26): todos os requisitos do Hackathon + Fases 1–4 auditados
+- [x] Contagem de testes corrigida no roteiro: 81 → 120 Vitest (2026-07-26)
+- [x] Paridade Modo Básico/Avançado (ADR-025) totalmente fechada: badge de prioridade e categoria de lembretes confirmados com `.advanced-only` (2026-07-26)
+- [x] Roteiro detalhado Demo Web adicionado (2026-07-26)
+- [x] Decisão "confirmação sempre ativa" documentada no Diferencial #7 e nos roteiros de demo (2026-07-26)
+- [x] Frases-chave atualizadas: WCAG AA, 120 testes Web, confirmação-padrão, fases da pós (2026-07-26)
+- [x] Badge de notificações Web — estado lido/não lido via `localStorage` implementado (2026-07-26)
 
 ### Obrigatório antes de entregar
 
