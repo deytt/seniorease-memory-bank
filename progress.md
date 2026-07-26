@@ -552,11 +552,11 @@
 - [x] **Número de suporte Web (SPEC-WEB-01)** — `1-800-SENIOR` substituído por `0800 600 0300` em `profileHelpCard.tsx`, `login/page.tsx` e `profileTourSteps.ts` (2026-07-26)
 - [x] **Rotas Modo Guiado Web (SPEC-WEB-05)** — confirmado que `/tasks/guided` (hub) e `/tasks/[id]/guided` (tela) não são duplicadas; links de entrada corretos; JSDoc no hub; nota hub+tela em `systemPatterns.md` (2026-07-26)
 - [x] **README Web completo (SPEC-WEB-03)** — reescrito com proposta/público-alvo, 13 telas, links (Vercel/Mobile/Figma/Protótipo/Kanban), 120 testes Vitest, Storybook (19 stories), CI/CD, estrutura Clean Architecture e instalação passo a passo; sem segredos (2026-07-26)
-- [ ] **[ADR-025] Adequar o Web ao contrato de paridade Modo Básico/Avançado** — alinhar `seniorease-web` às ocultações definidas em `systemPatterns.md` (tabela "Modo Básico vs. Modo Avançado"); divergências identificadas:
-  - [x] Card "Precisa de Ajuda?" oculto em Modo Básico no Web (Profile) via `.advanced-only` — SPEC-WEB-02 (2026-07-26); paridade com Mobile/Settings
-  - Secção "Categoria" no filtro de lembretes: revisar se web usa chips exclusivos ou modal (definir comportamento único)
-  - Badge de prioridade na "Próxima Atividade" do Dashboard Web: confirmar se `.advanced-only` já está aplicado
-  - Após adequar: atualizar a coluna "Status paridade" em `systemPatterns.md` de ⚠️/❌ para ✅
+- [x] **[ADR-025] Adequar o Web ao contrato de paridade Modo Básico/Avançado** — confirmado e tabela atualizada (2026-07-26):
+  - [x] Card "Precisa de Ajuda?" oculto em Modo Básico no Web (Profile) via `.advanced-only` — SPEC-WEB-02 (2026-07-26)
+  - [x] Secção "Categoria" no filtro de lembretes: `reminderFilterSheet.tsx` l.189 já tem `.advanced-only` — ✅ Paridade confirmada por avaliação interna (2026-07-26)
+  - [x] Badge de prioridade na "Próxima Atividade" do Dashboard Web: `dashboardScreen.tsx` l.140 já tem `.advanced-only` — ✅ Paridade confirmada por avaliação interna (2026-07-26)
+  - [x] Tabela "Modo Básico vs. Modo Avançado" em `systemPatterns.md` atualizada: todos os ⚠️ → ✅
 - [x] **Tornar público o repositório Mobile** — público e links adicionados no README (2026-07-25)
 - [x] **Tornar público o repositório Web** — público e links adicionados no README (2026-07-25)
 - [x] **Tornar público o Figma Design** — público e links adicionados no README (2026-07-25)
