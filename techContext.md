@@ -27,6 +27,15 @@ o mapeamento semântico do Tailwind em `@theme inline`. O layout raiz, o
 Storybook, o shadcn e o Tailwind devem consumir esse mesmo arquivo; não criar
 folhas paralelas de tokens.
 
+### Storybook Web — contexto de paridade
+
+- Storybook 10.5 com framework `@storybook/nextjs` e catálogo de 21 stories + introdução MDX.
+- `.storybook/preview.tsx` carrega `globals.css`, `Inter`, `Geist` e `Geist Mono`, espelhando o layout raiz.
+- Globals disponíveis: aparência (`light`, `dark`, `high`, `maximum`), fonte (`small`, `medium`, `large`, `extra_large`), espaçamento (`compact`, `comfortable`, `spacious`), alvos maiores e modo de interface (`basic`, `advanced`).
+- Os multiplicadores são os mesmos de `UserPreferences`: fonte `0.875/1/1.125/1.25` e espaçamento `0.85/1/1.5`.
+- A sincronização ocorre em `document.documentElement` para reproduzir seletores `html[data-*]`, `.dark`, `.a11y-large-touch` e o comportamento de portals.
+- O build estático é validado com `npm run build-storybook`; avisos de limite de tamanho dos bundles são não bloqueantes.
+
 ### Mobile — seniorease-mobile
 
 | Tecnologia | Versão | Motivo |

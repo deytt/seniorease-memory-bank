@@ -439,3 +439,8 @@ Ao criar um novo componente ou secção, decida:
 - Todos os componentes da web devem estar documentados no **Storybook**.
 - Documentação completa: cada componente do Design System com **todas as variações/estados**, mais os componentes **customizados** que eventualmente não existam no DS.
 - Incluir controls/args (props), estados (hover/disabled/loading/erro) e tokens aplicados.
+- O preview deve importar `src/app/globals.css` e carregar as mesmas fontes do layout raiz (`Inter`, `Geist` e `Geist Mono`); não duplicar tokens ou criar CSS específico para simular o Design System.
+- Preferências de acessibilidade devem ser controles globais: aparência/contraste, escala tipográfica, densidade de espaçamento, alvos de toque e modo básico/avançado.
+- Classes, atributos `data-*` e custom properties que na aplicação vivem em `<html>` também devem ser sincronizados em `document.documentElement`, pois overlays e outros portals não herdam o wrapper visual da story.
+- Stories isoladas usam o layout do próprio Storybook. Componentes estruturais podem optar pelo `AppContentDecorator`, que replica `max-w-6xl` e paddings responsivos do shell autenticado sem incluir autenticação, Firebase, navegação ou altura mínima de viewport.
+- `PageHeader` deve manter cenários com `actions`, `tourAction`, ambos combinados e viewport mobile para proteger o contrato responsivo usado pelas telas reais.
