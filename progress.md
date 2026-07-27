@@ -85,7 +85,7 @@
 - [x] Revisão UX/UI etapa 07 — menu móvel migrado para painel acessível com foco contido/restaurado, fechamento por `Esc`, `aria-current`, nomes acessíveis e alvos de toque de 48px (2026-07-23)
 - [x] Revisão UX/UI etapa 08 — bloco de suporte: número atualizado para `0800 600 0300` (SPEC-WEB-01, 2026-07-26); ocultação em Modo Básico fica na SPEC-WEB-02 / ADR-025
 - [x] Revisão UX/UI etapa 09 — ações compactas em 44px, principais em 56px, ícones em 44×44px, raio padrão de 14px e links de ação migrados para `Button` (2026-07-23)
-- [x] Storybook — **concluído** (19 stories; ver secção Documentação abaixo)
+- [x] Storybook — **concluído e alinhado ao Design System real** (21 stories + introdução MDX; ver secção Documentação abaixo; revisão 2026-07-27)
 
 ### Autenticação
 
@@ -119,15 +119,20 @@
 > Requisito: todos os componentes da web documentados no Storybook — documentação completa cobrindo cada componente e variações do Design System, além de componentes customizados que eventualmente não existam no DS.
 
 - [x] Storybook 10.5.0 configurado no projeto web com @storybook/nextjs builder (migrado de @storybook/nextjs-vite para resolver erros de rendering)
-- [x] Stories de 19 componentes (15 UI components + 3 features + 1 integração)
-  - **Components Section (15):** Avatar, Badge, Button, Card, Checkbox, Dialog, DropdownMenu, Input, Label, Separator, Sheet, Switch, Toast, Tooltip, Sooner
-  - **Features Section (3):** ReminderCard, ReminderFilterChips, TaskCard
-  - **Integrations Section (1):** ReminderListIntegration
-  - **Removidos (Firebase auth dependencies):** ~~CreateReminderForm~~, ~~CreateTaskForm~~
+- [x] Catálogo de **21 arquivos de stories + introdução MDX**, organizado por finalidade
+  - **Primitivos (14):** Avatar, Badge, Button, Card, Checkbox, Dialog, DropdownMenu, Input, Label, Separator, Sheet, Switch, Toast e Tooltip
+  - **Estrutura (4):** BackNavigationButton, MaskedInput, PageHeader e TourHelpButton
+  - **Domínio (3):** ReminderCard, ReminderFilters e TaskFilters
+  - **Removidos/consolidados:** Sooner, TaskCard e ReminderListIntegration; ReminderFilterChips consolidado em ReminderFilters; formulários com dependências de autenticação/Firebase continuam fora do catálogo isolado
 - [x] Controls/args (props), estados (hover/disabled/loading/erro) e tokens documentados via TypeScript + argTypes
 - [x] Autodocs habilitada com tags ["autodocs"] em todos os stories
 - [x] Resolver problemas: config conflict (.storybook/main.js deletado), version mismatch (@storybook/nextjs-vite@10.5.0), corrupção Next.js (next@16.2.9 reinstalado)
 - [x] Storybook validado com framework `@storybook/nextjs`; porta padrão local `6006` (usar outra porta se estiver ocupada)
+- [x] Paridade global com a aplicação: `globals.css`, Inter/Geist/Geist Mono, temas e contrastes, escala tipográfica, densidade de espaçamento, alvos de toque e modo básico/avançado (2026-07-27)
+- [x] Preferências globais sincronizadas no `<html>` para cobrir também componentes renderizados em portals (dialogs, sheets, dropdowns e tooltips)
+- [x] Decorator opcional `AppContentDecorator` replica largura/paddings do shell autenticado sem impor `min-h-screen`
+- [x] `PageHeader` atualizado com cenários `actions` + `tourAction` e viewport mobile; `TourHelpButton` documentado com foco, contraste e alvo ampliado
+- [x] Revisão validada com `tsc --noEmit`, ESLint, `git diff --check` e `storybook build` — commit web `6b808d6`
 
 ### Módulo 1 — Acessibilidade
 
@@ -245,7 +250,7 @@
 | Upload de foto        | Integrado (`UploadProfilePhotoUseCase`) | Bucket Storage ativado + `storage.rules` publicadas (2026-07-24)                             |
 | Alterar senha         | Integrado (`ChangePasswordUseCase`)     | —                                                                                          |
 | Verificar e-mail      | Tela `/profile/security` (unificada)    | —                                                                                          |
-| Storybook             | Concluído (19+ stories)         | Manter sincronizado com novos componentes                                                  |
+| Storybook             | Concluído (21 stories + introdução MDX; paridade global de acessibilidade) | Manter sincronizado com novos componentes                                   |
 | Testes unitários      | 120 Vitest (SPEC-WEB-04)        | Opcional: auth use cases, UpdateTask, FirebaseReminderRepository                           |
 | Tela "Sobre"          | `/about` + tour                 | —                                                                                          |
 | Tour Guiado           | Infra + Guia + tours nas telas listadas | Manter catálogo ao adicionar telas novas                                          |
